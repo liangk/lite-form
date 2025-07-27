@@ -6,6 +6,11 @@
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
+    "paths": {
+      "lite-form": [
+        "./dist/lite-form"
+      ]
+    },
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
@@ -22,5 +27,19 @@
     "typeCheckHostBindings": true,
     "strictTemplates": true
   },
-  "files": []
+  "files": [],
+  "references": [
+    {
+      "path": "./projects/lite-form/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/lite-form/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/ui-sandbox/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/ui-sandbox/tsconfig.spec.json"
+    }
+  ]
 }
