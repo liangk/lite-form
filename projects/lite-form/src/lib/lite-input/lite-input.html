@@ -1,0 +1,9 @@
+<div class="lite-input" [ngClass]="{'in-edit': inEdit()}">
+  @if (inEdit()) {
+    <input type="text" [formControl]="control().formControl" placeholder="" />
+    <label>{{ control().label }}</label>
+  } @else {
+    <label>{{ control().label }}</label>
+    <div class="value">{{ control().formControl.value }}</div>
+  }
+</div>

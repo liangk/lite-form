@@ -1,0 +1,13 @@
+:host {
+  display: flex; flex-direction: column; background-color: #f9f9f9; height: 100%;
+  font-family: "TikTok Sans", sans-serif; font-size: 14px; color: #333;
+}
+.main_content {
+  max-width: 1200px; margin: 20px auto; background: #fff; padding: 20px; border: 1px solid #eee;
+  border-radius: 4px; flex: 1; color: #333; 
+  h1 { color: #2079e1; font-size: 24px; margin-bottom: 20px; }
+  h2 { font-size: 18px; font-weight: bold; margin-bottom: 12px;}
+  .row { display: flex; gap: 12px; width: 100%;
+    lite-textarea, lite-input { width: 100%; }
+  }
+}
