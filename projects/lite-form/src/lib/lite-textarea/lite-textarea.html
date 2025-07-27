@@ -1,6 +1,6 @@
-<div class="lite-input" [ngClass]="{'in-edit': inEdit()}">
+<div class="lite-textarea" [ngClass]="{'in-edit': inEdit()}">
   @if (inEdit()) {
-    <input type="text" [formControl]="control().formControl" placeholder="" />
+    <textarea [formControl]="control().formControl" placeholder=""></textarea>
     <label>{{ control().label }}</label>
   } @else {
     <label>{{ control().label }}</label>

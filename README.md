@@ -1,59 +1,65 @@
-# LiteForm
+# Lite Form Project Documentation
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.3.
+## Overview
+Lite Form is an Angular library for building lightweight, customizable form components. It includes reusable input and textarea components, a style guide, and a UI sandbox application for testing and demonstration.
 
-## Development server
+---
 
-To start a local development server, run:
+## Project Structure
 
-```bash
-ng serve
+- `projects/lite-form/` — The Angular library source code
+  - `src/lib/` — Library components and styles
+    - `lite-input/` — Input component
+    - `lite-textarea/` — Textarea component
+    - `lite-styles.scss` — Shared SCSS styles
+    - `field-dto.ts` — Data transfer object for form fields
+    - `lite-form.module.ts` — Library module
+  - `public-api.ts` — Library exports
+- `projects/ui-sandbox/` — Standalone Angular app for demo/testing
+  - `src/app/` — App source code
+    - `app.html` — Demo page for components
+    - `app.ts` — App logic
+    - `app.scss` — App styles
+- `docs/STYLEGUIDE.md` — SCSS style guide for consistent styling
+
+---
+
+## Usage
+
+### 1. Building the Library
+Run:
+```sh
+ng build lite-form
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+### 2. Using Components in Your App
+Import `LiteFormModule` in your standalone component or NgModule:
+```typescript
+import { LiteFormModule } from 'lite-form';
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
+Use the components in your template:
+```html
+<lite-input [control]="inputDemo"></lite-input>
+<lite-textarea [control]="textareaDemo"></lite-textarea>
 ```
 
-## Building
+### 3. UI Sandbox
+The `ui-sandbox` app demonstrates and tests all library components. Edit `app.html` and `app.ts` to add new demos.
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## SCSS Style Guide
+See [`docs/STYLEGUIDE.md`](docs/STYLEGUIDE.md) for conventions on writing compact, maintainable SCSS.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## Contributing
+- Follow the SCSS style guide for all styles.
+- Use clear, descriptive names for variables and components.
+- Document new components and features in this file.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+---
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## License
+This project is licensed under the MIT License.

@@ -1,0 +1,34 @@
+.lite-input {
+  display: flex; flex-direction: column; margin-bottom: 10px; position: relative;
+  label { font-size: 1.2em; line-height: 1.2em; letter-spacing: 0.3x; }
+  .value { font-size: 1em; color: #333; letter-spacing: 0.5px; }
+}
+.lite-input.in-edit {
+  label { position: absolute; left: 8px; top: 5px; color: #aaa; pointer-events: none; transition: 0.2s;
+  font-size: 1em; line-height: 1.8em; letter-spacing: 0.3x; }
+  input { border: 1px solid #ccc; border-radius: 4px; padding: 5px 8px; font-size: 1em; outline: none;
+    line-height: 1.8em; letter-spacing: 1px; }
+  input:focus {
+    border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5);
+  }
+  input:focus + label, input:not(:placeholder-shown) + label {
+    transform: translateY(-16px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
+  }
+}
+.lite-textarea {
+  display: flex; flex-direction: column; margin-bottom: 10px; position: relative;
+  label { font-size: 1.2em; line-height: 1.2em; letter-spacing: 0.3x; }
+  .value { font-size: 1em; color: #333; letter-spacing: 0.5px; }
+}
+.lite-textarea.in-edit {
+  label { position: absolute; left: 8px; top: 5px; color: #aaa; pointer-events: none; transition: 0.2s;
+  font-size: 1em; line-height: 1.8em; letter-spacing: 0.3x; }
+  textarea { border: 1px solid #ccc; border-radius: 4px; padding: 5px 8px; font-size: 1em; outline: none;
+    line-height: 1.8em; letter-spacing: 1px; }
+  textarea:focus {
+    border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5);
+  }
+  textarea:focus + label, textarea:not(:placeholder-shown) + label {
+    transform: translateY(-16px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
+  }
+}

@@ -4,20 +4,18 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'lite-input',
+  selector: 'lite-textarea',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: `./lite-input.html`,
+  templateUrl: `./lite-textarea.html`,
   styleUrls: [`../lite-styles.scss`]
 })
-export class LiteInput {
+export class LiteTextarea {
   inEdit = input<boolean>(true);
   control = input<FieldDto>({ label: '', formControl: new FormControl('') });
-
   constructor() {
     effect(() => {
       // Initialization logic can go here if needed
-      console.log('LiteInput initialized with control:', this.control());
     });
   }
 }
