@@ -5,6 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:lib": "ng build lite-form --configuration production",
+    "pack:lib": "cd dist/lite-form && npm pack",
+    "publish:lib": "npm run build:lib && npm run pack:lib",
+    "publish:manual": "bash scripts/build-and-publish.sh",
     "watch": "ng build lite-form --watch --configuration development",
     "test": "ng test"
   },
