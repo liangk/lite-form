@@ -17,9 +17,14 @@ The GitHub Actions workflow (`.github/workflows/npm-publish-github-packages.yml`
 
 ### Setup for GitHub Actions
 
-1. Ensure your repository has the necessary permissions for GitHub Packages
-2. The workflow uses `GITHUB_TOKEN` automatically (no additional setup required)
-3. Packages will be published to `@liangk/lite-form` scope
+1. **Repository Settings**: Ensure GitHub Actions has the necessary permissions:
+   - Go to Repository Settings → Actions → General
+   - Under "Workflow permissions", select "Read and write permissions"
+   - Check "Allow GitHub Actions to create and approve pull requests"
+
+2. **Automatic Authentication**: The workflow uses `GITHUB_TOKEN` automatically (no additional setup required)
+
+3. **Package Publishing**: Packages will be published to `@liangk/lite-form` scope
 
 ## Manual Publishing
 
@@ -117,6 +122,19 @@ Or with a `.npmrc` file in their project:
 ```
 
 ## Troubleshooting
+
+### GitHub Actions Permission Issues
+If you see "Permission denied" errors for git operations:
+
+1. **Check Repository Settings**:
+   - Go to Settings → Actions → General
+   - Under "Workflow permissions", select "Read and write permissions"
+   - Enable "Allow GitHub Actions to create and approve pull requests"
+
+2. **Alternative: Use Personal Access Token**:
+   - Create a Personal Access Token with `repo` and `write:packages` scopes
+   - Add it as a repository secret named `PAT_TOKEN`
+   - Update the workflow to use `token: ${{ secrets.PAT_TOKEN }}` in checkout step
 
 ### Authentication Issues
 - Ensure `GITHUB_TOKEN` has `packages:write` permission
