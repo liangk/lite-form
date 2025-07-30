@@ -8,5 +8,8 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "sideEffects": false
 }

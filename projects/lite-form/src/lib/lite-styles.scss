@@ -1,34 +1,83 @@
+input, .label, textarea {
+  font-size: 1em; color: #333;
+}
 .lite-input {
-  display: flex; flex-direction: column; margin-bottom: 10px; position: relative;
-  label { font-size: 1.2em; line-height: 1.2em; letter-spacing: 0.3x; }
-  .value { font-size: 1em; color: #333; letter-spacing: 0.5px; }
+  display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
+  .label { font-size: 0.8em; font-weight: 500; }
 }
 .lite-input.in-edit {
-  label { position: absolute; left: 8px; top: 5px; color: #aaa; pointer-events: none; transition: 0.2s;
-  font-size: 1em; line-height: 1.8em; letter-spacing: 0.3x; }
-  input { border: 1px solid #ccc; border-radius: 4px; padding: 5px 8px; font-size: 1em; outline: none;
-    line-height: 1.8em; letter-spacing: 1px; }
+  .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
+  font-size: 1em; line-height: 36px; font-weight: normal; }
+  input { border: 1px solid #ccc; border-radius: 4px; padding: 0 8px; font-size: 1em; outline: none;
+    line-height: 36px; height: 36px; }
   input:focus {
     border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5);
   }
-  input:focus + label, input:not(:placeholder-shown) + label {
-    transform: translateY(-16px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
+  input:focus + .label, input:not(:placeholder-shown) + .label {
+    transform: translateY(-10px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
+    line-height: initial;
+  }
+  input.invalid {
+    border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25);
   }
 }
 .lite-textarea {
-  display: flex; flex-direction: column; margin-bottom: 10px; position: relative;
-  label { font-size: 1.2em; line-height: 1.2em; letter-spacing: 0.3x; }
-  .value { font-size: 1em; color: #333; letter-spacing: 0.5px; }
+  display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
+  .label { font-size: 0.8em; font-weight: 500; }
 }
 .lite-textarea.in-edit {
-  label { position: absolute; left: 8px; top: 5px; color: #aaa; pointer-events: none; transition: 0.2s;
-  font-size: 1em; line-height: 1.8em; letter-spacing: 0.3x; }
+  .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
+  font-size: 1em; line-height: 36px; font-weight: normal; }
   textarea { border: 1px solid #ccc; border-radius: 4px; padding: 5px 8px; font-size: 1em; outline: none;
-    line-height: 1.8em; letter-spacing: 1px; }
+    line-height: 36px; }
   textarea:focus {
     border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5);
   }
-  textarea:focus + label, textarea:not(:placeholder-shown) + label {
-    transform: translateY(-16px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
+  textarea:focus + .label, textarea:not(:placeholder-shown) + .label {
+    transform: translateY(-10px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
+    line-height: initial;
+  }
+  textarea.invalid {
+    border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25);
+  }
+}
+.lite-select {
+  display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
+  .label { font-size: 0.8em; font-weight: 500; }
+}
+.lite-select.in-edit {
+  .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
+  font-size: 1em; line-height: 36px; font-weight: normal; }
+  input { border: 1px solid #ccc; border-radius: 4px; padding: 0 2em 0 8px; font-size: 1em; outline: none;
+    line-height: 36px; height: 36px; }
+  input:focus {
+    border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5);
+  }
+  input.invalid {
+    border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25);
+  }
+  .label.float {
+    transform: translateY(-10px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
+    line-height: initial;
+  }
+  .options {
+    position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #ccc;
+    border-radius: 4px; max-height: 200px; overflow-y: auto; z-index: 1000; overflow: hidden;
+    .option { padding: 8px; cursor: pointer; &:hover { background-color: #f0f0f0; } }
+    .option.selected { background-color: #e0e0e0; }
+  }
+  .arrow_box {
+    position: absolute; right: 0; top: 0; cursor: pointer; height: 100%; width: 2em;
+    .arrow {
+      width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+      border-top: 5px solid #333; position: absolute; top: 48%; left: 0.5em;
+    }
+    .arrow:hover { border-top-color: #2079e1; }
+  }
+}
+.in-edit {
+  .error-messages {
+    color: orangered; font-size: 0.8em; letter-spacing: 0.6px; line-height: 1.8em; padding-left: 10px;
+    .error-message { margin-bottom: 2px; }
   }
 }
