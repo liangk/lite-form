@@ -1,0 +1,23 @@
+<div class="lite-select" [ngClass]="{'in-edit': inEdit()}">
+  @if (inEdit()) {
+    <input type="text" [value]="getDisplayValue()" (input)="onInputChange($event)" [ngClass]="{'selected': control().formControl.value, 'invalid': hasErrors()}"
+      (focus)="showOptions = 'expand'" (blur)="onInputBlur()" />
+    <div class="options" [@toggleView]="showOptions">
+      @for (option of getFilteredOptions(); track option) {
+        <div class="option" (click)="optionSelected(option)">{{ control().displayWith(option) }}</div>
+      }
+    </div>
+    <div class="label" [ngClass]="{float: showOptions=='expand' || getDisplayValue() || hasTypedValue()}">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+    <div class="arrow_box" (click)="showOptions = showOptions === 'expand' ? 'collapse' : 'expand'"><div class="arrow"></div></div>
+    @if (hasErrors()) {
+      <div class="error-messages">
+        @for (errorMessage of getErrorMessage(); track errorMessage) {
+          <div class="error-message">{{ errorMessage }}</div>
+        }
+      </div>
+    }
+  } @else {
+    <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+    <div class="value">{{ control().displayWith(control().formControl.value) }}</div>
+  }
+</div>

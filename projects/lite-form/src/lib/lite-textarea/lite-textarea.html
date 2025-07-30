@@ -1,9 +1,16 @@
 <div class="lite-textarea" [ngClass]="{'in-edit': inEdit()}">
   @if (inEdit()) {
-    <textarea [formControl]="control().formControl" placeholder=""></textarea>
-    <label>{{ control().label }}</label>
+    <textarea [formControl]="control().formControl" placeholder="" rows="{{ control().rows }}" [ngClass]="{'invalid': hasErrors()}"></textarea>
+    <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+    @if (hasErrors()) {
+      <div class="error-messages">
+        @for (errorMessage of getErrorMessage(); track errorMessage) {
+          <div class="error-message">{{ errorMessage }}</div>
+        }
+      </div>
+    }
   } @else {
-    <label>{{ control().label }}</label>
+    <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
     <div class="value">{{ control().formControl.value }}</div>
   }
 </div>
