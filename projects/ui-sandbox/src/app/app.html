@@ -6,6 +6,30 @@
     <lite-input [control]="inputDemo" [inEdit]="false"></lite-input>
     <lite-input [control]="inputDemo"></lite-input>
   </div>
+  <h2>Password Demo</h2>
+  <div class="row">
+    <lite-password [control]="passwordDemo" [inEdit]="false"></lite-password>
+    <lite-password [control]="passwordDemo"></lite-password>
+  </div>
+  <h2>Password with Toggle Disabled</h2>
+  <div class="row">
+    <lite-password [control]="confirmPasswordDemo" [inEdit]="false"></lite-password>
+    <lite-password [control]="confirmPasswordDemo" [showToggle]="false"></lite-password>
+  </div>
+  <h2>Advanced Password with Complex Validation</h2>
+  <div class="row">
+    <lite-password [control]="advancedPasswordDemo" [inEdit]="false"></lite-password>
+    <lite-password [control]="advancedPasswordDemo"></lite-password>
+  </div>
+  <h2>Password with Strength Indicator</h2>
+  <div class="row">
+    <lite-password [control]="strengthPasswordDemo" [inEdit]="false"></lite-password>
+    <lite-password [control]="strengthPasswordDemo" [showStrengthIndicator]="true"></lite-password>
+  </div>
+  <div class="demo-buttons">
+    <button (click)="testPasswordStrengths()">Test Password Strengths (Check Console)</button>
+    <button (click)="analyzePassword('MyTest@Pass123')">Analyze Sample Password</button>
+  </div>
   <h2>Textarea Demo</h2>
   <div class="row">
     <lite-textarea [control]="textareaDemo" [inEdit]="false"></lite-textarea>

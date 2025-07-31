@@ -1,13 +1,15 @@
 # Lite Form - Angular Form Components Library
 
 ## Overview
-Lite Form is a modern Angular library that provides lightweight, customizable form components with built-in validation, styling, and animations. It includes input, textarea, select, and multi-select components designed for Angular 17+ with standalone component support.
+Lite Form is a comprehensive Angular library that provides lightweight, customizable form components with built-in validation, styling, and animations. It includes input, password, textarea, select, multi-select, radio, checkbox, and advanced date picker components designed for Angular 17+ with standalone component support.
 
 ## Features
 - ✅ **Modern Angular 17+** - Built with standalone components and signals
 - ✅ **TypeScript Support** - Fully typed with generic support
 - ✅ **Reactive Forms** - Integrated with Angular Reactive Forms
 - ✅ **Built-in Validation** - Form validation with error messages
+- ✅ **Password Security** - Advanced password validation and strength analysis
+- ✅ **Date Handling** - Single date and date range selection with custom formatting
 - ✅ **Customizable Styling** - SCSS-based styling system
 - ✅ **Accessibility** - ARIA-compliant form controls
 - ✅ **Animations** - Smooth transitions and interactions
@@ -17,7 +19,10 @@ Lite Form is a modern Angular library that provides lightweight, customizable fo
 ### 🎯 LiteInput
 Basic text input component with floating labels and validation.
 
-### 📝 LiteTextarea  
+### � LitePassword
+Password input component with toggle visibility, strength indicator, and advanced validation features.
+
+### �📝 LiteTextarea  
 Multi-line text input with auto-resize capabilities.
 
 ### 📋 LiteSelect
@@ -73,6 +78,13 @@ export class YourComponent {
   // Number input
   ageField = new FieldDto('Age', new FormControl(0), 2, 'number');
   
+  // Password with validation
+  passwordField = new FieldDto('Password', new FormControl('', [
+    Validators.required,
+    Validators.minLength(8),
+    Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+  ]));
+  
   // Textarea
   descriptionField = new FieldDto('Description', new FormControl(''), 4);
   
@@ -122,6 +134,7 @@ export class YourComponent {
 ```html
 <form>
   <lite-input [control]="nameField"></lite-input>
+  <lite-password [control]="passwordField" [showStrengthIndicator]="true"></lite-password>
   <lite-textarea [control]="descriptionField"></lite-textarea>
   <lite-checkbox [control]="agreeField"></lite-checkbox>
   <lite-select [control]="countryField"></lite-select>
@@ -150,6 +163,53 @@ nameField = new FieldDto('Full Name', new FormControl('', [Validators.required])
 
 // Template
 <lite-input [control]="nameField"></lite-input>
+```
+
+### LitePassword Component
+
+**Selector:** `lite-password`
+
+**Inputs:**
+- `control: FieldDto` - Field configuration and form control
+- `inEdit: boolean` - Whether the field is in edit mode (default: true)
+- `showToggle: boolean` - Whether to show the password visibility toggle (default: true)
+- `showStrengthIndicator: boolean` - Whether to show password strength indicator (default: false)
+
+**Features:**
+- Password visibility toggle with eye/eye-off icons
+- Real-time password strength analysis
+- Advanced password validation error messages
+- Support for complex password patterns
+- Accessibility features (ARIA labels)
+
+**Example:**
+```typescript
+// Basic password
+passwordField = new FieldDto('Password', new FormControl('', [
+  Validators.required,
+  Validators.minLength(8)
+]));
+
+// Advanced password with pattern validation
+strongPasswordField = new FieldDto('Strong Password', new FormControl('', [
+  Validators.required,
+  Validators.minLength(8),
+  Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+]));
+
+// Template
+<lite-password [control]="passwordField"></lite-password>
+<lite-password [control]="strongPasswordField" [showStrengthIndicator]="true"></lite-password>
+<lite-password [control]="confirmPasswordField" [showToggle]="false"></lite-password>
+```
+
+**Password Strength Analysis:**
+```typescript
+import { FormUtils } from 'lite-form';
+
+// Analyze password strength programmatically
+const analysis = FormUtils.analyzePasswordStrength('MyStr0ng@Pass');
+// Returns: { score: 6, level: 'Good', feedback: ['Consider using 12+ characters'] }
 ```
 
 ### LiteTextarea Component
@@ -397,6 +457,7 @@ Override the default styles by importing and customizing the SCSS:
 projects/lite-form/            # Library source
 ├── src/lib/
 │   ├── lite-input/           # Input component
+│   ├── lite-password/        # Password component
 │   ├── lite-textarea/        # Textarea component  
 │   ├── lite-select/          # Select component
 │   ├── lite-multi-select/    # Multi-select component

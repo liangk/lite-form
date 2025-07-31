@@ -36,6 +36,75 @@ emailField = new FieldDto(
 
 ---
 
+### LitePassword
+
+**Selector:** `lite-password`
+
+**Description:** A password input component with visibility toggle, strength indicator, and advanced validation error messages.
+
+#### Inputs
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `control` | `FieldDto` | - | Field configuration including label and FormControl |
+| `inEdit` | `boolean` | `true` | Whether the field is in edit mode |
+| `showToggle` | `boolean` | `true` | Whether to show password visibility toggle button |
+| `showStrengthIndicator` | `boolean` | `false` | Whether to show real-time password strength indicator |
+
+#### Methods
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `togglePasswordVisibility()` | `void` | Toggle between password and text input type |
+| `getInputType()` | `string` | Get current input type ('password' or 'text') |
+| `getDisplayValue()` | `string` | Get masked display value for view mode |
+
+#### Features
+- **Password Visibility Toggle**: Click eye icon to show/hide password
+- **Strength Indicator**: Real-time password strength analysis with visual feedback
+- **Advanced Error Messages**: Detailed validation messages using `FormUtils.getPasswordErrorMessages()`
+- **Pattern Analysis**: Automatically detects missing requirements from regex patterns
+- **Accessibility**: ARIA labels for screen readers
+
+#### Usage
+```typescript
+// Basic password
+passwordField = new FieldDto('Password', new FormControl('', [
+  Validators.required,
+  Validators.minLength(8)
+]));
+
+// Strong password with pattern validation
+strongPasswordField = new FieldDto('Strong Password', new FormControl('', [
+  Validators.required,
+  Validators.minLength(8),
+  Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+]));
+
+// Password strength analysis
+import { FormUtils } from 'lite-form';
+const analysis = FormUtils.analyzePasswordStrength('MyStr0ng@Pass');
+// Returns: { score: 6, level: 'Good', feedback: ['Consider using 12+ characters'] }
+```
+
+```html
+<!-- Basic password -->
+<lite-password [control]="passwordField"></lite-password>
+
+<!-- With strength indicator -->
+<lite-password [control]="strongPasswordField" [showStrengthIndicator]="true"></lite-password>
+
+<!-- Without toggle button -->
+<lite-password [control]="confirmPasswordField" [showToggle]="false"></lite-password>
+```
+
+#### Password Strength Levels
+- **Very Weak** (0-2): Missing most requirements
+- **Weak** (3-4): Basic requirements met
+- **Fair** (5): Good character variety
+- **Good** (6): Strong with minor improvements
+- **Strong** (7-8): Excellent security
+
+---
+
 ### LiteTextarea
 
 **Selector:** `lite-textarea`
