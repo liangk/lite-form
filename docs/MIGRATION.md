@@ -9,6 +9,7 @@ This guide helps you migrate from other form libraries or Angular Material to Li
 The latest version includes several new components:
 
 - **LiteRadio**: Radio button groups with fieldset/legend structure for accessibility
+- **LitePassword**: Password input with visibility toggle, strength indicator, and advanced validation
 - **LiteDate**: Advanced date picker with single date and date range selection
 - **Enhanced LiteCheckbox**: Now integrated with base FieldDto for simplified usage
 
@@ -60,6 +61,51 @@ export class MyComponent {
 ```
 
 ### New Features in v2.x
+
+#### Password Component
+The new `lite-password` component provides:
+- Password visibility toggle with eye/eye-off icons
+- Real-time password strength indicator
+- Advanced validation error messages
+- Support for complex password patterns
+- Accessibility features with ARIA labels
+
+**Usage Examples:**
+
+```typescript
+// Basic password
+passwordField = new FieldDto('Password', new FormControl('', [
+  Validators.required,
+  Validators.minLength(8)
+]));
+
+// Advanced password with strength indicator
+strongPasswordField = new FieldDto('Strong Password', new FormControl('', [
+  Validators.required,
+  Validators.minLength(8),
+  Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+]));
+```
+
+```html
+<!-- Basic password -->
+<lite-password [control]="passwordField"></lite-password>
+
+<!-- With strength indicator -->
+<lite-password [control]="strongPasswordField" [showStrengthIndicator]="true"></lite-password>
+
+<!-- Without toggle button -->
+<lite-password [control]="confirmPasswordField" [showToggle]="false"></lite-password>
+```
+
+**Password Strength Analysis:**
+```typescript
+import { FormUtils } from 'lite-form';
+
+// Analyze password strength
+const analysis = FormUtils.analyzePasswordStrength('MyStr0ng@Pass');
+// Returns: { score: 6, level: 'Good', feedback: ['Consider using 12+ characters'] }
+```
 
 #### Date Picker Component
 The new `lite-date` component supports:

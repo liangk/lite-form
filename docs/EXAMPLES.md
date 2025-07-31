@@ -669,8 +669,8 @@ function usernameAvailabilityValidator(userService: UserService): AsyncValidator
   template: `
     <form (ngSubmit)="onSubmit()">
       <lite-input [control]="usernameField"></lite-input>
-      <lite-input [control]="passwordField"></lite-input>
-      <lite-input [control]="confirmPasswordField"></lite-input>
+      <lite-password [control]="passwordField"></lite-password>
+      <lite-password [control]="confirmPasswordField"></lite-password>
       
       <!-- Custom error display for password strength -->
       <div class="password-requirements" *ngIf="passwordField.formControl.hasError('passwordStrength')">
@@ -1307,6 +1307,317 @@ import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
 export class DatePositioningComponent {
   topDateField = new FieldDto('Top Date Field', new FormControl(''));
   bottomDateField = new FieldDto('Bottom Date Field', new FormControl(''));
+}
+```
+
+## Password Examples
+
+### Basic Password Field
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-basic-password',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <form>
+      <lite-password [control]="passwordField"></lite-password>
+      <button type="submit">Submit</button>
+    </form>
+  `
+})
+export class BasicPasswordComponent {
+  passwordField = new FieldDto('Password', new FormControl('', [
+    Validators.required,
+    Validators.minLength(8)
+  ]));
+}
+```
+
+### Password with Strength Indicator
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-password-strength',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <form>
+      <lite-password 
+        [control]="passwordField" 
+        [showStrengthIndicator]="true">
+      </lite-password>
+      <button type="submit" [disabled]="passwordField.formControl.invalid">
+        Create Account
+      </button>
+    </form>
+  `
+})
+export class PasswordStrengthComponent {
+  passwordField = new FieldDto('Create Password', new FormControl('', [
+    Validators.required,
+    Validators.minLength(8),
+    Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+  ]));
+}
+```
+
+### Password Confirmation Form
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-password-confirmation',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+      <lite-password 
+        [control]="passwordField" 
+        [showStrengthIndicator]="true">
+      </lite-password>
+      
+      <lite-password 
+        [control]="confirmPasswordField" 
+        [showToggle]="false">
+      </lite-password>
+      
+      <button type="submit" [disabled]="passwordForm.invalid">
+        Update Password
+      </button>
+    </form>
+  `
+})
+export class PasswordConfirmationComponent {
+  passwordField = new FieldDto('New Password', new FormControl('', [
+    Validators.required,
+    Validators.minLength(12),
+    Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^()_+-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d@$!%*?&^()_+-=\[\]{};':"\\|,.<>\/?]{12,}$/)
+  ]));
+
+  confirmPasswordField = new FieldDto('Confirm Password', new FormControl('', [
+    Validators.required,
+    this.passwordMatchValidator.bind(this)
+  ]));
+
+  passwordForm = new FormGroup({
+    password: this.passwordField.formControl,
+    confirmPassword: this.confirmPasswordField.formControl
+  });
+
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = this.passwordField.formControl.value;
+    const confirmPassword = control.value;
+    
+    if (password !== confirmPassword) {
+      return { passwordMismatch: true };
+    }
+    return null;
+  }
+
+  onSubmit() {
+    if (this.passwordForm.valid) {
+      console.log('Password updated successfully');
+    }
+  }
+}
+```
+
+### Password Strength Analysis
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { LiteFormModule, FieldDto, FormUtils } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-password-analysis',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="password-demo">
+      <lite-password 
+        [control]="passwordField" 
+        [showStrengthIndicator]="true">
+      </lite-password>
+      
+      <div class="analysis-section" *ngIf="passwordField.formControl.value">
+        <h4>Password Analysis</h4>
+        <div class="analysis-details">
+          <p><strong>Strength:</strong> {{ getPasswordAnalysis().level }}</p>
+          <p><strong>Score:</strong> {{ getPasswordAnalysis().score }}/8</p>
+          <div *ngIf="getPasswordAnalysis().feedback.length > 0">
+            <p><strong>Suggestions:</strong></p>
+            <ul>
+              <li *ngFor="let tip of getPasswordAnalysis().feedback">{{ tip }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="test-passwords">
+        <h4>Test Different Passwords</h4>
+        <button *ngFor="let pwd of testPasswords" 
+                (click)="setPassword(pwd)"
+                class="test-btn">
+          {{ pwd || '(empty)' }}
+        </button>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .password-demo { max-width: 500px; margin: 0 auto; padding: 20px; }
+    .analysis-section { 
+      margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;
+      .analysis-details p { margin: 5px 0; }
+      ul { margin-left: 20px; }
+    }
+    .test-passwords { margin-top: 20px; }
+    .test-btn { 
+      margin: 5px; padding: 8px 12px; border: 1px solid #007bff; 
+      background: #fff; border-radius: 4px; cursor: pointer; font-size: 12px;
+      &:hover { background: #f8f9fa; }
+    }
+  `]
+})
+export class PasswordAnalysisComponent {
+  passwordField = new FieldDto('Test Password', new FormControl(''));
+
+  testPasswords = [
+    '',
+    'abc',
+    'password',
+    'Password1',
+    'Password123',
+    'MyStr0ng@Pass',
+    'MyVeryStr0ng@Password123!'
+  ];
+
+  getPasswordAnalysis() {
+    return FormUtils.analyzePasswordStrength(this.passwordField.formControl.value || '');
+  }
+
+  setPassword(password: string) {
+    this.passwordField.formControl.setValue(password);
+  }
+}
+```
+
+### Advanced Password Validation
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-advanced-password',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <form>
+      <lite-password 
+        [control]="advancedPasswordField" 
+        [showStrengthIndicator]="true">
+      </lite-password>
+      
+      <div class="password-info">
+        <h4>Password Requirements:</h4>
+        <ul class="requirements-list">
+          <li [class.valid]="hasMinLength()">✓ At least 12 characters</li>
+          <li [class.valid]="hasUppercase()">✓ At least one uppercase letter</li>
+          <li [class.valid]="hasLowercase()">✓ At least one lowercase letter</li>
+          <li [class.valid]="hasNumber()">✓ At least one number</li>
+          <li [class.valid]="hasSpecialChar()">✓ At least one special character</li>
+          <li [class.valid]="noRepeatingChars()">✓ No more than 2 repeating characters</li>
+        </ul>
+      </div>
+    </form>
+  `,
+  styles: [`
+    .password-info { margin-top: 15px; }
+    .requirements-list { list-style: none; padding: 0; }
+    .requirements-list li { 
+      padding: 4px 0; color: #dc3545; 
+      &.valid { color: #28a745; }
+    }
+  `]
+})
+export class AdvancedPasswordComponent {
+  advancedPasswordField = new FieldDto('Advanced Password', new FormControl('', [
+    Validators.required,
+    Validators.minLength(12),
+    this.passwordComplexityValidator()
+  ]));
+
+  passwordComplexityValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value || '';
+      
+      const hasUpperCase = /[A-Z]/.test(value);
+      const hasLowerCase = /[a-z]/.test(value);
+      const hasNumeric = /[0-9]/.test(value);
+      const hasSpecial = /[@$!%*?&^()_+\-=\[\]{};':"\\|,.<>\/?#~`]/.test(value);
+      const minLength = value.length >= 12;
+      const noRepeatingChars = !/(.)\1{2,}/.test(value);
+      
+      const valid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecial && minLength && noRepeatingChars;
+      
+      if (!valid) {
+        return {
+          passwordComplexity: {
+            hasUpperCase,
+            hasLowerCase,
+            hasNumeric,
+            hasSpecial,
+            minLength,
+            noRepeatingChars
+          }
+        };
+      }
+      
+      return null;
+    };
+  }
+
+  private getValue(): string {
+    return this.advancedPasswordField.formControl.value || '';
+  }
+
+  hasMinLength(): boolean {
+    return this.getValue().length >= 12;
+  }
+
+  hasUppercase(): boolean {
+    return /[A-Z]/.test(this.getValue());
+  }
+
+  hasLowercase(): boolean {
+    return /[a-z]/.test(this.getValue());
+  }
+
+  hasNumber(): boolean {
+    return /[0-9]/.test(this.getValue());
+  }
+
+  hasSpecialChar(): boolean {
+    return /[@$!%*?&^()_+\-=\[\]{};':"\\|,.<>\/?#~`]/.test(this.getValue());
+  }
+
+  noRepeatingChars(): boolean {
+    return !/(.)\1{2,}/.test(this.getValue());
+  }
 }
 ```
 

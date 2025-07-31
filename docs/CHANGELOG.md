@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.0] - 2024-01-XX
 
 ### Added
+- **LitePassword Component**: Advanced password input with security features
+  - Password visibility toggle with eye/eye-off icons
+  - Real-time password strength indicator with visual feedback
+  - Advanced validation error messages using FormUtils.getPasswordErrorMessages()
+  - Pattern analysis to detect missing requirements from regex patterns
+  - Password strength analysis with FormUtils.analyzePasswordStrength()
+  - Accessibility features with ARIA labels for screen readers
+  - Configurable toggle button and strength indicator display
+  - Support for complex password validation patterns
+
 - **LiteDate Component**: Advanced date picker with single date and date range selection
   - Single date selection with custom formatting (dd/MM/yyyy, MM/dd/yyyy, yyyy-MM-dd)
   - Date range selection with dual calendar layout
@@ -30,6 +40,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - FormControl<string[]> type support for range selections
   - Consistent API with other field DTOs
   - Built-in validation support for date ranges
+
+- **Enhanced FormUtils**: Advanced password validation and analysis
+  - FormUtils.getPasswordErrorMessages() for detailed password error feedback
+  - FormUtils.analyzePasswordStrength() for real-time password strength analysis
+  - Pattern analysis to provide specific feedback based on regex requirements
+  - Support for custom password complexity validators
+  - Password strength scoring (0-8) with categorical levels (Very Weak to Strong)
 
 ### Changed
 - **BREAKING**: `CheckboxFieldDto` merged into base `FieldDto`
