@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { FieldDto, LiteFormModule, SelectFieldDto } from 'lite-form';
+import { FieldDto, LiteFormModule, SelectFieldDto, MultiSelectFieldDto } from 'lite-form';
 
 @Component({
   selector: 'app-root',
@@ -22,14 +22,29 @@ export class App {
     options: [],
     displayWith: (option: any) => option?.label
   };
+  
+  multiSelectDemo: MultiSelectFieldDto = {
+    label: 'Test Multi-Select',
+    formControl: new FormControl<any[]>([], { nonNullable: true }),
+    options: [],
+    displayWith: (option: any) => option?.title
+  };
   constructor(private http: HttpClient) {
     this.getPotterBooks();
+    this.getPotterCharacters();
   }
   getPotterBooks() {
     this.http.get<any[]>(`${this.potterApi}/books`).subscribe(books => {
       console.log(books);
       this.selectDemo.options = books;
       this.selectDemo.displayWith = (option: any) => option?.title;
+    });
+  }
+  getPotterCharacters() {
+    this.http.get<any[]>(`${this.potterApi}/characters`).subscribe(characters => {
+      console.log(characters);
+      this.multiSelectDemo.options = characters;
+      this.multiSelectDemo.displayWith = (option: any) => option?.fullName;
     });
   }
 }

@@ -120,4 +120,9 @@ export class LiteSelect {
       this.control().displayWith(option).toLowerCase().includes(this.inputText.toLowerCase())
     );
   }
+
+  shouldShowPlaceholder(): boolean {
+    // Only show placeholder when label is floating (not overlapping)
+    return this.showOptions === 'expand' || !!this.getDisplayValue() || this.hasTypedValue();
+  }
 }

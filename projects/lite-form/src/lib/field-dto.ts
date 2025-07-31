@@ -10,20 +10,47 @@ export class FieldDto {
     this.rows = rows;
   }
 }
-export class SelectFieldDto<T = any> {
+
+export abstract class BaseSelectFieldDto<T = any> {
   label: string;
-  formControl: FormControl<T>;
   options: T[];
   displayWith: (option: T) => string;
+  
+  constructor(
+    label: string,
+    options: T[],
+    displayWith: (option: T) => string
+  ) {
+    this.label = label;
+    this.options = options;
+    this.displayWith = displayWith;
+  }
+}
+
+export class SelectFieldDto<T = any> extends BaseSelectFieldDto<T> {
+  formControl: FormControl<T>;
+  
   constructor(
     label: string,
     formControl: FormControl<T>,
     options: T[],
     displayWith: (option: T) => string
   ) {
-    this.label = label;
+    super(label, options, displayWith);
     this.formControl = formControl;
-    this.options = options;
-    this.displayWith = displayWith;
+  }
+}
+
+export class MultiSelectFieldDto<T = any> extends BaseSelectFieldDto<T> {
+  formControl: FormControl<T[]>;
+  
+  constructor(
+    label: string,
+    formControl: FormControl<T[]>,
+    options: T[],
+    displayWith: (option: T) => string
+  ) {
+    super(label, options, displayWith);
+    this.formControl = formControl;
   }
 }
