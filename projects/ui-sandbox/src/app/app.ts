@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { FieldDto, LiteFormModule, SelectFieldDto, MultiSelectFieldDto } from 'lite-form';
+import { FieldDto, LiteFormModule, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto } from 'lite-form';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +28,28 @@ export class App {
     formControl: new FormControl<any[]>([], { nonNullable: true }),
     options: [],
     displayWith: (option: any) => option?.title
+  };
+
+  radioDemo: RadioFieldDto = {
+    label: 'Test Radio',
+    formControl: new FormControl('', [Validators.required]),
+    options: [
+      'Small Business Package',
+      'Professional Enterprise Solution',
+      'Premium Corporate Plan',
+      'Custom Implementation'
+    ],
+    displayWith: (option: string) => option
+  };
+  
+  checkboxDemo: FieldDto = {
+    label: 'I agree to the terms and conditions',
+    formControl: new FormControl<boolean>(false, { nonNullable: true }),
+  };
+  
+  requiredCheckboxDemo: FieldDto = {
+    label: 'Accept privacy policy (required)',
+    formControl: new FormControl<boolean>(false, { nonNullable: true, validators: [Validators.requiredTrue] }),
   };
   constructor(private http: HttpClient) {
     this.getPotterBooks();

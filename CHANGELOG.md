@@ -8,11 +8,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **LiteRadio Component** - Radio button group for single selection from multiple options
+- **LiteCheckbox Component** - Checkbox component for boolean input with validation support
+- Enhanced **FieldDto** with type parameter to support different field types:
+  - `'text'` for regular text inputs (default)
+  - `'textarea'` for multi-line text areas
+  - `'checkbox'` for boolean checkbox inputs
 - Comprehensive documentation suite
 - API reference documentation
 - Migration guide from other form libraries
-- Examples and usage patterns
+- Examples and usage patterns including radio and checkbox components
 - TypeScript support improvements
+
+### Changed
+- **BREAKING**: Updated `FieldDto` type parameter to only support `'text'` and `'number'`
+- **BREAKING**: Removed `'textarea'` and `'checkbox'` types from FieldDto
+- Simplified checkbox usage - no longer requires type parameter
+- Simplified textarea usage - uses rows parameter without type specification
+- Updated examples to remove redundant `[inEdit]="true"` properties (since it defaults to true)
+
+### Enhanced
+- Improved checkbox styling with hover effects and proper sizing
+- Added radio button styling with both vertical and horizontal layouts
+- Enhanced form validation support for all component types
 
 ## [1.0.0] - 2025-01-31
 

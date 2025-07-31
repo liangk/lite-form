@@ -26,6 +26,12 @@ Single-selection dropdown with search and filtering.
 ### ☑️ LiteMultiSelect
 Multi-selection dropdown with inline selected items display and dynamic height adjustment.
 
+### 🔘 LiteRadio
+Radio button group component for single selection from multiple options.
+
+### ✅ LiteCheckbox
+Checkbox component for boolean input with validation support.
+
 ---
 
 ## Installation
@@ -55,11 +61,20 @@ export class YourComponent {
 
 ```typescript
 import { FormControl } from '@angular/forms';
-import { FieldDto, SelectFieldDto, MultiSelectFieldDto } from 'lite-form';
+import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto } from 'lite-form';
 
 export class YourComponent {
   // Basic input
   nameField = new FieldDto('Full Name', new FormControl(''));
+  
+  // Number input
+  ageField = new FieldDto('Age', new FormControl(0), 2, 'number');
+  
+  // Textarea
+  descriptionField = new FieldDto('Description', new FormControl(''), 4);
+  
+  // Checkbox (using basic FieldDto for boolean)
+  agreeField = new FieldDto('I agree to terms', new FormControl<boolean>(false, { nonNullable: true }));
   
   // Select dropdown
   countryField = new SelectFieldDto(
@@ -76,6 +91,14 @@ export class YourComponent {
     ['JavaScript', 'TypeScript', 'Angular', 'React'],
     (option) => option
   );
+  
+  // Radio group
+  planField = new RadioFieldDto(
+    'Choose Plan',
+    new FormControl(''),
+    ['Basic', 'Premium', 'Enterprise'],
+    (option) => option
+  );
 }
 ```
 
@@ -84,8 +107,11 @@ export class YourComponent {
 ```html
 <form>
   <lite-input [control]="nameField"></lite-input>
+  <lite-textarea [control]="descriptionField"></lite-textarea>
+  <lite-checkbox [control]="agreeField"></lite-checkbox>
   <lite-select [control]="countryField"></lite-select>
   <lite-multi-select [control]="skillsField"></lite-multi-select>
+  <lite-radio [control]="planField"></lite-radio>
 </form>
 ```
 ---
@@ -120,6 +146,7 @@ nameField = new FieldDto('Full Name', new FormControl('', [Validators.required])
 **Example:**
 ```typescript
 // Component
+// With validation
 descriptionField = new FieldDto('Description', new FormControl(''), 4);
 
 // Template

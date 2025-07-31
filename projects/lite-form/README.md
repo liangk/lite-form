@@ -8,7 +8,9 @@ A modern, lightweight Angular form components library with TypeScript support, b
 - 📝 **Textarea Component** - Multi-line text input  
 - 📋 **Select Component** - Single-selection dropdown with filtering
 - ☑️ **Multi-Select Component** - Multi-selection with inline display
-- 🔧 **TypeScript Support** - Fully typed with generics
+- � **Radio Component** - Radio button groups for single selection
+- ✅ **Checkbox Component** - Boolean input with validation support
+- �🔧 **TypeScript Support** - Fully typed with generics
 - ✅ **Form Validation** - Integrated Angular Reactive Forms validation
 - 🎨 **Customizable Styling** - SCSS-based theming system
 - 📱 **Responsive Design** - Mobile-friendly components
@@ -23,25 +25,37 @@ npm install lite-form
 
 ```typescript
 import { LiteFormModule } from 'lite-form';
-import { FormControl } from '@angular/forms';
-import { FieldDto, SelectFieldDto, MultiSelectFieldDto } from 'lite-form';
+import { FormControl, Validators } from '@angular/forms';
+import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto } from 'lite-form';
 
 @Component({
   standalone: true,
   imports: [LiteFormModule],
   template: `
     <lite-input [control]="nameField"></lite-input>
+    <lite-textarea [control]="descriptionField"></lite-textarea>
+    <lite-checkbox [control]="agreeField"></lite-checkbox>
     <lite-select [control]="statusField"></lite-select>
     <lite-multi-select [control]="skillsField"></lite-multi-select>
+    <lite-radio [control]="priorityField"></lite-radio>
   `
 })
 export class MyFormComponent {
   nameField = new FieldDto('Name', new FormControl(''));
+  descriptionField = new FieldDto('Description', new FormControl(''), 4);
+  agreeField = new FieldDto('I agree to terms', new FormControl<boolean>(false, { nonNullable: true }));
   
   statusField = new SelectFieldDto(
     'Status',
     new FormControl(''),
     ['Active', 'Inactive'],
+    (option) => option
+  );
+  
+  priorityField = new RadioFieldDto(
+    'Priority',
+    new FormControl('', [Validators.required]),
+    ['Low', 'Medium', 'High'],
     (option) => option
   );
   

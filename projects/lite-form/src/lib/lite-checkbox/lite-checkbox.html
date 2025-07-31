@@ -1,0 +1,31 @@
+<div class="lite-checkbox" [ngClass]="{'in-edit': inEdit(), 'invalid': hasErrors()}">
+  @if (inEdit()) {
+    <div class="checkbox-container">
+      <label class="checkbox-label">
+        <input type="checkbox" 
+               [checked]="control().formControl.value" 
+               (change)="onCheckboxChange($event)"
+               class="checkbox-input" />
+        <div class="checkbox-text">{{ control().label }}<span *ngIf="isRequired()" class="required">*</span></div>
+
+      </label>
+    </div>
+  } @else {
+    <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+    <div class="value">
+      @if (control().formControl.value) {
+        <span class="checked">✓ Yes</span>
+      } @else {
+        <span class="unchecked">✗ No</span>
+      }
+    </div>
+  }
+
+  @if (inEdit() && hasErrors()) {
+    <div class="error-messages">
+      @for (error of getErrorMessage(); track error) {
+        <div class="error-message">{{ error }}</div>
+      }
+    </div>
+  }
+</div>

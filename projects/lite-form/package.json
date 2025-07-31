@@ -1,6 +1,6 @@
 {
   "name": "lite-form",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "A lightweight Angular form library with reusable input, textarea, select and multi-select components",
   "keywords": [
     "angular",
