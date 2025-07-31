@@ -174,6 +174,97 @@ tagsField = new MultiSelectFieldDto(
 
 ---
 
+### LiteRadio
+
+**Selector:** `lite-radio`
+
+**Description:** A radio button group component for single selection from multiple options.
+
+#### Inputs
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `control` | `RadioFieldDto<T>` | - | Radio field configuration with options and display function |
+| `inEdit` | `boolean` | `true` | Whether the field is in edit mode |
+| `direction` | `'horizontal' \| 'vertical'` | `'vertical'` | Layout direction for radio options |
+
+#### Methods
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `isSelected(option)` | `boolean` | Check if the given option is selected |
+| `onRadioChange(option)` | `void` | Handle radio button selection change |
+
+#### Usage
+```typescript
+// String options
+planField = new RadioFieldDto(
+  'Choose Plan',
+  new FormControl(''),
+  ['Basic', 'Premium', 'Enterprise'],
+  (option) => option
+);
+
+// Object options
+priorityField = new RadioFieldDto(
+  'Priority Level',
+  new FormControl<{id: number, name: string}>(),
+  [
+    { id: 1, name: 'Low' },
+    { id: 2, name: 'Medium' },
+    { id: 3, name: 'High' }
+  ],
+  (option) => option.name
+);
+```
+
+```html
+<lite-radio [control]="planField"></lite-radio>
+<lite-radio [control]="priorityField" direction="horizontal"></lite-radio>
+```
+
+---
+
+### LiteCheckbox
+
+**Selector:** `lite-checkbox`
+
+**Description:** A checkbox component for boolean input with validation support.
+
+#### Inputs
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `control` | `FieldDto` | - | Field configuration for boolean values |
+| `inEdit` | `boolean` | `true` | Whether the field is in edit mode |
+
+#### Methods
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `onCheckboxChange(event)` | `void` | Handle checkbox state change |
+
+#### Usage
+```typescript
+// Basic checkbox
+agreeField = new FieldDto(
+  'I agree to the terms and conditions', 
+  new FormControl<boolean>(false, { nonNullable: true })
+);
+
+// Required checkbox
+privacyField = new FieldDto(
+  'Accept privacy policy', 
+  new FormControl<boolean>(false, { 
+    nonNullable: true, 
+    validators: [Validators.requiredTrue] 
+  })
+);
+```
+
+```html
+<lite-checkbox [control]="agreeField"></lite-checkbox>
+<lite-checkbox [control]="privacyField"></lite-checkbox>
+```
+
+---
+
 ## Data Transfer Objects
 
 ### FieldDto
@@ -186,16 +277,34 @@ tagsField = new MultiSelectFieldDto(
 | `label` | `string` | No | Display label for the field |
 | `formControl` | `FormControl` | No | Angular FormControl instance |
 | `rows` | `number` | Yes | Number of rows for textarea (default: 2) |
+| `type` | `'text' \| 'number'` | Yes | Input type (default: 'text') |
 
 #### Constructor
 ```typescript
-constructor(label: string, formControl: FormControl, rows?: number)
+constructor(
+  label: string, 
+  formControl: FormControl, 
+  rows?: number, 
+  type?: 'text' | 'number'
+)
 ```
 
-#### Example
+#### Examples
 ```typescript
+// Text input
 const nameField = new FieldDto('Full Name', new FormControl(''));
+
+// Number input
+const ageField = new FieldDto('Age', new FormControl(0), 2, 'number');
+
+// Textarea
 const bioField = new FieldDto('Biography', new FormControl(''), 5);
+
+// Checkbox (using basic FieldDto)
+const agreeField = new FieldDto(
+  'I agree to terms', 
+  new FormControl<boolean>(false, { nonNullable: true })
+);
 ```
 
 ---
@@ -258,6 +367,51 @@ constructor(
   options: T[],
   displayWith: (option: T) => string
 )
+```
+
+---
+
+### RadioFieldDto<T>
+
+**Description:** Field configuration for radio button groups.
+
+#### Properties
+| Property | Type | Description |
+|----------|------|-------------|
+| `formControl` | `FormControl<T>` | FormControl for single selected value |
+| *...extends BaseSelectFieldDto* | - | Inherits label, options, displayWith |
+
+#### Constructor
+```typescript
+constructor(
+  label: string,
+  formControl: FormControl<T>,
+  options: T[],
+  displayWith: (option: T) => string
+)
+```
+
+#### Example
+```typescript
+// String options
+const planField = new RadioFieldDto(
+  'Choose Plan',
+  new FormControl(''),
+  ['Basic', 'Premium', 'Enterprise'],
+  (option) => option
+);
+
+// Object options
+const priorityField = new RadioFieldDto(
+  'Priority',
+  new FormControl<{id: number, name: string}>(),
+  [
+    { id: 1, name: 'Low' },
+    { id: 2, name: 'Medium' },
+    { id: 3, name: 'High' }
+  ],
+  (option) => option.name
+);
 ```
 
 ---

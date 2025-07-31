@@ -1,0 +1,33 @@
+<div class="lite-radio" [ngClass]="{'in-edit': inEdit()}">
+  @if (inEdit()) {
+    <div class="radio-container">
+      <div class="label" [ngClass]="{'float': true}">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+      <div class="radio-options" [ngClass]="{'horizontal': direction() === 'horizontal', 'vertical': direction() === 'vertical'}">
+        @for (option of control().options; track option) {
+          <label class="radio-option">
+            <input type="radio" [value]="option" [checked]="isSelected(option)"
+              (change)="onRadioChange(option)" [name]="control().label + '_radio'" class="radio-input" />
+            <span class="radio-label">{{ control().displayWith(option) }}</span>
+          </label>
+        }
+      </div>
+    </div>
+  } @else {
+    <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+    <div class="value">
+      @if (control().formControl.value) {
+        {{ control().displayWith(control().formControl.value) }}
+      } @else {
+        <span class="no-value">Not selected</span>
+      }
+    </div>
+  }
+
+  @if (inEdit() && hasErrors()) {
+    <div class="error-messages">
+      @for (error of getErrorMessage(); track error) {
+        <div class="error-message">{{ error }}</div>
+      }
+    </div>
+  }
+</div>

@@ -9,7 +9,7 @@ This document provides comprehensive examples of using LiteForm components in va
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, FieldDto, SelectFieldDto } from 'lite-form';
+import { LiteFormModule, FieldDto, SelectFieldDto, RadioFieldDto } from 'lite-form';
 
 @Component({
   selector: 'app-simple-form',
@@ -21,6 +21,8 @@ import { LiteFormModule, FieldDto, SelectFieldDto } from 'lite-form';
       <lite-input [control]="emailField"></lite-input>
       <lite-textarea [control]="messageField"></lite-textarea>
       <lite-select [control]="priorityField"></lite-select>
+      <lite-radio [control]="urgencyField"></lite-radio>
+      <lite-checkbox [control]="agreeField"></lite-checkbox>
       
       <button type="submit" [disabled]="!isFormValid()">Submit</button>
     </form>
@@ -37,12 +39,26 @@ export class SimpleFormComponent {
     ['Low', 'Medium', 'High', 'Urgent'],
     (option) => option
   );
+  
+  urgencyField = new RadioFieldDto(
+    'Response Time',
+    new FormControl('', [Validators.required]),
+    ['Within 24 hours', 'Within 3 days', 'Within a week', 'No rush'],
+    (option) => option
+  );
+  
+  agreeField = new FieldDto(
+    'I agree to the terms and conditions', 
+    new FormControl<boolean>(false, { nonNullable: true, validators: [Validators.requiredTrue] })
+  );
 
   isFormValid(): boolean {
     return this.nameField.formControl.valid &&
            this.emailField.formControl.valid &&
            this.messageField.formControl.valid &&
-           this.priorityField.formControl.valid;
+           this.priorityField.formControl.valid &&
+           this.urgencyField.formControl.valid &&
+           this.agreeField.formControl.valid;
   }
 
   onSubmit(): void {
@@ -141,6 +157,242 @@ export class SkillsFormComponent {
 }
 ```
 
+### Radio Button Groups
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { LiteFormModule, RadioFieldDto } from 'lite-form';
+
+@Component({
+  selector: 'app-survey-form',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="survey-form">
+      <h2>Customer Satisfaction Survey</h2>
+      
+      <lite-radio [control]="satisfactionField"></lite-radio>
+      <lite-radio [control]="recommendField" direction="horizontal"></lite-radio>
+      <lite-radio [control]="supportField"></lite-radio>
+      
+      <button (click)="submitSurvey()" [disabled]="!isSurveyValid()">
+        Submit Survey
+      </button>
+      
+      <div class="survey-results" *ngIf="showResults">
+        <h3>Survey Results:</h3>
+        <p><strong>Satisfaction:</strong> {{ getSatisfactionText() }}</p>
+        <p><strong>Would Recommend:</strong> {{ getRecommendText() }}</p>
+        <p><strong>Support Experience:</strong> {{ getSupportText() }}</p>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .survey-form {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .survey-results {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #e8f5e8;
+      border-radius: 4px;
+    }
+  `]
+})
+export class SurveyFormComponent {
+  showResults = false;
+  
+  satisfactionField = new RadioFieldDto(
+    'How satisfied are you with our service?',
+    new FormControl('', [Validators.required]),
+    [
+      'Very Dissatisfied',
+      'Dissatisfied', 
+      'Neutral',
+      'Satisfied',
+      'Very Satisfied'
+    ],
+    (option) => option
+  );
+  
+  recommendField = new RadioFieldDto(
+    'Would you recommend us to a friend?',
+    new FormControl('', [Validators.required]),
+    ['Yes', 'No', 'Maybe'],
+    (option) => option
+  );
+  
+  supportField = new RadioFieldDto(
+    'How would you rate our customer support?',
+    new FormControl('', [Validators.required]),
+    [
+      { id: 1, name: 'Poor', description: 'Unhelpful and slow' },
+      { id: 2, name: 'Fair', description: 'Adequate but could improve' },
+      { id: 3, name: 'Good', description: 'Helpful and responsive' },
+      { id: 4, name: 'Excellent', description: 'Outstanding service' }
+    ],
+    (option) => `${option.name} - ${option.description}`
+  );
+  
+  isSurveyValid(): boolean {
+    return this.satisfactionField.formControl.valid &&
+           this.recommendField.formControl.valid &&
+           this.supportField.formControl.valid;
+  }
+  
+  submitSurvey(): void {
+    if (this.isSurveyValid()) {
+      this.showResults = true;
+    }
+  }
+  
+  getSatisfactionText(): string {
+    return this.satisfactionField.formControl.value || 'Not selected';
+  }
+  
+  getRecommendText(): string {
+    return this.recommendField.formControl.value || 'Not selected';
+  }
+  
+  getSupportText(): string {
+    const value = this.supportField.formControl.value;
+    return value ? value.name : 'Not selected';
+  }
+}
+```
+
+### Checkbox Examples
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { LiteFormModule, FieldDto } from 'lite-form';
+
+@Component({
+  selector: 'app-terms-form',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="terms-form">
+      <h2>Account Registration</h2>
+      
+      <lite-input [control]="nameField"></lite-input>
+      <lite-input [control]="emailField"></lite-input>
+      
+      <div class="agreements">
+        <lite-checkbox [control]="termsField"></lite-checkbox>
+        <lite-checkbox [control]="privacyField"></lite-checkbox>
+        <lite-checkbox [control]="marketingField"></lite-checkbox>
+        <lite-checkbox [control]="newsletterField"></lite-checkbox>
+      </div>
+      
+      <button (click)="register()" [disabled]="!isFormValid()">
+        Create Account
+      </button>
+      
+      <div class="consent-summary" *ngIf="showSummary">
+        <h3>Consent Summary:</h3>
+        <ul>
+          <li [class.agreed]="termsField.formControl.value">
+            Terms & Conditions: {{ termsField.formControl.value ? 'Accepted' : 'Not Accepted' }}
+          </li>
+          <li [class.agreed]="privacyField.formControl.value">
+            Privacy Policy: {{ privacyField.formControl.value ? 'Accepted' : 'Not Accepted' }}
+          </li>
+          <li [class.agreed]="marketingField.formControl.value">
+            Marketing Communications: {{ marketingField.formControl.value ? 'Opted In' : 'Opted Out' }}
+          </li>
+          <li [class.agreed]="newsletterField.formControl.value">
+            Newsletter: {{ newsletterField.formControl.value ? 'Subscribed' : 'Not Subscribed' }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .terms-form {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .agreements {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+    }
+    .consent-summary {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #e3f2fd;
+      border-radius: 4px;
+    }
+    .consent-summary li.agreed {
+      color: #2e7d32;
+      font-weight: 500;
+    }
+  `]
+})
+export class TermsFormComponent {
+  showSummary = false;
+  
+  nameField = new FieldDto('Full Name', new FormControl('', [Validators.required]));
+  emailField = new FieldDto('Email Address', new FormControl('', [Validators.required, Validators.email]));
+  
+  // Required checkboxes
+  termsField = new FieldDto(
+    'I agree to the Terms and Conditions',
+    new FormControl<boolean>(false, { 
+      nonNullable: true, 
+      validators: [Validators.requiredTrue] 
+    })
+  );
+  
+  privacyField = new FieldDto(
+    'I accept the Privacy Policy',
+    new FormControl<boolean>(false, { 
+      nonNullable: true, 
+      validators: [Validators.requiredTrue] 
+    })
+  );
+  
+  // Optional checkboxes
+  marketingField = new FieldDto(
+    'I consent to receive marketing communications',
+    new FormControl<boolean>(false, { nonNullable: true })
+  );
+  
+  newsletterField = new FieldDto(
+    'Subscribe to our monthly newsletter',
+    new FormControl<boolean>(true, { nonNullable: true })
+  );
+  
+  isFormValid(): boolean {
+    return this.nameField.formControl.valid &&
+           this.emailField.formControl.valid &&
+           this.termsField.formControl.valid &&
+           this.privacyField.formControl.valid;
+  }
+  
+  register(): void {
+    if (this.isFormValid()) {
+      this.showSummary = true;
+      console.log('Registration successful with consent:', {
+        name: this.nameField.formControl.value,
+        email: this.emailField.formControl.value,
+        terms: this.termsField.formControl.value,
+        privacy: this.privacyField.formControl.value,
+        marketing: this.marketingField.formControl.value,
+        newsletter: this.newsletterField.formControl.value
+      });
+    }
+  }
+}
+```
+
 ### Object-Based Multi-Select
 
 ```typescript
@@ -230,6 +482,7 @@ interface Language {
         <lite-input [control]="firstNameField"></lite-input>
         <lite-input [control]="lastNameField"></lite-input>
         <lite-input [control]="emailField"></lite-input>
+        <lite-input [control]="ageField"></lite-input>
         <lite-input [control]="phoneField"></lite-input>
       </div>
 
@@ -308,6 +561,7 @@ export class UserProfileComponent {
   firstNameField = new FieldDto('First Name', new FormControl('', [Validators.required, Validators.minLength(2)]));
   lastNameField = new FieldDto('Last Name', new FormControl('', [Validators.required, Validators.minLength(2)]));
   emailField = new FieldDto('Email', new FormControl('', [Validators.required, Validators.email]));
+  ageField = new FieldDto('Age', new FormControl(0, [Validators.required, Validators.min(18)]), 2, 'number');
   phoneField = new FieldDto('Phone', new FormControl('', [Validators.pattern(/^\+?[\d\s\-\(\)]+$/)]));
   
   countryField = new SelectFieldDto<Country>(
@@ -330,6 +584,7 @@ export class UserProfileComponent {
     firstName: this.firstNameField.formControl,
     lastName: this.lastNameField.formControl,
     email: this.emailField.formControl,
+    age: this.ageField.formControl,
     phone: this.phoneField.formControl,
     country: this.countryField.formControl,
     languages: this.languagesField.formControl,
@@ -342,6 +597,7 @@ export class UserProfileComponent {
         firstName: this.firstNameField.formControl.value,
         lastName: this.lastNameField.formControl.value,
         email: this.emailField.formControl.value,
+        age: this.ageField.formControl.value,
         phone: this.phoneField.formControl.value,
         country: this.countryField.formControl.value,
         languages: this.languagesField.formControl.value,
