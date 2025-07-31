@@ -947,6 +947,369 @@ export class DynamicFormComponent {
 
 ---
 
+## Date Picker Examples
+
+### Basic Single Date
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-date-basic',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <form>
+      <lite-date [control]="birthdateField"></lite-date>
+      <button type="submit">Submit</button>
+    </form>
+  `
+})
+export class DateBasicComponent {
+  birthdateField = new FieldDto('Birthdate', new FormControl(''));
+}
+```
+
+### Date with Custom Format
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-date-format',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <form>
+      <lite-date 
+        [control]="eventDateField"
+        format="MM/dd/yyyy">
+      </lite-date>
+      <lite-date 
+        [control]="issueDateField"
+        format="yyyy-MM-dd">
+      </lite-date>
+    </form>
+  `
+})
+export class DateFormatComponent {
+  eventDateField = new FieldDto('Event Date', new FormControl(''));
+  issueDateField = new FieldDto('Issue Date', new FormControl(''));
+}
+```
+
+### Date Range Selection
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { LiteFormModule, DateRangeFieldDto } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-date-range',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <form>
+      <lite-date 
+        [control]="vacationField"
+        [range]="true">
+      </lite-date>
+      <lite-date 
+        [control]="projectField"
+        [range]="true"
+        format="yyyy-MM-dd">
+      </lite-date>
+    </form>
+  `
+})
+export class DateRangeComponent {
+  vacationField = new DateRangeFieldDto('Vacation Period', new FormControl<string[]>([]));
+  projectField = new DateRangeFieldDto('Project Timeline', new FormControl<string[]>([]));
+}
+```
+
+### Date with Constraints
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-date-constraints',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <form>
+      <lite-date 
+        [control]="appointmentField"
+        [min]="minDate"
+        [max]="maxDate">
+      </lite-date>
+      <lite-date 
+        [control]="birthdateField"
+        [max]="today">
+      </lite-date>
+    </form>
+  `
+})
+export class DateConstraintsComponent {
+  today = new Date().toISOString().split('T')[0];
+  minDate = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // Tomorrow
+  maxDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 30 days from now
+
+  appointmentField = new FieldDto('Appointment Date', new FormControl(''));
+  birthdateField = new FieldDto('Date of Birth', new FormControl(''));
+}
+```
+
+### Complete Date Form with Validation
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { LiteFormModule, FieldDto, DateRangeFieldDto } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-date-form',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <form [formGroup]="dateForm" (ngSubmit)="onSubmit()">
+      <h3>Event Planning Form</h3>
+      
+      <lite-date 
+        [control]="startDateField"
+        [min]="today"
+        format="dd/MM/yyyy">
+      </lite-date>
+      
+      <lite-date 
+        [control]="endDateField"
+        [min]="getMinEndDate()"
+        format="dd/MM/yyyy">
+      </lite-date>
+      
+      <lite-date 
+        [control]="deadlineField"
+        [range]="true"
+        format="yyyy-MM-dd">
+      </lite-date>
+      
+      <div class="form-actions">
+        <button type="submit" [disabled]="dateForm.invalid">
+          Create Event
+        </button>
+        <button type="button" (click)="resetForm()">
+          Reset
+        </button>
+      </div>
+      
+      <div class="form-summary" *ngIf="dateForm.valid">
+        <h4>Event Summary</h4>
+        <p><strong>Start:</strong> {{ startDateField.control.value || 'Not set' }}</p>
+        <p><strong>End:</strong> {{ endDateField.control.value || 'Not set' }}</p>
+        <p><strong>Preparation Period:</strong> 
+          {{ deadlineField.control.value?.join(' to ') || 'Not set' }}
+        </p>
+      </div>
+    </form>
+  `,
+  styles: [`
+    form { max-width: 500px; margin: 0 auto; padding: 20px; }
+    h3 { text-align: center; margin-bottom: 30px; color: #333; }
+    .form-actions { 
+      display: flex; gap: 10px; margin-top: 20px; 
+      button { padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; }
+      button[type="submit"] { background: #007bff; color: white; }
+      button[type="button"] { background: #6c757d; color: white; }
+      button:disabled { opacity: 0.6; cursor: not-allowed; }
+    }
+    .form-summary { 
+      margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 4px; 
+      h4 { margin-top: 0; color: #495057; }
+      p { margin: 5px 0; }
+    }
+  `]
+})
+export class DateFormComponent {
+  today = new Date().toISOString().split('T')[0];
+
+  startDateField = new FieldDto('Event Start Date', new FormControl('', [Validators.required]));
+  endDateField = new FieldDto('Event End Date', new FormControl('', [Validators.required]));
+  deadlineField = new DateRangeFieldDto('Preparation Period', new FormControl<string[]>([]));
+
+  dateForm = new FormGroup({
+    startDate: this.startDateField.control,
+    endDate: this.endDateField.control,
+    deadlines: this.deadlineField.control
+  });
+
+  getMinEndDate(): string {
+    const startDate = this.startDateField.control.value;
+    return startDate || this.today;
+  }
+
+  onSubmit() {
+    if (this.dateForm.valid) {
+      console.log('Form submitted:', this.dateForm.value);
+      // Handle form submission
+    }
+  }
+
+  resetForm() {
+    this.dateForm.reset();
+  }
+}
+```
+
+### Dynamic Date Fields
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { LiteFormModule, FieldDto, DateRangeFieldDto } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-dynamic-dates',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <form>
+      <div class="date-type-selector">
+        <label>
+          <input type="radio" name="dateType" value="single" 
+                 [checked]="dateType === 'single'"
+                 (change)="changeDateType('single')">
+          Single Date
+        </label>
+        <label>
+          <input type="radio" name="dateType" value="range"
+                 [checked]="dateType === 'range'"
+                 (change)="changeDateType('range')">
+          Date Range
+        </label>
+      </div>
+
+      <lite-date 
+        *ngIf="dateType === 'single'"
+        [control]="singleDateField"
+        format="dd/MM/yyyy">
+      </lite-date>
+
+      <lite-date 
+        *ngIf="dateType === 'range'"
+        [control]="rangeDateField"
+        [range]="true"
+        format="dd/MM/yyyy">
+      </lite-date>
+
+      <div class="selected-value">
+        <strong>Selected:</strong> 
+        <span *ngIf="dateType === 'single'">{{ singleDateField.control.value || 'None' }}</span>
+        <span *ngIf="dateType === 'range'">{{ 
+          rangeDateField.control.value?.length ? rangeDateField.control.value.join(' to ') : 'None' 
+        }}</span>
+      </div>
+    </form>
+  `,
+  styles: [`
+    .date-type-selector {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 20px;
+      label { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+    }
+    .selected-value {
+      margin-top: 15px;
+      padding: 10px;
+      background: #e9ecef;
+      border-radius: 4px;
+    }
+  `]
+})
+export class DynamicDatesComponent {
+  dateType: 'single' | 'range' = 'single';
+
+  singleDateField = new FieldDto('Select Date', new FormControl(''));
+  rangeDateField = new DateRangeFieldDto('Select Date Range', new FormControl<string[]>([]));
+
+  changeDateType(type: 'single' | 'range') {
+    this.dateType = type;
+    // Clear previous selections
+    this.singleDateField.control.setValue('');
+    this.rangeDateField.control.setValue([]);
+  }
+}
+```
+
+### Date with Custom Calendar Positioning
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+
+@Component({
+  selector: 'app-date-positioning',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="positioning-demo">
+      <h3>Calendar Positioning Demo</h3>
+      
+      <div class="top-section">
+        <lite-date [control]="topDateField" format="dd/MM/yyyy"></lite-date>
+        <p>Calendar opens below (normal positioning)</p>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="bottom-section">
+        <lite-date [control]="bottomDateField" format="dd/MM/yyyy"></lite-date>
+        <p>Calendar opens above (auto-adjusted when no space below)</p>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .positioning-demo {
+      height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-section {
+      margin-top: 50px;
+    }
+    .spacer {
+      flex: 1;
+    }
+    .bottom-section {
+      margin-bottom: 50px;
+    }
+    h3 {
+      text-align: center;
+      color: #333;
+    }
+    p {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+      font-style: italic;
+    }
+  `]
+})
+export class DatePositioningComponent {
+  topDateField = new FieldDto('Top Date Field', new FormControl(''));
+  bottomDateField = new FieldDto('Bottom Date Field', new FormControl(''));
+}
+```
+
 ## Styling Examples
 
 ### Custom Theme
