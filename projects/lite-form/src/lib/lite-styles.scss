@@ -75,6 +75,92 @@ input, .label, textarea {
     .arrow:hover { border-top-color: #2079e1; }
   }
 }
+.lite-multi-select {
+  display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
+  .label { font-size: 0.8em; font-weight: 500; }
+  .value { display: flex; gap: 5px; flex-wrap: wrap;
+    .item {
+      border: 1px solid #999; padding:2px 5px; padding-left: 5px; border-radius: 3px; font-size: 0.8em;
+      line-height: 16px;
+    }
+  }
+}
+.lite-multi-select.in-edit {
+  .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
+    font-size: 1em; line-height: 36px; font-weight: normal; }
+  
+  .input-container {
+    border: 1px solid #ccc; border-radius: 4px; background: #fff; outline: none;
+    min-height: 36px; padding: 0 2em 0 8px; position: relative;
+    transition: height 0.2s ease-in-out;
+    &:focus-within { border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5); }
+    &.invalid { border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25); }
+
+    .selected-items-inline {
+      position: absolute; top: 0; left: 8px; right: 2em; bottom: 0; display: flex;
+      flex-wrap: wrap; gap: 4px; padding: 6px 0;
+      align-content: flex-start; align-items: flex-start; pointer-events: none;
+      z-index: 3; overflow: hidden; height: fit-content;
+
+      .selected-item-inline {
+        display: inline-flex; align-items: center; border: 1px solid #999; background: #fff;
+        padding-left: 5px; border-radius: 3px; font-size: 0.8em; gap: 4px;
+        max-width: calc(100% - 20px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        height: 20px; pointer-events: auto;
+
+        .remove-item-inline {
+          background: none; border: none; font-size: 1.2em; cursor: pointer; 
+          line-height: 1; padding: 0; margin-left: 2px; color: #666; flex-shrink: 0;
+          width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
+          pointer-events: auto;
+          &:hover { color: #333; }
+        }
+      }
+    }    
+    .filter-input {
+      border: none; outline: none; background: transparent; font-size: 1em;
+      width: 100%; height: 100%; min-height: 36px; position: relative; z-index: 2;
+      &::placeholder { color: #aaa; }
+    }
+  }
+  
+  .label.float {
+    transform: translateY(-10px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
+    line-height: initial;
+  }
+  .options {
+    position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #ccc;
+    border-radius: 4px; max-height: 250px; overflow-y: auto; z-index: 1000; overflow: auto;
+    
+    .multi-option { 
+      padding: 6px 8px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+      &:hover { background-color: #f0f0f0; }
+      &.selected { background-color: #e3f2fd; }
+      
+      input[type="checkbox"] {
+        margin: 0; cursor: pointer; accent-color: #2079e1;
+      }
+      
+      .option-text {
+        flex: 1; user-select: none;
+      }
+    }
+    
+    .no-options {
+      padding: 12px; text-align: center; color: #999; font-style: italic;
+    }
+  }
+  
+  .arrow_box {
+    position: absolute; right: 4px; top: 4px; cursor: pointer; 
+    height: calc(100% - 8px); width: 2em; display: flex; align-items: center; justify-content: center;
+    .arrow {
+      width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+      border-top: 5px solid #333;
+    }
+    .arrow:hover { border-top-color: #2079e1; }
+  }
+}
 .in-edit {
   .error-messages {
     color: orangered; font-size: 0.8em; letter-spacing: 0.6px; line-height: 1.8em; padding-left: 10px;

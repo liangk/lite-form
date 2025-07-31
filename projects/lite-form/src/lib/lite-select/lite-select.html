@@ -1,7 +1,8 @@
 <div class="lite-select" [ngClass]="{'in-edit': inEdit()}">
   @if (inEdit()) {
     <input type="text" [value]="getDisplayValue()" (input)="onInputChange($event)" [ngClass]="{'selected': control().formControl.value, 'invalid': hasErrors()}"
-      (focus)="showOptions = 'expand'" (blur)="onInputBlur()" />
+      (focus)="showOptions = 'expand'" (blur)="onInputBlur()" 
+      [placeholder]="shouldShowPlaceholder() ? 'Type to search...' : ''" />
     <div class="options" [@toggleView]="showOptions">
       @for (option of getFilteredOptions(); track option) {
         <div class="option" (click)="optionSelected(option)">{{ control().displayWith(option) }}</div>

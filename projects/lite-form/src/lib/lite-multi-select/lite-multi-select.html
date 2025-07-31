@@ -1,0 +1,60 @@
+<div class="lite-multi-select" [ngClass]="{'in-edit': inEdit()}">
+  @if (inEdit()) {
+    <div class="input-container" 
+         [ngClass]="{'selected': hasSelection(), 'invalid': hasErrors()}"
+         [style.height]="containerHeight">
+      <!-- Selected items overlay on input -->
+      @if (hasSelection() && !isFiltering() && !isFocused) {
+        <div class="selected-items-inline" #selectedItemsRef>
+          @for (item of getSelectedItems(); track item) {
+            <span class="selected-item-inline">
+              {{ control().displayWith(item) }}
+              <button type="button" class="remove-item-inline" (click)="removeSelectedItem(item)">&times;</button>
+            </span>
+          }
+        </div>
+      }
+      <input type="text" [value]="getDisplayValue()" (input)="onInputChange($event)" 
+             (focus)="onInputFocus()" (blur)="onInputBlur()"
+             [placeholder]="shouldShowPlaceholder() ? 'Type to filter options...' : ''" 
+             class="filter-input" />
+    </div>
+    <div class="options" [@toggleView]="showOptions">
+      <!-- Options list -->
+      @for (option of getFilteredOptions(); track option) {
+        <div class="option multi-option" 
+             [ngClass]="{'selected': isOptionSelected(option)}"
+             (click)="optionToggled(option)">
+          <input type="checkbox" [checked]="isOptionSelected(option)" 
+                 (click)="$event.stopPropagation(); optionToggled(option)" readonly />
+          <span class="option-text">{{ control().displayWith(option) }}</span>
+        </div>
+      }
+      @if (getFilteredOptions().length === 0) {
+        <div class="no-options">No options found</div>
+      }
+    </div>
+    <div class="label" [ngClass]="{float: shouldFloat()}">
+      {{ control().label }}<span *ngIf="isRequired()">*</span>
+    </div>
+    <div class="arrow_box" (click)="showOptions = showOptions === 'expand' ? 'collapse' : 'expand'">
+      <div class="arrow"></div>
+    </div>
+    @if (hasErrors()) {
+      <div class="error-messages">
+        @for (errorMessage of getErrorMessage(); track errorMessage) {
+          <div class="error-message">{{ errorMessage }}</div>
+        }
+      </div>
+    }
+  } @else {
+    <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+    <div class="value">
+      @for (item of getSelectedItems(); track item) {
+        <span class="item">
+          {{ control().displayWith(item) }}
+        </span>
+      }
+    </div>
+  }
+</div>
