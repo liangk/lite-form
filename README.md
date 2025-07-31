@@ -32,6 +32,9 @@ Radio button group component for single selection from multiple options.
 ### ✅ LiteCheckbox
 Checkbox component for boolean input with validation support.
 
+### 📅 LiteDate
+Advanced date picker component with single date and date range selection, custom formatting, and intelligent calendar positioning.
+
 ---
 
 ## Installation
@@ -61,7 +64,7 @@ export class YourComponent {
 
 ```typescript
 import { FormControl } from '@angular/forms';
-import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto } from 'lite-form';
+import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto } from 'lite-form';
 
 export class YourComponent {
   // Basic input
@@ -99,6 +102,18 @@ export class YourComponent {
     ['Basic', 'Premium', 'Enterprise'],
     (option) => option
   );
+  
+  // Single date
+  birthdateField: FieldDto = {
+    label: 'Birth Date',
+    formControl: new FormControl<string>('', { nonNullable: true })
+  };
+  
+  // Date range
+  eventDateField: DateRangeFieldDto = {
+    label: 'Event Date Range',
+    formControl: new FormControl<string[]>(['', ''], { nonNullable: true })
+  };
 }
 ```
 
@@ -112,6 +127,8 @@ export class YourComponent {
   <lite-select [control]="countryField"></lite-select>
   <lite-multi-select [control]="skillsField"></lite-multi-select>
   <lite-radio [control]="planField"></lite-radio>
+  <lite-date [control]="birthdateField"></lite-date>
+  <lite-date [control]="eventDateField" [range]="true" [format]="'dd/MM/yyyy'"></lite-date>
 </form>
 ```
 ---
@@ -206,6 +223,63 @@ tagsField = new MultiSelectFieldDto(
 <lite-multi-select [control]="tagsField"></lite-multi-select>
 ```
 
+### LiteDate Component
+
+**Selector:** `lite-date`
+
+**Inputs:**
+- `control: FieldDto | DateRangeFieldDto` - Date field configuration
+- `inEdit: boolean` - Whether the field is in edit mode (default: true)
+- `format: string` - Date display format (default: 'dd/MM/yyyy')
+- `range: boolean` - Enable date range selection (default: false)
+
+**Features:**
+- Single date and date range selection
+- Custom date formatting (dd/MM/yyyy, MM/dd/yyyy, yyyy-MM-dd)
+- Intelligent calendar positioning (auto-adjusts based on screen space)
+- Dual calendar display for range selection
+- Visual range highlighting with different styles for start, end, and in-between dates
+- Manual input parsing with format validation
+- Timezone-safe date handling
+- Today's date highlighting with distinctive styling
+- Auto-close calendar after range selection
+
+**Single Date Example:**
+```typescript
+// Component
+birthdateField: FieldDto = {
+  label: 'Birth Date',
+  formControl: new FormControl<string>('', { 
+    nonNullable: true, 
+    validators: [Validators.required] 
+  })
+};
+
+// Template
+<lite-date [control]="birthdateField" [format]="'dd/MM/yyyy'"></lite-date>
+```
+
+**Date Range Example:**
+```typescript
+// Component
+import { DateRangeFieldDto } from 'lite-form';
+
+eventDateField: DateRangeFieldDto = {
+  label: 'Event Date Range',
+  formControl: new FormControl<string[]>(['', ''], { nonNullable: true })
+};
+
+// Template
+<lite-date [control]="eventDateField" [range]="true" [format]="'dd/MM/yyyy'"></lite-date>
+```
+
+**Range Selection Behavior:**
+- First click: Sets start date, clears any existing range
+- Second click: Sets end date, completes range selection
+- Clicking same date twice: Resets to single start date
+- Auto-orders dates (earlier date becomes start, later becomes end)
+- Calendar auto-closes 1 second after completing range selection
+
 ---
 
 ## Data Transfer Objects (DTOs)
@@ -247,6 +321,15 @@ Multi-selection dropdown configuration.
 ```typescript
 class MultiSelectFieldDto<T> extends BaseSelectFieldDto<T> {
   formControl: FormControl<T[]>;
+}
+```
+
+### DateRangeFieldDto
+Date range selection configuration.
+
+```typescript
+interface DateRangeFieldDto extends Omit<FieldDto, 'formControl'> {
+  formControl: FormControl<string[]>;
 }
 ```
 
@@ -317,6 +400,9 @@ projects/lite-form/            # Library source
 │   ├── lite-textarea/        # Textarea component  
 │   ├── lite-select/          # Select component
 │   ├── lite-multi-select/    # Multi-select component
+│   ├── lite-radio/           # Radio button component
+│   ├── lite-checkbox/        # Checkbox component
+│   ├── lite-date/            # Date picker component
 │   ├── field-dto.ts          # Data transfer objects
 │   ├── form-utils.ts         # Utility functions
 │   ├── lite-styles.scss      # Shared styles

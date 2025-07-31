@@ -11,3 +11,4 @@ export * from './lib/lite-select/lite-select';
 export * from './lib/lite-multi-select/lite-multi-select';
 export * from './lib/lite-radio/lite-radio';
 export * from './lib/lite-checkbox/lite-checkbox';
+export * from './lib/lite-date/lite-date';

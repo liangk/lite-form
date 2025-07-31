@@ -2,6 +2,113 @@
 
 This guide helps you migrate from other form libraries or Angular Material to LiteForm, and provides upgrade paths for LiteForm versions.
 
+## Latest Version Updates (v2.x)
+
+### New Components Added
+
+The latest version includes several new components:
+
+- **LiteRadio**: Radio button groups with fieldset/legend structure for accessibility
+- **LiteDate**: Advanced date picker with single date and date range selection
+- **Enhanced LiteCheckbox**: Now integrated with base FieldDto for simplified usage
+
+### Breaking Changes in v2.x
+
+#### CheckboxFieldDto Removed
+`CheckboxFieldDto` has been merged into the base `FieldDto`. Update your checkbox implementations:
+
+**Before:**
+```typescript
+import { CheckboxFieldDto } from 'lite-form';
+
+export class MyComponent {
+  checkboxField = new CheckboxFieldDto('Accept Terms', new FormControl(false));
+}
+```
+
+**After:**
+```typescript
+import { FieldDto } from 'lite-form';
+
+export class MyComponent {
+  checkboxField = new FieldDto('Accept Terms', new FormControl(false));
+}
+```
+
+#### FieldDto Type Restrictions
+`FieldDto` now only supports `'text'` and `'number'` types:
+
+**Before:**
+```typescript
+nameField = new FieldDto('Name', new FormControl(''), 'email'); // No longer supported
+```
+
+**After:**
+```typescript
+nameField = new FieldDto('Name', new FormControl(''), 'text'); // Use 'text' or 'number' only
+```
+
+#### New DateRangeFieldDto
+For date range selection, use the new `DateRangeFieldDto`:
+
+```typescript
+import { DateRangeFieldDto } from 'lite-form';
+
+export class MyComponent {
+  vacationField = new DateRangeFieldDto('Vacation Period', new FormControl<string[]>([]));
+}
+```
+
+### New Features in v2.x
+
+#### Date Picker Component
+The new `lite-date` component supports:
+- Single date selection
+- Date range selection
+- Multiple date formats (dd/MM/yyyy, MM/dd/yyyy, yyyy-MM-dd)
+- Min/max date constraints
+- Intelligent calendar positioning
+- Custom date formatting
+
+**Usage Examples:**
+
+```typescript
+// Single date
+singleDateField = new FieldDto('Event Date', new FormControl(''));
+
+// Date range
+rangeDateField = new DateRangeFieldDto('Project Period', new FormControl<string[]>([]));
+```
+
+```html
+<!-- Single date with custom format -->
+<lite-date [control]="singleDateField" format="dd/MM/yyyy"></lite-date>
+
+<!-- Date range with constraints -->
+<lite-date 
+  [control]="rangeDateField" 
+  [range]="true"
+  [min]="minDate"
+  [max]="maxDate">
+</lite-date>
+```
+
+#### Radio Button Component
+The new `lite-radio` component provides accessible radio button groups:
+
+```typescript
+radioField = new SelectFieldDto(
+  'Gender',
+  new FormControl(''),
+  ['Male', 'Female', 'Other'],
+  (option) => option
+);
+```
+
+```html
+<lite-radio [control]="radioField"></lite-radio>
+```
+
 ## Migrating from Angular Material
 
 ### From Angular Material Form Fields

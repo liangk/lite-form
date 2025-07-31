@@ -265,6 +265,104 @@ privacyField = new FieldDto(
 
 ---
 
+### LiteDate
+
+**Selector:** `lite-date`
+
+**Description:** Advanced date picker component with single date and date range selection capabilities.
+
+#### Inputs
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `control` | `FieldDto \| DateRangeFieldDto` | - | Date field configuration |
+| `inEdit` | `boolean` | `true` | Whether the field is in edit mode |
+| `format` | `string` | `'dd/MM/yyyy'` | Date display format |
+| `range` | `boolean` | `false` | Enable date range selection |
+
+#### Methods
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `toggleCalendar()` | `void` | Open/close the calendar popup |
+| `selectDate(day)` | `void` | Select a specific date from calendar |
+| `previousMonth()` | `void` | Navigate to previous month |
+| `nextMonth()` | `void` | Navigate to next month |
+| `getFormattedValue()` | `string` | Get formatted display value for input |
+| `getDisplayValue()` | `string` | Get formatted display value for read-only mode |
+| `onDateChange(event)` | `void` | Handle manual date input changes |
+
+#### Features
+- **Single Date Mode:** Standard date picker for single date selection
+- **Range Mode:** Dual calendar view for selecting date ranges
+- **Custom Formatting:** Support for multiple date formats (dd/MM/yyyy, MM/dd/yyyy, yyyy-MM-dd)
+- **Intelligent Positioning:** Calendar automatically positions above/below based on screen space
+- **Manual Input:** Type dates directly with format validation
+- **Visual Range Highlighting:** Different styles for start, end, and in-between dates
+- **Today Highlighting:** Distinctive orange styling for current date
+- **Timezone Safe:** Proper handling of local dates without timezone shifts
+- **Auto-close:** Calendar closes automatically after range selection completion
+
+#### Single Date Usage
+```typescript
+// Basic date field
+birthdateField: FieldDto = {
+  label: 'Birth Date',
+  formControl: new FormControl<string>('', { nonNullable: true })
+};
+
+// With validation and custom format
+appointmentField: FieldDto = {
+  label: 'Appointment Date',
+  formControl: new FormControl<string>('', { 
+    nonNullable: true, 
+    validators: [Validators.required] 
+  })
+};
+```
+
+```html
+<lite-date [control]="birthdateField"></lite-date>
+<lite-date [control]="appointmentField" [format]="'MM/dd/yyyy'"></lite-date>
+```
+
+#### Date Range Usage
+```typescript
+import { DateRangeFieldDto } from 'lite-form';
+
+// Date range field
+eventDateField: DateRangeFieldDto = {
+  label: 'Event Date Range',
+  formControl: new FormControl<string[]>(['', ''], { nonNullable: true })
+};
+
+// With validation
+vacationField: DateRangeFieldDto = {
+  label: 'Vacation Dates',
+  formControl: new FormControl<string[]>(['', ''], { 
+    nonNullable: true,
+    validators: [Validators.required]
+  })
+};
+```
+
+```html
+<lite-date [control]="eventDateField" [range]="true"></lite-date>
+<lite-date [control]="vacationField" [range]="true" [format]="'yyyy-MM-dd'"></lite-date>
+```
+
+#### Range Selection Behavior
+1. **First Click:** Sets start date, clears any existing range
+2. **Second Click:** Sets end date, completes range selection
+3. **Same Date Twice:** Resets to single start date selection
+4. **Auto-ordering:** Earlier date becomes start, later date becomes end
+5. **Auto-close:** Calendar closes 1 second after completing range selection
+
+#### Supported Formats
+- `dd/MM/yyyy` - European format (default)
+- `MM/dd/yyyy` - US format
+- `yyyy-MM-dd` - ISO format
+
+---
+
 ## Data Transfer Objects
 
 ### FieldDto
@@ -413,6 +511,49 @@ const priorityField = new RadioFieldDto(
   (option) => option.name
 );
 ```
+
+---
+
+### DateRangeFieldDto
+
+**Description:** Field configuration for date range selection components.
+
+#### Properties
+| Property | Type | Description |
+|----------|------|-------------|
+| `label` | `string` | Display label for the field |
+| `formControl` | `FormControl<string[]>` | FormControl for array of two date strings [startDate, endDate] |
+
+#### Interface Definition
+```typescript
+interface DateRangeFieldDto extends Omit<FieldDto, 'formControl'> {
+  formControl: FormControl<string[]>;
+}
+```
+
+#### Usage
+```typescript
+// Basic date range
+const eventDateField: DateRangeFieldDto = {
+  label: 'Event Date Range',
+  formControl: new FormControl<string[]>(['', ''], { nonNullable: true })
+};
+
+// With validation
+const vacationField: DateRangeFieldDto = {
+  label: 'Vacation Dates',
+  formControl: new FormControl<string[]>(['', ''], { 
+    nonNullable: true,
+    validators: [Validators.required]
+  })
+};
+```
+
+#### Data Format
+- **Array Structure:** `[startDate, endDate]`
+- **Date Format:** ISO date strings (YYYY-MM-DD)
+- **Partial Selection:** `[startDate, '']` when only start date is selected
+- **Empty State:** `['', '']` when no dates are selected
 
 ---
 
