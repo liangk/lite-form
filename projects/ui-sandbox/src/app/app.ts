@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { FieldDto, LiteFormModule, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto, FormUtils } from 'lite-form';
+import { FieldDto, LiteFormModule, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto, FileFieldDto, FormUtils } from 'lite-form';
 
 @Component({
   selector: 'app-root',
@@ -102,6 +102,37 @@ export class App {
     ]) 
   } as FieldDto;
 
+  // File upload demos
+  fileDemo: FileFieldDto = new FileFieldDto(
+    'File Upload',
+    new FormControl([]),
+    true, // multiple
+    '*/*', // accept all files
+    5 * 1024 * 1024, // 5MB max
+    5, // max 5 files
+    true // show preview
+  );
+
+  imageFileDemo: FileFieldDto = new FileFieldDto(
+    'Image Upload',
+    new FormControl([]),
+    false, // single file
+    'image/*', // images only
+    2 * 1024 * 1024, // 2MB max
+    1, // max 1 file
+    true // show preview
+  );
+
+  documentFileDemo: FileFieldDto = new FileFieldDto(
+    'Document Upload',
+    new FormControl([], [Validators.required]),
+    true, // multiple
+    '.pdf,.doc,.docx,.txt', // specific file types
+    10 * 1024 * 1024, // 10MB max
+    3, // max 3 files
+    false // no preview for docs
+  );
+
   constructor(private http: HttpClient) {
     this.getPotterBooks();
     this.getPotterCharacters();
@@ -126,6 +157,19 @@ export class App {
           console.log('Suggestions:', analysis.feedback);
         }
       }
+    });
+
+    // File upload demos
+    this.fileDemo.formControl.valueChanges.subscribe(files => {
+      console.log('Files changed:', files);
+    });
+
+    this.imageFileDemo.formControl.valueChanges.subscribe(files => {
+      console.log('Image files changed:', files);
+    });
+
+    this.documentFileDemo.formControl.valueChanges.subscribe(files => {
+      console.log('Document files changed:', files);
     });
   }
 

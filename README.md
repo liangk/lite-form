@@ -1,7 +1,7 @@
 # Lite Form - Angular Form Components Library
 
 ## Overview
-Lite Form is a comprehensive Angular library that provides lightweight, customizable form components with built-in validation, styling, and animations. It includes input, password, textarea, select, multi-select, radio, checkbox, and advanced date picker components designed for Angular 17+ with standalone component support.
+Lite Form is a comprehensive Angular library that provides lightweight, customizable form components with built-in validation, styling, and animations. It includes input, password, textarea, select, multi-select, radio, checkbox, file upload, and advanced date picker components designed for Angular 17+ with standalone component support.
 
 ## Features
 - ✅ **Modern Angular 17+** - Built with standalone components and signals
@@ -10,6 +10,7 @@ Lite Form is a comprehensive Angular library that provides lightweight, customiz
 - ✅ **Built-in Validation** - Form validation with error messages
 - ✅ **Password Security** - Advanced password validation and strength analysis
 - ✅ **Date Handling** - Single date and date range selection with custom formatting
+- ✅ **File Upload** - Drag & drop file upload with camera capture and file management
 - ✅ **Customizable Styling** - SCSS-based styling system
 - ✅ **Accessibility** - ARIA-compliant form controls
 - ✅ **Animations** - Smooth transitions and interactions
@@ -40,6 +41,9 @@ Checkbox component for boolean input with validation support.
 ### 📅 LiteDate
 Advanced date picker component with single date and date range selection, custom formatting, and intelligent calendar positioning.
 
+### 📎 LiteFile
+File upload component with drag & drop, badge, file management panel, and camera capture support.
+
 ---
 
 ## Installation
@@ -69,7 +73,7 @@ export class YourComponent {
 
 ```typescript
 import { FormControl } from '@angular/forms';
-import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto } from 'lite-form';
+import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto, FileFieldDto } from 'lite-form';
 
 export class YourComponent {
   // Basic input
@@ -126,6 +130,15 @@ export class YourComponent {
     label: 'Event Date Range',
     formControl: new FormControl<string[]>(['', ''], { nonNullable: true })
   };
+  
+  // File upload
+  fileField = new FileFieldDto('Attachments', new FormControl([]), {
+    multiple: true,
+    accept: 'image/*,application/pdf',
+    maxFileSize: 5 * 1024 * 1024,
+    maxFiles: 5,
+    showPreview: true
+  });
 }
 ```
 
@@ -142,6 +155,7 @@ export class YourComponent {
   <lite-radio [control]="planField"></lite-radio>
   <lite-date [control]="birthdateField"></lite-date>
   <lite-date [control]="eventDateField" [range]="true" [format]="'dd/MM/yyyy'"></lite-date>
+  <lite-file [control]="fileField"></lite-file>
 </form>
 ```
 ---
@@ -340,6 +354,60 @@ eventDateField: DateRangeFieldDto = {
 - Auto-orders dates (earlier date becomes start, later becomes end)
 - Calendar auto-closes 1 second after completing range selection
 
+### LiteFile Component
+
+**Selector:** `lite-file`
+
+**Inputs:**
+- `control: FileFieldDto` - File field configuration including label, FormControl, and file options
+- `inEdit: boolean` - Whether the field is in edit mode (default: true)
+
+**Features:**
+- File upload via button, drag & drop, or camera capture (on supported devices)
+- Always-visible badge shows file count
+- Management panel lists files, upload area, and action buttons
+- Camera capture on devices with a camera using `<input type="file" accept="image/*" capture="environment">`
+- Validation: max files, max file size, file type restrictions
+- Image preview with thumbnails for image files
+- Progress tracking for file uploads
+- Accessibility: keyboard and screen reader friendly
+
+**Example:**
+```typescript
+// Component
+import { FileFieldDto } from 'lite-form';
+
+// Basic file upload
+fileField = new FileFieldDto('Upload Files', new FormControl([]));
+
+// Image upload with restrictions
+imageField = new FileFieldDto(
+  'Profile Picture',
+  new FormControl([]),
+  false, // single file only
+  'image/*', // images only
+  2 * 1024 * 1024, // 2MB limit
+  1, // max 1 file
+  true // show preview
+);
+
+// Template
+<lite-file [control]="fileField"></lite-file>
+<lite-file [control]="imageField"></lite-file>
+```
+
+**Camera Capture:**
+- The "Take Picture" button opens the device camera using a hidden file input with `accept="image/*" capture="environment"`
+- Works on mobile devices and laptops with a camera
+- On desktops without a camera, the button will do nothing or fall back to file selection
+- No special permissions required, but the browser may prompt for camera access
+
+**File Management Panel:**
+- Click the file icon button to open the management panel
+- Drag & drop files or click the upload area to select files
+- Use action buttons to upload files, take a picture, or close the panel
+- Remove files individually or clear all files
+
 ---
 
 ## Data Transfer Objects (DTOs)
@@ -390,6 +458,21 @@ Date range selection configuration.
 ```typescript
 interface DateRangeFieldDto extends Omit<FieldDto, 'formControl'> {
   formControl: FormControl<string[]>;
+}
+```
+
+### FileFieldDto
+File field configuration for the LiteFile component.
+
+```typescript
+class FileFieldDto {
+  label: string;
+  formControl: FormControl;
+  multiple?: boolean; // Allow multiple file selection (default: true)
+  accept?: string; // Accepted file types (default: '*/*')
+  maxFileSize?: number; // Maximum file size in bytes (default: 10MB)
+  maxFiles?: number; // Maximum number of files allowed (default: 10)
+  showPreview?: boolean; // Show image previews (default: true)
 }
 ```
 
@@ -464,6 +547,7 @@ projects/lite-form/            # Library source
 │   ├── lite-radio/           # Radio button component
 │   ├── lite-checkbox/        # Checkbox component
 │   ├── lite-date/            # Date picker component
+│   ├── lite-file/            # File upload component
 │   ├── field-dto.ts          # Data transfer objects
 │   ├── form-utils.ts         # Utility functions
 │   ├── lite-styles.scss      # Shared styles
