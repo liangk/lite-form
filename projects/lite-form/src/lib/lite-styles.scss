@@ -361,3 +361,140 @@ input, .label, textarea {
     }
   }
 }
+
+// Lite File Styles
+.lite-file {
+  display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
+  .label { font-size: 0.8em; font-weight: 500; }
+  button {
+    position: relative; background: none; border: none; width: 30px; display: flex; justify-content: center; cursor: pointer; margin-top: 10px;
+    &:hover { background: #e9ecef; border-color: #6c757d; }
+    &.has-files { border-color: #28a745; background: #d4edda; }
+    img {width: 24px; height: 24px; stroke: currentColor; }
+    .file-badge {
+      position: absolute; top: -8px; right: -8px; background: #2079e1; color: white; border-radius: 50%;
+      min-width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+      font-weight: 600;
+    }
+  }
+}
+.lite-file.in-edit {
+  position: relative; display: inline-block;
+  .file-button {
+    position: relative; background: none; border: none; padding: 4px;
+    cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center;
+    
+    &:hover { background: #e9ecef; border-color: #6c757d; }
+    &:focus { outline: 2px solid #2079e1; outline-offset: 2px; }
+    &.has-files { border-color: #28a745; background: #d4edda; }
+    &.has-errors { border-color: #dc3545; background: #f8d7da; }
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+    .file-icon {
+      width: 24px; height: 24px; stroke: currentColor;
+    }
+    .file-badge {
+      position: absolute; top: -8px; right: -8px; background: #2079e1; color: white; border-radius: 50%;
+      min-width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+      font-weight: 600;
+    }
+  }
+}
+.panel-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;
+  opacity: 0; visibility: hidden; transition: all 0.2s ease; pointer-events: none;
+  &.visible { opacity: 1; visibility: visible; pointer-events: auto; }
+}
+// --- File Panel (compact SCSS style) ---
+.file-panel { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.95); min-width: 400px; max-width: 90vw; max-height: 90vh; background: #fff; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,.15); z-index: 1000; opacity: 0; visibility: hidden; transition: all .2s; display: none; flex-direction: column; pointer-events: none; overflow: hidden;
+  &.visible { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); display: flex; pointer-events: auto; }
+  .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #dee2e6; background: #f8f9fa;
+    h3 { margin: 0; font-size: 1.1rem; font-weight: 600; color: #333; }
+    .close-button { background: none; border: none; cursor: pointer; padding: 4px; border-radius: 4px; color: #6c757d; transition: all .2s;
+      &:hover { color: #dc3545; background: #f8d7da; }
+      svg { width: 16px; height: 16px; }
+    }
+  }
+  .panel-content { padding: 20px; overflow-y: auto; flex: 1;
+    .upload-area { border: 2px dashed #dee2e6; border-radius: 8px; padding: 40px 20px; text-align: center; margin-bottom: 20px; transition: all .2s; cursor: pointer; position: relative;
+      &:hover, &.drag-over { border-color: #2079e1; background: #f0f8ff; }
+      &.uploading { border-color: #ffc107; background: #fff8e1; }
+      .upload-content { pointer-events: none;
+        .upload-icon { width: 48px; height: 48px; margin: 0 auto 16px; stroke: #6c757d; }
+        p { margin: 0 0 8px; font-size: 1.1rem; color: #333; font-weight: 500; }
+        small { color: #6c757d; font-size: .9rem; }
+      }
+    }
+    .action-buttons {
+      display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+      .action-btn {
+        display: flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid #dee2e6; border-radius: 6px;
+        background: white; cursor: pointer; transition: all 0.2s ease; font-size: 0.9rem; flex: 1; min-width: 120px;
+        justify-content: center;
+        &:hover { background: #f8f9fa; border-color: #6c757d; }
+        &.upload-btn:hover { background: #e7f3ff; border-color: #2079e1; color: #2079e1; }
+        &.camera-btn:hover { background: #e8f5e8; border-color: #28a745; color: #28a745; }
+        &.close-btn:hover { background: #f8d7da; border-color: #dc3545; color: #dc3545; }
+        svg { width: 16px; height: 16px; }
+      }
+    }
+    .file-list {
+      .file-list-header {
+        display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 8px;
+        border-bottom: 1px solid #dee2e6;
+        span { font-weight: 600; color: #333; }
+        .total-size { font-size: 0.9rem; color: #6c757d; font-weight: normal; }
+        .clear-all-btn {
+          background: none; border: 1px solid #dc3545; color: #dc3545; padding: 4px 12px; border-radius: 4px;
+          cursor: pointer; font-size: 0.8rem; transition: all 0.2s ease;
+          &:hover { background: #dc3545; color: white; }
+        }
+      }
+      .file-items {
+        max-height: 300px; overflow-y: auto;
+        .file-item {
+          display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #dee2e6; border-radius: 6px;
+          margin-bottom: 8px; transition: all 0.2s ease; background: white;
+          &:hover { background: #f8f9fa; }
+          &.has-error { border-color: #dc3545; background: #fff5f5; }
+          &.uploading { background: #fff8e1; border-color: #ffc107; }
+          .file-preview {
+            width: 48px; height: 48px; border-radius: 4px; overflow: hidden; background: #f8f9fa; display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0;
+            .preview-image { width: 100%; height: 100%; object-fit: cover; }
+            .file-type-icon { font-size: 24px; }
+          }
+          .file-info {
+            flex: 1; min-width: 0;
+            .file-name { font-weight: 500; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .file-details {
+              display: flex; gap: 12px; margin-top: 4px; font-size: 0.8rem; color: #6c757d;
+              .file-size, .file-type { white-space: nowrap; }
+            }
+            .file-error { color: #dc3545; font-size: 0.8rem; margin-top: 4px; font-weight: 500; }
+            .upload-progress {
+              display: flex; align-items: center; gap: 8px; margin-top: 8px;
+              .progress-bar {
+                flex: 1; height: 6px; background: #e9ecef; border-radius: 3px; overflow: hidden;
+                .progress-fill { height: 100%; background: #2079e1; transition: width 0.3s ease; }
+              }
+              .progress-text { font-size: 0.8rem; color: #6c757d; font-weight: 500; min-width: 32px; }
+            }
+          }
+          .remove-file-btn {
+            background: none; border: 1px solid #dc3545; color: #dc3545; padding: 6px; border-radius: 4px;
+            cursor: pointer; transition: all 0.2s ease; flex-shrink: 0;
+            &:hover:not(:disabled) { background: #dc3545; color: white; }
+            &:disabled { opacity: 0.5; cursor: not-allowed; }
+            svg { width: 16px; height: 16px; }
+          }
+        }
+      }
+    }
+    .empty-state {
+      text-align: center; padding: 40px 20px; color: #6c757d;
+      .empty-icon { width: 64px; height: 64px; margin: 0 auto 16px; stroke: #dee2e6; }
+      p { margin: 0 0 8px; font-size: 1.1rem; }
+      small { font-size: 0.9rem; }
+    }
+  }
+}

@@ -9,7 +9,7 @@ This document provides comprehensive examples of using LiteForm components in va
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, FieldDto, SelectFieldDto, RadioFieldDto } from 'lite-form';
+import { LiteFormModule, FieldDto, SelectFieldDto, RadioFieldDto, FileFieldDto } from 'lite-form';
 
 @Component({
   selector: 'app-simple-form',
@@ -23,6 +23,7 @@ import { LiteFormModule, FieldDto, SelectFieldDto, RadioFieldDto } from 'lite-fo
       <lite-select [control]="priorityField"></lite-select>
       <lite-radio [control]="urgencyField"></lite-radio>
       <lite-checkbox [control]="agreeField"></lite-checkbox>
+      <lite-file [control]="attachmentField"></lite-file>
       
       <button type="submit" [disabled]="!isFormValid()">Submit</button>
     </form>
@@ -52,13 +53,23 @@ export class SimpleFormComponent {
     new FormControl<boolean>(false, { nonNullable: true, validators: [Validators.requiredTrue] })
   );
 
+  attachmentField = new FileFieldDto(
+    'Attachments', 
+    new FormControl([]),
+    true, // multiple files
+    '*/*', // any file type
+    5 * 1024 * 1024, // 5MB limit
+    3 // max 3 files
+  );
+
   isFormValid(): boolean {
     return this.nameField.formControl.valid &&
            this.emailField.formControl.valid &&
            this.messageField.formControl.valid &&
            this.priorityField.formControl.valid &&
            this.urgencyField.formControl.valid &&
-           this.agreeField.formControl.valid;
+           this.agreeField.formControl.valid &&
+           this.attachmentField.formControl.valid;
   }
 
   onSubmit(): void {
@@ -448,6 +459,802 @@ export class DepartmentFormComponent {
 
   getSelectedDepartments(): Department[] {
     return this.departmentsField.formControl.value || [];
+  }
+}
+```
+
+---
+
+## File Upload Examples
+
+### Basic File Upload
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { LiteFormModule, FileFieldDto } from 'lite-form';
+
+@Component({
+  selector: 'app-basic-file',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <form (ngSubmit)="onSubmit()">
+      <lite-file [control]="filesField"></lite-file>
+      <button type="submit" [disabled]="!hasFiles()">Upload Files</button>
+    </form>
+  `
+})
+export class BasicFileComponent {
+  filesField = new FileFieldDto('Upload Files', new FormControl([]));
+
+  hasFiles(): boolean {
+    const files = this.filesField.formControl.value || [];
+    return files.length > 0;
+  }
+
+  onSubmit(): void {
+    const files = this.filesField.formControl.value || [];
+    console.log('Uploading files:', files);
+  }
+}
+```
+
+### Image Upload with Preview
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { LiteFormModule, FileFieldDto } from 'lite-form';
+
+@Component({
+  selector: 'app-image-upload',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="image-upload-form">
+      <h3>Profile Picture Upload</h3>
+      
+      <lite-file [control]="profilePictureField"></lite-file>
+      
+      <div class="upload-info">
+        <p><strong>Requirements:</strong></p>
+        <ul>
+          <li>Single image only</li>
+          <li>Max size: 2MB</li>
+          <li>Formats: JPG, PNG, GIF</li>
+        </ul>
+      </div>
+      
+      <button (click)="saveProfile()" [disabled]="!isValid()">
+        Save Profile Picture
+      </button>
+    </div>
+  `,
+  styles: [`
+    .image-upload-form {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .upload-info {
+      margin: 15px 0;
+      padding: 10px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+    }
+    .upload-info ul {
+      margin: 5px 0;
+      padding-left: 20px;
+    }
+  `]
+})
+export class ImageUploadComponent {
+  profilePictureField = new FileFieldDto(
+    'Profile Picture',
+    new FormControl([], [Validators.required]),
+    false, // single file only
+    'image/*', // images only
+    2 * 1024 * 1024, // 2MB limit
+    1, // max 1 file
+    true // show preview
+  );
+
+  isValid(): boolean {
+    return this.profilePictureField.formControl.valid;
+  }
+
+  saveProfile(): void {
+    if (this.isValid()) {
+      const files = this.profilePictureField.formControl.value || [];
+      console.log('Saving profile picture:', files[0]);
+    }
+  }
+}
+```
+
+### Document Upload with File Type Restrictions
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { LiteFormModule, FileFieldDto } from 'lite-form';
+
+@Component({
+  selector: 'app-document-upload',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="document-form">
+      <h3>Document Upload</h3>
+      
+      <lite-file [control]="documentsField"></lite-file>
+      
+      <div class="file-summary" *ngIf="getFileCount() > 0">
+        <h4>Selected Files ({{ getFileCount() }})</h4>
+        <div class="file-info" *ngFor="let file of getFiles()">
+          <span class="file-name">{{ file.name }}</span>
+          <span class="file-size">({{ formatFileSize(file.size) }})</span>
+        </div>
+      </div>
+      
+      <div class="upload-guidelines">
+        <h4>Accepted Documents:</h4>
+        <ul>
+          <li>PDF files (.pdf)</li>
+          <li>Word documents (.doc, .docx)</li>
+          <li>Excel spreadsheets (.xls, .xlsx)</li>
+          <li>PowerPoint presentations (.ppt, .pptx)</li>
+          <li>Text files (.txt)</li>
+        </ul>
+        <p><strong>Max file size:</strong> 10MB per file</p>
+        <p><strong>Max files:</strong> 5 files total</p>
+      </div>
+      
+      <button (click)="uploadDocuments()" [disabled]="getFileCount() === 0">
+        Upload Documents
+      </button>
+    </div>
+  `,
+  styles: [`
+    .document-form {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .file-summary {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #e8f4fd;
+      border-radius: 4px;
+    }
+    .file-info {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    .file-info:last-child {
+      border-bottom: none;
+    }
+    .file-size {
+      color: #666;
+      font-size: 0.9em;
+    }
+    .upload-guidelines {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+    }
+  `]
+})
+export class DocumentUploadComponent {
+  documentsField = new FileFieldDto(
+    'Upload Documents',
+    new FormControl([]),
+    true, // multiple files
+    '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document', // document types
+    10 * 1024 * 1024, // 10MB per file
+    5, // max 5 files
+    false // no preview for documents
+  );
+
+  getFiles(): File[] {
+    return this.documentsField.formControl.value || [];
+  }
+
+  getFileCount(): number {
+    return this.getFiles().length;
+  }
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  uploadDocuments(): void {
+    const files = this.getFiles();
+    console.log('Uploading documents:', files);
+    // Handle file upload logic here
+  }
+}
+```
+
+### Camera Capture Example
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { LiteFormModule, FileFieldDto } from 'lite-form';
+
+@Component({
+  selector: 'app-camera-capture',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="camera-form">
+      <h3>Photo Capture</h3>
+      
+      <lite-file [control]="photoField"></lite-file>
+      
+      <div class="photo-gallery" *ngIf="hasPhotos()">
+        <h4>Captured Photos</h4>
+        <div class="photo-grid">
+          <div class="photo-item" *ngFor="let photo of getPhotos(); let i = index">
+            <img [src]="getPhotoPreview(photo)" [alt]="'Photo ' + (i + 1)">
+            <div class="photo-info">
+              <span>{{ photo.name }}</span>
+              <button (click)="removePhoto(i)" class="remove-btn">×</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="camera-info">
+        <h4>Camera Capture Features:</h4>
+        <ul>
+          <li>✅ Works on mobile devices with camera</li>
+          <li>✅ Works on laptops with built-in camera</li>
+          <li>✅ Automatically opens camera app on mobile</li>
+          <li>✅ Falls back to file selection on unsupported devices</li>
+          <li>✅ No special permissions required</li>
+        </ul>
+      </div>
+      
+      <button (click)="savePhotos()" [disabled]="!hasPhotos()">
+        Save Photos
+      </button>
+    </div>
+  `,
+  styles: [`
+    .camera-form {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .photo-gallery {
+      margin: 20px 0;
+    }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      margin: 15px 0;
+    }
+    .photo-item {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+    }
+    .photo-item img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+    .photo-info {
+      padding: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8em;
+    }
+    .remove-btn {
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .camera-info {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #e8f5e8;
+      border-radius: 4px;
+    }
+  `]
+})
+export class CameraCaptureComponent {
+  photoField = new FileFieldDto(
+    'Take Photos',
+    new FormControl([]),
+    true, // multiple photos
+    'image/*', // images only
+    5 * 1024 * 1024, // 5MB per image
+    10, // max 10 photos
+    true // show preview
+  );
+
+  hasPhotos(): boolean {
+    return this.getPhotos().length > 0;
+  }
+
+  getPhotos(): File[] {
+    return this.photoField.formControl.value || [];
+  }
+
+  getPhotoPreview(photo: File): string {
+    return URL.createObjectURL(photo);
+  }
+
+  removePhoto(index: number): void {
+    const photos = this.getPhotos();
+    photos.splice(index, 1);
+    this.photoField.formControl.setValue([...photos]);
+  }
+
+  savePhotos(): void {
+    const photos = this.getPhotos();
+    console.log('Saving photos:', photos);
+    // Handle photo saving logic here
+  }
+}
+```
+
+### Advanced File Upload with Progress
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { HttpClient, HttpEventType } from '@angular/common/http';
+import { LiteFormModule, FileFieldDto } from 'lite-form';
+import { Observable } from 'rxjs';
+
+interface UploadProgress {
+  file: File;
+  progress: number;
+  status: 'pending' | 'uploading' | 'completed' | 'error';
+  response?: any;
+}
+
+@Component({
+  selector: 'app-advanced-file-upload',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="advanced-upload-form">
+      <h3>Advanced File Upload</h3>
+      
+      <lite-file [control]="filesField"></lite-file>
+      
+      <div class="upload-queue" *ngIf="uploadQueue.length > 0">
+        <h4>Upload Queue</h4>
+        <div class="upload-item" *ngFor="let item of uploadQueue">
+          <div class="file-info">
+            <span class="file-name">{{ item.file.name }}</span>
+            <span class="file-size">({{ formatFileSize(item.file.size) }})</span>
+          </div>
+          
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" 
+                   [style.width.%]="item.progress"
+                   [class]="item.status">
+              </div>
+            </div>
+            <span class="progress-text">{{ item.progress }}%</span>
+          </div>
+          
+          <div class="status-indicator" [class]="item.status">
+            <span *ngIf="item.status === 'pending'">⏳ Pending</span>
+            <span *ngIf="item.status === 'uploading'">📤 Uploading</span>
+            <span *ngIf="item.status === 'completed'">✅ Completed</span>
+            <span *ngIf="item.status === 'error'">❌ Error</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="upload-controls">
+        <button (click)="startUpload()" 
+                [disabled]="!hasFiles() || isUploading">
+          {{ isUploading ? 'Uploading...' : 'Start Upload' }}
+        </button>
+        
+        <button (click)="clearQueue()" 
+                [disabled]="isUploading">
+          Clear Queue
+        </button>
+      </div>
+      
+      <div class="upload-summary" *ngIf="uploadQueue.length > 0">
+        <p><strong>Total Files:</strong> {{ uploadQueue.length }}</p>
+        <p><strong>Completed:</strong> {{ getCompletedCount() }}</p>
+        <p><strong>Failed:</strong> {{ getFailedCount() }}</p>
+        <p><strong>Overall Progress:</strong> {{ getOverallProgress() }}%</p>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .advanced-upload-form {
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .upload-queue {
+      margin: 20px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+    }
+    .upload-item {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 15px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .upload-item:last-child {
+      border-bottom: none;
+    }
+    .file-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .file-size {
+      font-size: 0.8em;
+      color: #666;
+    }
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 150px;
+    }
+    .progress-bar {
+      width: 100px;
+      height: 6px;
+      background-color: #f0f0f0;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+    .progress-fill.pending { background-color: #6c757d; }
+    .progress-fill.uploading { background-color: #007bff; }
+    .progress-fill.completed { background-color: #28a745; }
+    .progress-fill.error { background-color: #dc3545; }
+    .progress-text {
+      font-size: 0.8em;
+      min-width: 35px;
+    }
+    .status-indicator {
+      font-size: 0.8em;
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-align: center;
+      min-width: 80px;
+    }
+    .status-indicator.pending { background-color: #f8f9fa; }
+    .status-indicator.uploading { background-color: #e3f2fd; }
+    .status-indicator.completed { background-color: #e8f5e8; }
+    .status-indicator.error { background-color: #ffebee; }
+    .upload-controls {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .upload-summary {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+    }
+  `]
+})
+export class AdvancedFileUploadComponent {
+  filesField = new FileFieldDto(
+    'Select Files to Upload',
+    new FormControl([]),
+    true, // multiple files
+    '*/*', // all file types
+    50 * 1024 * 1024, // 50MB per file
+    20, // max 20 files
+    true // show preview
+  );
+
+  uploadQueue: UploadProgress[] = [];
+  isUploading = false;
+
+  constructor(private http: HttpClient) {
+    // Watch for file changes
+    this.filesField.formControl.valueChanges.subscribe(files => {
+      this.updateUploadQueue(files || []);
+    });
+  }
+
+  updateUploadQueue(files: File[]): void {
+    this.uploadQueue = files.map(file => ({
+      file,
+      progress: 0,
+      status: 'pending' as const
+    }));
+  }
+
+  hasFiles(): boolean {
+    return this.uploadQueue.length > 0;
+  }
+
+  startUpload(): void {
+    if (this.isUploading) return;
+    
+    this.isUploading = true;
+    
+    // Upload files sequentially
+    this.uploadSequentially(0);
+  }
+
+  private uploadSequentially(index: number): void {
+    if (index >= this.uploadQueue.length) {
+      this.isUploading = false;
+      return;
+    }
+
+    const item = this.uploadQueue[index];
+    this.uploadSingleFile(item).subscribe({
+      next: (progress) => {
+        item.progress = progress;
+        if (progress === 100) {
+          item.status = 'completed';
+        }
+      },
+      error: (error) => {
+        item.status = 'error';
+        console.error('Upload failed:', error);
+      },
+      complete: () => {
+        // Upload next file
+        setTimeout(() => this.uploadSequentially(index + 1), 500);
+      }
+    });
+  }
+
+  private uploadSingleFile(item: UploadProgress): Observable<number> {
+    return new Observable(observer => {
+      item.status = 'uploading';
+      
+      const formData = new FormData();
+      formData.append('file', item.file);
+
+      // Simulate upload progress (replace with actual HTTP upload)
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += Math.random() * 20;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          observer.next(progress);
+          observer.complete();
+        } else {
+          observer.next(progress);
+        }
+      }, 200);
+
+      // Actual HTTP upload example:
+      // this.http.post('/api/upload', formData, {
+      //   reportProgress: true,
+      //   observe: 'events'
+      // }).subscribe(event => {
+      //   if (event.type === HttpEventType.UploadProgress) {
+      //     const progress = Math.round(100 * event.loaded / (event.total || 1));
+      //     observer.next(progress);
+      //   } else if (event.type === HttpEventType.Response) {
+      //     observer.complete();
+      //   }
+      // });
+    });
+  }
+
+  clearQueue(): void {
+    if (this.isUploading) return;
+    
+    this.uploadQueue = [];
+    this.filesField.formControl.setValue([]);
+  }
+
+  getCompletedCount(): number {
+    return this.uploadQueue.filter(item => item.status === 'completed').length;
+  }
+
+  getFailedCount(): number {
+    return this.uploadQueue.filter(item => item.status === 'error').length;
+  }
+
+  getOverallProgress(): number {
+    if (this.uploadQueue.length === 0) return 0;
+    
+    const totalProgress = this.uploadQueue.reduce((sum, item) => sum + item.progress, 0);
+    return Math.round(totalProgress / this.uploadQueue.length);
+  }
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+}
+```
+
+### File Upload with Validation
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { LiteFormModule, FileFieldDto } from 'lite-form';
+
+@Component({
+  selector: 'app-file-validation',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="file-validation-form">
+      <h3>File Upload with Custom Validation</h3>
+      
+      <lite-file [control]="validatedFilesField"></lite-file>
+      
+      <div class="validation-info" *ngIf="hasValidationErrors()">
+        <h4>Validation Errors:</h4>
+        <ul>
+          <li *ngFor="let error of getValidationErrors()">{{ error }}</li>
+        </ul>
+      </div>
+      
+      <div class="file-requirements">
+        <h4>File Requirements:</h4>
+        <ul>
+          <li>At least 1 file required</li>
+          <li>Maximum 3 files allowed</li>
+          <li>Only images (JPG, PNG, GIF) permitted</li>
+          <li>Each file must be under 2MB</li>
+          <li>Total size must not exceed 5MB</li>
+        </ul>
+      </div>
+      
+      <button (click)="submitFiles()" [disabled]="!isValid()">
+        Submit Files
+      </button>
+    </div>
+  `,
+  styles: [`
+    .file-validation-form {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .validation-info {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #ffebee;
+      border-left: 4px solid #f44336;
+      border-radius: 4px;
+    }
+    .validation-info ul {
+      margin: 5px 0;
+      color: #d32f2f;
+    }
+    .file-requirements {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #e3f2fd;
+      border-radius: 4px;
+    }
+  `]
+})
+export class FileValidationComponent {
+  validatedFilesField = new FileFieldDto(
+    'Upload Images',
+    new FormControl([], [
+      Validators.required,
+      this.customFileValidator()
+    ]),
+    true, // multiple files
+    'image/*', // images only
+    2 * 1024 * 1024, // 2MB per file
+    3, // max 3 files
+    true // show preview
+  );
+
+  customFileValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const files: File[] = control.value || [];
+      const errors: string[] = [];
+
+      // Check if at least one file is selected
+      if (files.length === 0) {
+        errors.push('At least one file is required');
+      }
+
+      // Check maximum number of files
+      if (files.length > 3) {
+        errors.push('Maximum 3 files allowed');
+      }
+
+      // Check file types
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+      files.forEach((file, index) => {
+        if (!allowedTypes.includes(file.type)) {
+          errors.push(`File ${index + 1} (${file.name}) is not a valid image type`);
+        }
+      });
+
+      // Check individual file sizes
+      files.forEach((file, index) => {
+        if (file.size > 2 * 1024 * 1024) {
+          errors.push(`File ${index + 1} (${file.name}) exceeds 2MB limit`);
+        }
+      });
+
+      // Check total size
+      const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+      if (totalSize > 5 * 1024 * 1024) {
+        errors.push(`Total file size (${this.formatFileSize(totalSize)}) exceeds 5MB limit`);
+      }
+
+      return errors.length > 0 ? { fileValidation: { errors } } : null;
+    };
+  }
+
+  hasValidationErrors(): boolean {
+    return this.validatedFilesField.formControl.hasError('fileValidation');
+  }
+
+  getValidationErrors(): string[] {
+    const error = this.validatedFilesField.formControl.getError('fileValidation');
+    return error ? error.errors : [];
+  }
+
+  isValid(): boolean {
+    return this.validatedFilesField.formControl.valid;
+  }
+
+  submitFiles(): void {
+    if (this.isValid()) {
+      const files = this.validatedFilesField.formControl.value || [];
+      console.log('Submitting validated files:', files);
+    }
+  }
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 }
 ```

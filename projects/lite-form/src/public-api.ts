@@ -13,3 +13,4 @@ export * from './lib/lite-radio/lite-radio';
 export * from './lib/lite-checkbox/lite-checkbox';
 export * from './lib/lite-date/lite-date';
 export * from './lib/lite-password/lite-password';
+export * from './lib/lite-file/lite-file';

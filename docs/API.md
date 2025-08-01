@@ -2,6 +2,92 @@
 
 ## Components
 
+### LiteFile
+
+**Selector:** `lite-file`
+
+**Description:** File upload component with drag & drop, badge, file management panel, and camera capture support.
+
+#### Inputs
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `control` | `FileFieldDto` | - | File field configuration including label, FormControl, and file options |
+| `inEdit` | `boolean` | `true` | Whether the field is in edit mode |
+
+#### Features
+- **File Upload:** Upload files via button, drag & drop, or camera capture (on supported devices)
+- **Badge:** Always-visible badge shows file count
+- **Management Panel:** Popup panel lists files, upload area, and action buttons
+- **Camera Capture:** On devices with a camera, clicking "Take Picture" opens the camera UI (uses `<input type="file" accept="image/*" capture="environment">`). On unsupported devices, the button is hidden or does nothing.
+- **Validation:** Max files, max file size, file type restrictions
+- **Image Preview:** Shows thumbnail for image files
+- **Progress Tracking:** Shows upload progress for each file
+- **Accessibility:** Keyboard and screen reader friendly
+
+#### Methods
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `togglePanel()` | `void` | Toggle visibility of the file management panel |
+| `closePanel()` | `void` | Close the file management panel |
+| `openFileDialog()` | `void` | Open system file picker dialog |
+| `openCameraDialog()` | `void` | Open camera capture interface (on supported devices) |
+| `onFileSelect(event)` | `void` | Handle file selection from file input |
+| `onCameraCapture(event)` | `void` | Handle image capture from camera |
+| `onDragOver(event)` | `void` | Handle file drag over upload area |
+| `onDragLeave(event)` | `void` | Handle file drag leave from upload area |
+| `onDrop(event)` | `void` | Handle file drop in upload area |
+| `removeFile(id)` | `void` | Remove a specific file by ID |
+| `clearAllFiles()` | `void` | Remove all uploaded files |
+| `formatFileSize(bytes)` | `string` | Format file size in bytes to human-readable string |
+| `isImage(type)` | `boolean` | Check if file type is an image |
+| `getFileIcon(type)` | `string` | Get appropriate icon for file type |
+
+#### Usage
+```typescript
+import { FileFieldDto } from 'lite-form';
+import { FormControl } from '@angular/forms';
+
+fileField = new FileFieldDto('Attachments', new FormControl([]), {
+  multiple: true,
+  accept: 'image/*,application/pdf',
+  maxFileSize: 5 * 1024 * 1024,
+  maxFiles: 5,
+  showPreview: true
+});
+```
+
+```html
+<lite-file [control]="fileField"></lite-file>
+```
+
+#### Camera Capture
+- The "Take Picture" button opens the device camera using a hidden file input with `accept="image/*" capture="environment"`.
+- On mobile devices and laptops with a camera, this will prompt the user to take a photo.
+- On desktops without a camera, the button will do nothing or fall back to file selection, depending on browser support.
+- No special permissions are required, but the browser may prompt for camera access.
+
+#### File Management Panel
+- Click the file icon button to open the management panel.
+- Drag & drop files or click the upload area to select files.
+- Use the action buttons to upload files, take a picture, or close the panel.
+- Remove files individually or clear all files.
+
+#### Styling
+- `.lite-file` - Root class
+- `.file-panel` - Management panel
+- `.file-badge` - File count badge
+- `.upload-area` - Drag & drop/upload area
+- `.action-btn` - Action buttons (upload, camera, close)
+- `.file-list` - File list container
+
+#### Browser Support
+- Camera capture works on most modern mobile browsers and laptops with a camera.
+- On unsupported devices, the feature is gracefully degraded.
+
+---
+
+## Components
+
 ### LiteInput
 
 **Selector:** `lite-input`
@@ -433,6 +519,67 @@ vacationField: DateRangeFieldDto = {
 ---
 
 ## Data Transfer Objects
+
+### FileFieldDto
+
+**Description:** File field configuration for the LiteFile component, with support for multiple file upload, file type filtering, and size limits.
+
+#### Properties
+| Property | Type | Optional | Description |
+|----------|------|----------|-------------|
+| `label` | `string` | No | Display label for the field |
+| `formControl` | `FormControl` | No | Angular FormControl instance holding file array |
+| `multiple` | `boolean` | Yes | Allow multiple file selection (default: true) |
+| `accept` | `string` | Yes | Accepted file types (e.g., 'image/*,application/pdf') (default: '*/*') |
+| `maxFileSize` | `number` | Yes | Maximum file size in bytes (default: 10MB) |
+| `maxFiles` | `number` | Yes | Maximum number of files allowed (default: 10) |
+| `showPreview` | `boolean` | Yes | Show image previews for image files (default: true) |
+
+#### Constructor
+```typescript
+constructor(
+  label: string,
+  formControl: FormControl,
+  multiple: boolean = true,
+  accept: string = '*/*',
+  maxFileSize: number = 10 * 1024 * 1024, // 10MB
+  maxFiles: number = 10,
+  showPreview: boolean = true
+)
+```
+
+#### Examples
+```typescript
+// Basic file upload with defaults
+const filesField = new FileFieldDto(
+  'Upload Files',
+  new FormControl([])
+);
+
+// Image upload with restrictions
+const imageField = new FileFieldDto(
+  'Profile Picture',
+  new FormControl([]),
+  false, // single file only
+  'image/*', // images only
+  2 * 1024 * 1024, // 2MB limit
+  1, // max 1 file
+  true // show preview
+);
+
+// Document upload with custom limits
+const docsField = new FileFieldDto(
+  'Documents',
+  new FormControl([]),
+  true, // multiple files
+  '.pdf,.doc,.docx', // document types
+  5 * 1024 * 1024, // 5MB per file
+  5, // max 5 files
+  false // no preview
+);
+```
+
+---
 
 ### FieldDto
 

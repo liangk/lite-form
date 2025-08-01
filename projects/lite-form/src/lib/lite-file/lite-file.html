@@ -1,0 +1,170 @@
+<div class="lite-file" [class.in-edit]="inEdit()">
+  <label class="label" [class.required]="isRequired()">{{ control().label }}</label>
+  <button [class.has-files]="fileCount() > 0" [class.has-errors]="hasErrors()" (click)="togglePanel()">
+    <img [src]="svgToBase64DataUrl(file_icon)" alt="file icon">
+    <!-- Badge -->
+    <span class="file-badge">
+      {{ fileCount() }}
+    </span>
+  </button>
+
+</div>
+<!-- Panel overlay -->
+<div class="panel-overlay" 
+      [class.visible]="showPanel()" 
+      (click)="closePanel()">
+</div>
+<!-- Management panel -->
+<div class="file-panel" [class.visible]="showPanel()">
+  <div class="panel-header">
+    <h3>File Management</h3>
+    <button (click)="closePanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div class="panel-content">
+    <!-- File upload area -->
+    <div class="upload-area" 
+          [class.drag-over]="isDragOver()"
+          [class.uploading]="isUploading()"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)"
+          (click)="openFileDialog()">
+      
+      <div class="upload-content">
+        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7,10 12,15 17,10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <p>Drop files here or click to browse</p>
+        <small>Max {{ maxFiles() }} files, {{ formatFileSize(maxFileSize()) }} each</small>
+      </div>
+
+      <!-- Hidden file inputs -->
+      <input #fileInput
+              type="file"
+              [multiple]="multiple()"
+              [accept]="accept()"
+              (change)="onFileSelect($event)"
+              style="display: none;">
+
+      <input #cameraInput
+              type="file"
+              accept="image/*"
+              capture="environment"
+              (change)="onCameraCapture($event)"
+              style="display: none;">
+    </div>
+
+    <!-- Action buttons -->
+    <div class="action-buttons">
+      <button type="button" class="action-btn upload-btn" (click)="openFileDialog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17,8 12,3 7,8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        Upload Files
+      </button>
+
+      <button type="button" class="action-btn camera-btn" (click)="openCameraDialog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+          <circle cx="12" cy="13" r="4"></circle>
+        </svg>
+        Take Picture
+      </button>
+
+      <button type="button" class="action-btn close-btn" (click)="closePanel()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        Close
+      </button>
+    </div>
+
+    <!-- File list -->
+    <div class="file-list" *ngIf="fileCount() > 0">
+      <div class="file-list-header">
+        <span>Files ({{ fileCount() }})</span>
+        <span class="total-size">{{ getTotalSizeFormatted() }}</span>
+        <button type="button" class="clear-all-btn" (click)="clearAllFiles()">
+          Clear All
+        </button>
+      </div>
+
+      <div class="file-items">
+        <div class="file-item" 
+              *ngFor="let file of files()" 
+              [class.has-error]="file.error"
+              [class.uploading]="file.isUploading">
+          
+          <!-- File preview/icon -->
+          <div class="file-preview">
+            <img *ngIf="file.url && isImage(file.type)" 
+                  [src]="file.url" 
+                  [alt]="file.name"
+                  class="preview-image">
+            <span *ngIf="!file.url || !isImage(file.type)" 
+                  class="file-type-icon">
+              {{ getFileIcon(file.type) }}
+            </span>
+          </div>
+
+          <!-- File info -->
+          <div class="file-info">
+            <div class="file-name" [title]="file.name">{{ file.name }}</div>
+            <div class="file-details">
+              <span class="file-size">{{ formatFileSize(file.size) }}</span>
+              <span class="file-type">{{ file.type || 'Unknown' }}</span>
+            </div>
+            <div class="file-error" *ngIf="file.error">{{ file.error }}</div>
+            
+            <!-- Upload progress -->
+            <div class="upload-progress" *ngIf="file.isUploading && file.uploadProgress !== undefined">
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="file.uploadProgress"></div>
+              </div>
+              <span class="progress-text">{{ file.uploadProgress }}%</span>
+            </div>
+          </div>
+
+          <!-- Remove button -->
+          <button type="button" 
+                  class="remove-file-btn" 
+                  (click)="removeFile(file.id)"
+                  [disabled]="file.isUploading">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3,6 5,6 21,6"></polyline>
+              <path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2V6"></path>
+              <line x1="10" y1="11" x2="10" y2="17"></line>
+              <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="fileCount() === 0">
+      <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14,2 14,8 20,8"></polyline>
+      </svg>
+      <p>No files uploaded yet</p>
+      <small>Click upload or drag files to get started</small>
+    </div>
+  </div>
+</div>
+
+<!-- Error messages -->
+<div class="error-messages" *ngIf="hasFormErrors()">
+  <div class="error-message" *ngFor="let error of getErrorMessage()">{{ error }}</div>
+</div>
