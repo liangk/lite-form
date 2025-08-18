@@ -420,6 +420,7 @@ privacyField = new FieldDto(
 
 ---
 
+
 ### LiteDate
 
 **Selector:** `lite-date`
@@ -515,6 +516,38 @@ vacationField: DateRangeFieldDto = {
 - `dd/MM/yyyy` - European format (default)
 - `MM/dd/yyyy` - US format
 - `yyyy-MM-dd` - ISO format
+
+---
+
+### LiteDateTime
+
+**Selector:** `lite-datetime`
+
+**Description:** Date & time picker component for selecting both date and time, with custom formatting and time granularity.
+
+#### Inputs
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `control` | `FieldDto` | - | Date/time field configuration |
+| `inEdit` | `boolean` | `true` | Whether the field is in edit mode |
+| `format` | `string` | `'dd/MM/yyyy HH:mm'` | Date/time display format |
+
+#### Features
+- Combined date and time selection in a single popup
+- Customizable date/time format (e.g., 'yyyy-MM-dd HH:mm')
+- Keyboard and mouse navigation
+- Time selection with hour and minute granularity
+- Validation and error display
+- Responsive and accessible
+
+#### Example
+```typescript
+import { FieldDto } from 'lite-form';
+datetimeField = new FieldDto('Event Date & Time', new FormControl(''));
+```
+```html
+<lite-datetime [control]="datetimeField" format="yyyy-MM-dd HH:mm"></lite-datetime>
+```
 
 ---
 

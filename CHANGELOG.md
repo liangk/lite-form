@@ -5,16 +5,21 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
 ## [Unreleased]
 
-### Added
+- **LiteDateTime Component** - Combined date & time picker for selecting both date and time, with custom formatting and time granularity
 - **LiteRadio Component** - Radio button group for single selection from multiple options
 - **LiteCheckbox Component** - Checkbox component for boolean input with validation support
 - Enhanced **FieldDto** with type parameter to support different field types:
   - `'text'` for regular text inputs (default)
   - `'textarea'` for multi-line text areas
   - `'checkbox'` for boolean checkbox inputs
-- Comprehensive documentation suite
+- **Comprehensive documentation updates:**
+  - Added full documentation for **LiteFile** component and **FileFieldDto**
+  - Added file upload usage examples to all main docs and EXAMPLES.md
+  - Improved Quick Start and DTO sections to include file upload
+  - Added camera capture, validation, and advanced file upload examples
 - API reference documentation
 - Migration guide from other form libraries
 - Examples and usage patterns including radio and checkbox components
@@ -26,11 +31,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Simplified checkbox usage - no longer requires type parameter
 - Simplified textarea usage - uses rows parameter without type specification
 - Updated examples to remove redundant `[inEdit]="true"` properties (since it defaults to true)
+- Fixed broken emoji characters in documentation and improved consistency in feature lists
 
 ### Enhanced
 - Improved checkbox styling with hover effects and proper sizing
 - Added radio button styling with both vertical and horizontal layouts
 - Enhanced form validation support for all component types
+- Improved documentation consistency and completeness for all components
 
 ## [1.0.0] - 2025-01-31
 

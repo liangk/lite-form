@@ -2,14 +2,17 @@
 
 A modern, lightweight Angular form components library with TypeScript support, built-in validation, and responsive design.
 
+
 ## Features
 
 - 🎯 **Input Component** - Text input with floating labels
-- 📝 **Textarea Component** - Multi-line text input  
+- 📝 **Textarea Component** - Multi-line text input
 - 📋 **Select Component** - Single-selection dropdown with filtering
 - ☑️ **Multi-Select Component** - Multi-selection with inline display
-- � **Radio Component** - Radio button groups for single selection
+- 🔘 **Radio Component** - Radio button groups for single selection
 - ✅ **Checkbox Component** - Boolean input with validation support
+- 📎 **File Upload Component** - Drag & drop, camera capture, file management
+- � **DateTime Picker Component** - Combined date & time selection
 - �🔧 **TypeScript Support** - Fully typed with generics
 - ✅ **Form Validation** - Integrated Angular Reactive Forms validation
 - 🎨 **Customizable Styling** - SCSS-based theming system
@@ -26,18 +29,21 @@ npm install lite-form
 ```typescript
 import { LiteFormModule } from 'lite-form';
 import { FormControl, Validators } from '@angular/forms';
-import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto } from 'lite-form';
+
+import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, FileFieldDto } from 'lite-form';
 
 @Component({
   standalone: true,
   imports: [LiteFormModule],
   template: `
-    <lite-input [control]="nameField"></lite-input>
-    <lite-textarea [control]="descriptionField"></lite-textarea>
-    <lite-checkbox [control]="agreeField"></lite-checkbox>
-    <lite-select [control]="statusField"></lite-select>
-    <lite-multi-select [control]="skillsField"></lite-multi-select>
-    <lite-radio [control]="priorityField"></lite-radio>
+  <lite-input [control]="nameField"></lite-input>
+  <lite-textarea [control]="descriptionField"></lite-textarea>
+  <lite-checkbox [control]="agreeField"></lite-checkbox>
+  <lite-select [control]="statusField"></lite-select>
+  <lite-multi-select [control]="skillsField"></lite-multi-select>
+  <lite-radio [control]="priorityField"></lite-radio>
+  <lite-file [control]="fileField"></lite-file>
+  <lite-datetime [control]="datetimeField"></lite-datetime>
   `
 })
 export class MyFormComponent {
@@ -65,7 +71,70 @@ export class MyFormComponent {
     ['JavaScript', 'TypeScript', 'Angular'],
     (option) => option
   );
+  fileField = new FileFieldDto('Attachments', new FormControl([]), {
+    multiple: true,
+    accept: 'image/*,application/pdf',
+    maxFileSize: 5 * 1024 * 1024,
+    maxFiles: 5,
+    showPreview: true
+  });
+  datetimeField = new FieldDto('Event Date & Time', new FormControl(''));
+### LiteDateTime
+Date & time picker component for selecting both date and time, with custom formatting and time granularity.
+
+**Features:**
+- Combined date and time selection in a single popup
+- Customizable date/time format (e.g., 'yyyy-MM-dd HH:mm')
+- Keyboard and mouse navigation
+- Time selection with hour and minute granularity
+- Validation and error display
+- Responsive and accessible
+
+**Example:**
+```typescript
+import { FieldDto } from 'lite-form';
+datetimeField = new FieldDto('Event Date & Time', new FormControl(''));
+```
+```html
+<lite-datetime [control]="datetimeField" format="yyyy-MM-dd HH:mm"></lite-datetime>
+```
 }
+### LiteFile
+File upload component with drag & drop, badge, file management panel, and camera capture support.
+
+**Features:**
+- File upload via button, drag & drop, or camera capture (on supported devices)
+- Badge shows file count
+- File management panel with upload area and action buttons
+- Camera capture on devices with a camera
+- Validation: max files, max file size, file type restrictions
+- Image preview for image files
+- Progress tracking for uploads
+- Accessibility: keyboard and screen reader friendly
+
+**Example:**
+```typescript
+import { FileFieldDto } from 'lite-form';
+fileField = new FileFieldDto('Upload Files', new FormControl([]));
+```
+```html
+<lite-file [control]="fileField"></lite-file>
+```
+
+### FileFieldDto
+File field configuration for the LiteFile component.
+
+```typescript
+class FileFieldDto {
+  label: string;
+  formControl: FormControl;
+  multiple?: boolean; // Allow multiple file selection (default: true)
+  accept?: string; // Accepted file types (default: '*/*')
+  maxFileSize?: number; // Maximum file size in bytes (default: 10MB)
+  maxFiles?: number; // Maximum number of files allowed (default: 10)
+  showPreview?: boolean; // Show image previews (default: true)
+}
+```
 ```
 
 ## Components
