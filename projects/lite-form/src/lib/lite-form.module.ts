@@ -10,14 +10,15 @@ import { LiteCheckbox } from './lite-checkbox/lite-checkbox';
 import { LiteDate } from './lite-date/lite-date';
 import { LitePassword } from './lite-password/lite-password';
 import { LiteFile } from './lite-file/lite-file';
+import { LiteDateTime } from '../public-api';
 
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    LiteInput, LiteTextarea, LiteSelect, LiteMultiSelect, LiteRadio, LiteCheckbox, LiteDate, LitePassword, LiteFile
+    LiteInput, LiteTextarea, LiteSelect, LiteMultiSelect, LiteRadio, LiteCheckbox, LiteDate, LitePassword, LiteFile, LiteDateTime
   ],
   exports: [
-    LiteInput, LiteTextarea, LiteSelect, LiteMultiSelect, LiteRadio, LiteCheckbox, LiteDate, LitePassword, LiteFile
+    LiteInput, LiteTextarea, LiteSelect, LiteMultiSelect, LiteRadio, LiteCheckbox, LiteDate, LitePassword, LiteFile, LiteDateTime
   ]
 })
 export class LiteFormModule { }

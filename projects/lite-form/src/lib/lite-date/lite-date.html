@@ -61,6 +61,7 @@
                 <div class="calendar-day" [ngClass]="{ 
                   'today': day.isToday, 
                   'selected': day.isSelected,
+                  'dim': day.isOtherMonth,
                   'range-start': day.isRangeStart,
                   'range-end': day.isRangeEnd,
                   'in-range': day.isInRange
@@ -94,6 +95,7 @@
                 <div class="calendar-day" [ngClass]="{ 
                   'today': day.isToday, 
                   'selected': day.isSelected,
+                  'dim': day.isOtherMonth,
                   'range-start': day.isRangeStart,
                   'range-end': day.isRangeEnd,
                   'in-range': day.isInRange
@@ -127,6 +129,7 @@
             <div class="calendar-day" [ngClass]="{ 
               'today': day.isToday, 
               'selected': day.isSelected,
+              'dim': day.isOtherMonth,
               'range-start': day.isRangeStart,
               'range-end': day.isRangeEnd,
               'in-range': day.isInRange

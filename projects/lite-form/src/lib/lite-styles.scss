@@ -4,6 +4,7 @@ input, .label, textarea {
 .lite-input {
   display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
   .label { font-size: 0.8em; font-weight: 500; }
+  .value { min-height: 1em; line-height: 1em; }
 }
 .lite-input.in-edit {
   .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
@@ -24,6 +25,7 @@ input, .label, textarea {
 .lite-password {
   display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
   .label { font-size: 0.8em; font-weight: 500; }
+  .value { min-height: 1em; line-height: 1em; }
 }
 .lite-password.in-edit {
   .input-container {
@@ -80,6 +82,7 @@ input, .label, textarea {
 .lite-textarea {
   display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
   .label { font-size: 0.8em; font-weight: 500; }
+  .value { min-height: 1em; line-height: 1em; }
 }
 .lite-textarea.in-edit {
   .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
@@ -100,6 +103,7 @@ input, .label, textarea {
 .lite-select {
   display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
   .label { font-size: 0.8em; font-weight: 500; }
+  .value { min-height: 1em; line-height: 1em; }
 }
 .lite-select.in-edit {
   .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
@@ -134,7 +138,7 @@ input, .label, textarea {
 .lite-multi-select {
   display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
   .label { font-size: 0.8em; font-weight: 500; }
-  .value { display: flex; gap: 5px; flex-wrap: wrap;
+  .value { display: flex; gap: 5px; flex-wrap: wrap; min-height: 1em; line-height: 1em;
     .item {
       border: 1px solid #999; padding:2px 5px; padding-left: 5px; border-radius: 3px; font-size: 0.8em;
       line-height: 16px;
@@ -298,6 +302,23 @@ input, .label, textarea {
 .calendar-panel {
   background: white; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 16px; width: 280px; font-family: inherit;
+  &.datetime { display: flex; width: 100%; padding: 0;
+    .control-header { width: 100%; height: 50px; display: flex; justify-content: flex-end;
+      .close-button { color: #999; cursor: pointer; border: none; background: none; width: 30px; height: 30px; padding: 0; }
+    }
+    .time-header { font-size: 11px; font-weight: 600; color: #333; border-bottom: 1px solid #ccc; letter-spacing: 0.5px;
+    line-height: 20px;}
+    .date-panel { width: 280px; padding: 20px 10px 20px 20px; }
+    .time-panel { width: 200px; padding: 20px 20px 20px 10px;
+      .hh-grid { display: flex; align-items: center; flex-wrap: wrap; margin: 10px 0; gap: 2px; }
+      .hh-slot {
+        display: flex; width: 30px; justify-content: center; line-height: 24px; border-radius: 4px; cursor: pointer;
+        font-size: 0.8em; flex: 0 0 calc(16.666% - 2px); border: 1px solid #ddd; box-sizing: border-box;
+        &:hover { background-color: #f5f5f5; }
+        &.selected { background-color: #2079e1; color: white; }
+      }
+    }
+  }
   &.range-mode { width: 580px; }
   .dual-calendar {
     display: flex; gap: 20px;
@@ -325,9 +346,9 @@ input, .label, textarea {
         transition: background-color 0.2s, color 0.2s; position: relative;
         &:hover { background-color: #f0f8ff; }
         &.today { 
-          background-color: #ff9800; color: white; font-weight: 700; 
-          border: 2px solid #e65100; box-shadow: 0 2px 4px rgba(255, 152, 0, 0.4);
+          background-color: #f8f8f8; font-weight: 600; border: 1px solid #ccc; border-radius: 50%;
         }
+        &.dim { opacity: 0.5; font-size: 0.9em; }
         &.selected { background-color: #2079e1; color: white; font-weight: 600; }
         &.selected:hover { background-color: #1976d2; }
         
@@ -373,7 +394,7 @@ input, .label, textarea {
     img {width: 24px; height: 24px; stroke: currentColor; }
     .file-badge {
       position: absolute; top: -8px; right: -8px; background: #2079e1; color: white; border-radius: 50%;
-      min-width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+      min-width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75em;
       font-weight: 600;
     }
   }
@@ -394,7 +415,7 @@ input, .label, textarea {
     }
     .file-badge {
       position: absolute; top: -8px; right: -8px; background: #2079e1; color: white; border-radius: 50%;
-      min-width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+      min-width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75em;
       font-weight: 600;
     }
   }
@@ -408,7 +429,7 @@ input, .label, textarea {
 .file-panel { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.95); min-width: 400px; max-width: 90vw; max-height: 90vh; background: #fff; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,.15); z-index: 1000; opacity: 0; visibility: hidden; transition: all .2s; display: none; flex-direction: column; pointer-events: none; overflow: hidden;
   &.visible { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); display: flex; pointer-events: auto; }
   .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #dee2e6; background: #f8f9fa;
-    h3 { margin: 0; font-size: 1.1rem; font-weight: 600; color: #333; }
+    h3 { margin: 0; font-size: 1.1em; font-weight: 600; color: #333; }
     .close-button { background: none; border: none; cursor: pointer; padding: 4px; border-radius: 4px; color: #6c757d; transition: all .2s;
       &:hover { color: #dc3545; background: #f8d7da; }
       svg { width: 16px; height: 16px; }
@@ -420,15 +441,15 @@ input, .label, textarea {
       &.uploading { border-color: #ffc107; background: #fff8e1; }
       .upload-content { pointer-events: none;
         .upload-icon { width: 48px; height: 48px; margin: 0 auto 16px; stroke: #6c757d; }
-        p { margin: 0 0 8px; font-size: 1.1rem; color: #333; font-weight: 500; }
-        small { color: #6c757d; font-size: .9rem; }
+        p { margin: 0 0 8px; font-size: 1.1em; color: #333; font-weight: 500; }
+        small { color: #6c757d; font-size: .9em; }
       }
     }
     .action-buttons {
       display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
       .action-btn {
         display: flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid #dee2e6; border-radius: 6px;
-        background: white; cursor: pointer; transition: all 0.2s ease; font-size: 0.9rem; flex: 1; min-width: 120px;
+        background: white; cursor: pointer; transition: all 0.2s ease; font-size: 0.9em; flex: 1; min-width: 120px;
         justify-content: center;
         &:hover { background: #f8f9fa; border-color: #6c757d; }
         &.upload-btn:hover { background: #e7f3ff; border-color: #2079e1; color: #2079e1; }
@@ -442,10 +463,10 @@ input, .label, textarea {
         display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 8px;
         border-bottom: 1px solid #dee2e6;
         span { font-weight: 600; color: #333; }
-        .total-size { font-size: 0.9rem; color: #6c757d; font-weight: normal; }
+        .total-size { font-size: 0.9em; color: #6c757d; font-weight: normal; }
         .clear-all-btn {
           background: none; border: 1px solid #dc3545; color: #dc3545; padding: 4px 12px; border-radius: 4px;
-          cursor: pointer; font-size: 0.8rem; transition: all 0.2s ease;
+          cursor: pointer; font-size: 0.8em; transition: all 0.2s ease;
           &:hover { background: #dc3545; color: white; }
         }
       }
@@ -467,17 +488,17 @@ input, .label, textarea {
             flex: 1; min-width: 0;
             .file-name { font-weight: 500; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
             .file-details {
-              display: flex; gap: 12px; margin-top: 4px; font-size: 0.8rem; color: #6c757d;
+              display: flex; gap: 12px; margin-top: 4px; font-size: 0.8em; color: #6c757d;
               .file-size, .file-type { white-space: nowrap; }
             }
-            .file-error { color: #dc3545; font-size: 0.8rem; margin-top: 4px; font-weight: 500; }
+            .file-error { color: #dc3545; font-size: 0.8em; margin-top: 4px; font-weight: 500; }
             .upload-progress {
               display: flex; align-items: center; gap: 8px; margin-top: 8px;
               .progress-bar {
                 flex: 1; height: 6px; background: #e9ecef; border-radius: 3px; overflow: hidden;
                 .progress-fill { height: 100%; background: #2079e1; transition: width 0.3s ease; }
               }
-              .progress-text { font-size: 0.8rem; color: #6c757d; font-weight: 500; min-width: 32px; }
+              .progress-text { font-size: 0.8em; color: #6c757d; font-weight: 500; min-width: 32px; }
             }
           }
           .remove-file-btn {
@@ -493,8 +514,8 @@ input, .label, textarea {
     .empty-state {
       text-align: center; padding: 40px 20px; color: #6c757d;
       .empty-icon { width: 64px; height: 64px; margin: 0 auto 16px; stroke: #dee2e6; }
-      p { margin: 0 0 8px; font-size: 1.1rem; }
-      small { font-size: 0.9rem; }
+      p { margin: 0 0 8px; font-size: 1.1em; }
+      small { font-size: 0.9em; }
     }
   }
 }

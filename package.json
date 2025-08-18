@@ -1,9 +1,9 @@
 {
   "name": "lite-form",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 8100",
     "build": "ng build",
     "build:lib": "ng build lite-form --configuration production",
     "pack:lib": "cd dist/lite-form && npm pack",

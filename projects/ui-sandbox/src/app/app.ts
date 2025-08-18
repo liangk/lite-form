@@ -82,6 +82,10 @@ export class App {
     label: 'Event Date Range',
     formControl: new FormControl<string[]>(['', ''], { nonNullable: true }),
   };
+  datetimeDemo: FieldDto = {
+    label: 'Presentation Time',
+    formControl: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+  };
 
   // Advanced password with custom complexity validator
   advancedPasswordDemo: FieldDto = { 
@@ -160,15 +164,15 @@ export class App {
     });
 
     // File upload demos
-    this.fileDemo.formControl.valueChanges.subscribe(files => {
+    this.fileDemo.formControl.valueChanges.subscribe((files: any[]) => {
       console.log('Files changed:', files);
     });
 
-    this.imageFileDemo.formControl.valueChanges.subscribe(files => {
+    this.imageFileDemo.formControl.valueChanges.subscribe((files: any[]) => {
       console.log('Image files changed:', files);
     });
 
-    this.documentFileDemo.formControl.valueChanges.subscribe(files => {
+    this.documentFileDemo.formControl.valueChanges.subscribe((files: any[]) => {
       console.log('Document files changed:', files);
     });
   }

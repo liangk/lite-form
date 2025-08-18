@@ -19,7 +19,7 @@ export class LiteInput {
 
   constructor() {
     effect(() => {
-      console.log('LiteInput initialized with control:', this.control());
+      // console.log('LiteInput initialized with control:', this.control());
 
     });
   }

@@ -28,7 +28,7 @@ export class LitePassword {
 
   constructor() {
     effect(() => {
-      console.log('LitePassword initialized with control:', this.control());
+      // console.log('LitePassword initialized with control:', this.control());
     });
   }
 
