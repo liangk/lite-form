@@ -1,7 +1,7 @@
 # Lite Form - Angular Form Components Library
 
 ## Overview
-Lite Form is a comprehensive Angular library that provides lightweight, customizable form components with built-in validation, styling, and animations. It includes input, password, textarea, select, multi-select, radio, checkbox, file upload, and advanced date picker components designed for Angular 17+ with standalone component support.
+Lite Form is a comprehensive Angular library that provides lightweight, customizable form components with built-in validation, styling, and animations. It includes input, password, textarea, select, multi-select, radio, checkbox, file upload, advanced date picker, and datetime-picker components designed for Angular 17+ with standalone component support.
 
 ## Features
 - ✅ **Modern Angular 17+** - Built with standalone components and signals

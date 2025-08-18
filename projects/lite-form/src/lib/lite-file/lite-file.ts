@@ -61,7 +61,7 @@ export class LiteFile {
 
   constructor(private sanitizer: DomSanitizer) {
     effect(() => {
-      console.log('LiteFile initialized with control:', this.control());
+      // console.log('LiteFile initialized with control:', this.control());
       
       // Sync files with form control
       const controlValue = this.control().formControl.value || [];

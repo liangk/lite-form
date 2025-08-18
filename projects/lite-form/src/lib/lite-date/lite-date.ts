@@ -111,6 +111,17 @@ export class LiteDate {
     }
     
     // Only add days from the current month
+    const previousMonth = new Date(firstDay);
+    while (previousMonth.getDay() !== 0) {
+      previousMonth.setDate(previousMonth.getDate() - 1);
+      days.unshift({
+        date: new Date(previousMonth),
+        day: previousMonth.getDate(),
+        isOtherMonth: true,
+        isToday: this.isSameDay(previousMonth, today),
+        isSelected: selectedDates.some(selectedDate => this.isSameDay(previousMonth, selectedDate)),
+      });
+    }
     const currentDate = new Date(firstDay);
     while (currentDate <= lastDay) {
       const isToday = this.isSameDay(currentDate, today);
@@ -131,10 +142,19 @@ export class LiteDate {
         isRangeEnd,
         isInRange
       });
-      
       currentDate.setDate(currentDate.getDate() + 1);
     }
-    
+    const nextMonthDate = new Date(lastDay);
+    while (nextMonthDate.getDay() < 6) {
+      nextMonthDate.setDate(nextMonthDate.getDate() + 1);
+      days.push({
+        date: new Date(nextMonthDate),
+        day: nextMonthDate.getDate(),
+        isOtherMonth: true,
+        isToday: this.isSameDay(nextMonthDate, today),
+        isSelected: selectedDates.some(selectedDate => this.isSameDay(nextMonthDate, selectedDate)),
+      });
+    }
     return days;
   }
   
@@ -143,7 +163,7 @@ export class LiteDate {
   constructor(private elementRef: ElementRef) {
     effect(() => {
       const control = this.control();
-      console.log('LiteDate initialized with control:', control);
+      // console.log('LiteDate initialized with control:', control);
       
       // Subscribe to form control value changes to trigger reactivity
       if (control && control.formControl) {

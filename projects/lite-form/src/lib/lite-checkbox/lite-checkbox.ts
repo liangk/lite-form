@@ -19,7 +19,7 @@ export class LiteCheckbox {
 
   constructor() {
     effect(() => {
-      console.log('LiteCheckbox initialized with control:', this.control());
+      // console.log('LiteCheckbox initialized with control:', this.control());
     });
   }
 

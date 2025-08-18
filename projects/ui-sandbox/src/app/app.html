@@ -1,49 +1,55 @@
 <div class="main_content">
   <h1>Lite Form {{ title() }}</h1>
   <p>Welcome to the Lite Form UI Sandbox. This is a playground for testing and demonstrating the Lite Form components.</p>
-  <h2>Input Demo</h2>
   <div class="row">
-    <lite-input [control]="inputDemo" [inEdit]="false"></lite-input>
-    <lite-input [control]="inputDemo"></lite-input>
+    <div class="col">
+      <h2>Input Demo</h2>
+      <lite-input [control]="inputDemo" [inEdit]="false"></lite-input>
+      <lite-input [control]="inputDemo"></lite-input>
+    </div>
+    <div class="col">
+      <h2>Password Demo</h2>
+      <lite-password [control]="passwordDemo" [inEdit]="false"></lite-password>
+      <lite-password [control]="passwordDemo"></lite-password>
+    </div>
+    <div class="col">
+      <h2>Password with Toggle Disabled</h2>
+      <lite-password [control]="confirmPasswordDemo" [inEdit]="false"></lite-password>
+      <lite-password [control]="confirmPasswordDemo" [showToggle]="false"></lite-password>
+    </div>
   </div>
-  <h2>Password Demo</h2>
   <div class="row">
-    <lite-password [control]="passwordDemo" [inEdit]="false"></lite-password>
-    <lite-password [control]="passwordDemo"></lite-password>
-  </div>
-  <h2>Password with Toggle Disabled</h2>
-  <div class="row">
-    <lite-password [control]="confirmPasswordDemo" [inEdit]="false"></lite-password>
-    <lite-password [control]="confirmPasswordDemo" [showToggle]="false"></lite-password>
-  </div>
-  <h2>Advanced Password with Complex Validation</h2>
-  <div class="row">
-    <lite-password [control]="advancedPasswordDemo" [inEdit]="false"></lite-password>
-    <lite-password [control]="advancedPasswordDemo"></lite-password>
-  </div>
-  <h2>Password with Strength Indicator</h2>
-  <div class="row">
-    <lite-password [control]="strengthPasswordDemo" [inEdit]="false"></lite-password>
-    <lite-password [control]="strengthPasswordDemo" [showStrengthIndicator]="true"></lite-password>
+    <div class="col">
+      <h2>Advanced Password with Complex Validation</h2>
+      <lite-password [control]="advancedPasswordDemo" [inEdit]="false"></lite-password>
+      <lite-password [control]="advancedPasswordDemo"></lite-password>
+    </div>
+    <div class="col">
+      <h2>Password with Strength Indicator</h2>
+      <lite-password [control]="advancedPasswordDemo" [inEdit]="false"></lite-password>
+      <lite-password [control]="advancedPasswordDemo" [showStrengthIndicator]="true"></lite-password>
+    </div>
   </div>
   <div class="demo-buttons">
     <button (click)="testPasswordStrengths()">Test Password Strengths (Check Console)</button>
     <button (click)="analyzePassword('MyTest@Pass123')">Analyze Sample Password</button>
   </div>
+  <div class="row">
+    <div class="col">
   <h2>Textarea Demo</h2>
-  <div class="row">
-    <lite-textarea [control]="textareaDemo" [inEdit]="false"></lite-textarea>
-    <lite-textarea [control]="textareaDemo"></lite-textarea>
-  </div>
-  <h2>Select Demo</h2>
-  <div class="row">
-    <lite-select [control]="selectDemo" [inEdit]="false"></lite-select>
-    <lite-select [control]="selectDemo"></lite-select>
-  </div>
-  <h2>Multi-Select Demo</h2>
-  <div class="row">
-    <lite-multi-select [control]="multiSelectDemo" [inEdit]="false"></lite-multi-select>
-    <lite-multi-select [control]="multiSelectDemo"></lite-multi-select>
+      <lite-textarea [control]="textareaDemo" [inEdit]="false"></lite-textarea>
+      <lite-textarea [control]="textareaDemo"></lite-textarea>
+    </div>
+    <div class="col">
+        <h2>Select Demo</h2>
+        <lite-select [control]="selectDemo" [inEdit]="false"></lite-select>
+        <lite-select [control]="selectDemo"></lite-select>
+    </div>
+    <div class="col">
+      <h2>Multi-Select Demo</h2>
+      <lite-multi-select [control]="multiSelectDemo" [inEdit]="false"></lite-multi-select>
+      <lite-multi-select [control]="multiSelectDemo"></lite-multi-select>
+    </div>
   </div>
   <h2>Radio Demo</h2>
   <div class="row">
@@ -70,19 +76,26 @@
     <lite-date [control]="dateRangeDemo" [inEdit]="false" [range]="true"></lite-date>
     <lite-date [control]="dateRangeDemo" [range]="true"></lite-date>
   </div>
-  <h2>File Upload Demo</h2>
+  <h2>Datetime Demo</h2>
   <div class="row">
+    <lite-datetime [control]="datetimeDemo" [inEdit]="false"></lite-datetime>
+    <lite-datetime [control]="datetimeDemo"></lite-datetime>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h2>File Upload Demo</h2>
     <lite-file [control]="fileDemo" [inEdit]="false"></lite-file>
     <lite-file [control]="fileDemo"></lite-file>
-  </div>
-  <h2>Single Image Upload Demo</h2>
-  <div class="row">
-    <lite-file [control]="imageFileDemo" [inEdit]="false"></lite-file>
-    <lite-file [control]="imageFileDemo"></lite-file>
-  </div>
-  <h2>Document Upload Demo (Required)</h2>
-  <div class="row">
-    <lite-file [control]="documentFileDemo" [inEdit]="false"></lite-file>
-    <lite-file [control]="documentFileDemo"></lite-file>
+    </div>
+    <div class="col">
+      <h2>Single Image Upload Demo</h2>
+      <lite-file [control]="imageFileDemo" [inEdit]="false"></lite-file>
+      <lite-file [control]="imageFileDemo"></lite-file>
+    </div>
+    <div class="col">
+      <h2>Document Upload Demo (Required)</h2>
+      <lite-file [control]="documentFileDemo" [inEdit]="false"></lite-file>
+      <lite-file [control]="documentFileDemo"></lite-file>
+    </div>
   </div>
 </div>
