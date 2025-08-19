@@ -1,5 +1,5 @@
 {
-  "name": "lite-form",
+  "name": "ngx-lite-form",
   "version": "1.0.3",
   "scripts": {
     "ng": "ng",
@@ -22,7 +22,6 @@
       }
     ]
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^20.1.3",
     "@angular/common": "^20.1.0",
