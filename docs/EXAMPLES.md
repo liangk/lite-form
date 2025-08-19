@@ -9,7 +9,7 @@ This document provides comprehensive examples of using LiteForm components in va
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, FieldDto, SelectFieldDto, RadioFieldDto, FileFieldDto } from 'lite-form';
+import { LiteFormModule, FieldDto, SelectFieldDto, RadioFieldDto, FileFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-simple-form',
@@ -95,7 +95,7 @@ export class SimpleFormComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, MultiSelectFieldDto } from 'lite-form';
+import { LiteFormModule, MultiSelectFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-skills-form',
@@ -173,7 +173,7 @@ export class SkillsFormComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, RadioFieldDto } from 'lite-form';
+import { LiteFormModule, RadioFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-survey-form',
@@ -280,7 +280,7 @@ export class SurveyFormComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, FieldDto } from 'lite-form';
+import { LiteFormModule, FieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-terms-form',
@@ -472,7 +472,7 @@ export class DepartmentFormComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FileFieldDto } from 'lite-form';
+import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-basic-file',
@@ -505,7 +505,7 @@ export class BasicFileComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, FileFieldDto } from 'lite-form';
+import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-image-upload',
@@ -580,7 +580,7 @@ export class ImageUploadComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FileFieldDto } from 'lite-form';
+import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-document-upload',
@@ -691,7 +691,7 @@ export class DocumentUploadComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FileFieldDto } from 'lite-form';
+import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-camera-capture',
@@ -828,7 +828,7 @@ export class CameraCaptureComponent {
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { LiteFormModule, FileFieldDto } from 'lite-form';
+import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
 import { Observable } from 'rxjs';
 
 interface UploadProgress {
@@ -1115,7 +1115,7 @@ export class AdvancedFileUploadComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { LiteFormModule, FileFieldDto } from 'lite-form';
+import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-file-validation',

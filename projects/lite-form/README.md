@@ -21,16 +21,16 @@ A modern, lightweight Angular form components library with TypeScript support, b
 ## Installation
 
 ```bash
-npm install lite-form
+npm install ngx-lite-form
 ```
 
 ## Quick Usage
 
 ```typescript
-import { LiteFormModule } from 'lite-form';
+import { LiteFormModule } from 'ngx-lite-form';
 import { FormControl, Validators } from '@angular/forms';
 
-import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, FileFieldDto } from 'lite-form';
+import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, FileFieldDto } from 'ngx-lite-form';
 
 @Component({
   standalone: true,
@@ -92,7 +92,7 @@ Date & time picker component for selecting both date and time, with custom forma
 
 **Example:**
 ```typescript
-import { FieldDto } from 'lite-form';
+import { FieldDto } from 'ngx-lite-form';
 datetimeField = new FieldDto('Event Date & Time', new FormControl(''));
 ```
 ```html
@@ -114,7 +114,7 @@ File upload component with drag & drop, badge, file management panel, and camera
 
 **Example:**
 ```typescript
-import { FileFieldDto } from 'lite-form';
+import { FileFieldDto } from 'ngx-lite-form';
 fileField = new FileFieldDto('Upload Files', new FormControl([]));
 ```
 ```html
@@ -220,7 +220,7 @@ The library includes comprehensive SCSS styling. To customize:
 
 ### Building the Library
 ```bash
-ng build lite-form
+ng build ngx-lite-form
 ```
 
 ### Publishing
@@ -231,7 +231,7 @@ npm publish
 
 ### Running Tests
 ```bash
-ng test lite-form
+ng test ngx-lite-form
 ```
 
 ## Browser Support

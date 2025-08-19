@@ -49,7 +49,7 @@ File upload component with drag & drop, badge, file management panel, and camera
 ## Installation
 
 ```bash
-npm install lite-form
+npm install ngx-lite-form
 ```
 
 ## Quick Start
@@ -57,7 +57,7 @@ npm install lite-form
 ### 1. Import the Module
 
 ```typescript
-import { LiteFormModule } from 'lite-form';
+import { LiteFormModule } from 'ngx-lite-form';
 
 @Component({
   standalone: true,
@@ -73,7 +73,7 @@ export class YourComponent {
 
 ```typescript
 import { FormControl } from '@angular/forms';
-import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto, FileFieldDto } from 'lite-form';
+import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto, FileFieldDto } from 'ngx-lite-form';
 
 export class YourComponent {
   // Basic input
@@ -219,7 +219,7 @@ strongPasswordField = new FieldDto('Strong Password', new FormControl('', [
 
 **Password Strength Analysis:**
 ```typescript
-import { FormUtils } from 'lite-form';
+import { FormUtils } from 'ngx-lite-form';
 
 // Analyze password strength programmatically
 const analysis = FormUtils.analyzePasswordStrength('MyStr0ng@Pass');
@@ -336,7 +336,7 @@ birthdateField: FieldDto = {
 **Date Range Example:**
 ```typescript
 // Component
-import { DateRangeFieldDto } from 'lite-form';
+import { DateRangeFieldDto } from 'ngx-lite-form';
 
 eventDateField: DateRangeFieldDto = {
   label: 'Event Date Range',
@@ -375,7 +375,7 @@ eventDateField: DateRangeFieldDto = {
 **Example:**
 ```typescript
 // Component
-import { FileFieldDto } from 'lite-form';
+import { FileFieldDto } from 'ngx-lite-form';
 
 // Basic file upload
 fileField = new FileFieldDto('Upload Files', new FormControl([]));
@@ -519,7 +519,7 @@ The library includes pre-built SCSS styles that provide:
 Override the default styles by importing and customizing the SCSS:
 
 ```scss
-@import 'lite-form/src/lib/lite-styles.scss';
+@import 'ngx-lite-form/src/lib/lite-styles.scss';
 
 // Override variables
 .lite-input.in-edit {
@@ -565,10 +565,10 @@ projects/ui-sandbox/          # Demo application
 
 ```bash
 # Build the library
-ng build lite-form
+ng build ngx-lite-form
 
 # Build with watch mode
-ng build lite-form --watch
+ng build ngx-lite-form --watch
 
 # Run the demo application
 ng serve ui-sandbox
@@ -578,7 +578,7 @@ ng serve ui-sandbox
 
 ```bash
 # Unit tests
-ng test lite-form
+ng test ngx-lite-form
 
 # E2E tests  
 ng e2e ui-sandbox
