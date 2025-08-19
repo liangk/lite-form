@@ -62,20 +62,6 @@ jobs:
         # Auto-increment patch version for main branch releases
         npm version patch --no-git-tag-version
 
-    - name: Ensure package name is ngx-lite-form
-      run: |
-        cd dist/lite-form
-        node -e "
-          const pkg = require('./package.json');
-          pkg.name = 'ngx-lite-form';
-          require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
-        "
-
-    - name: Set .npmrc for npmjs
-      run: |
-        cd dist/lite-form
-        echo "registry=https://registry.npmjs.org/" > .npmrc
-
     - name: Publish to npmjs (public)
       run: |
         cd dist/lite-form
