@@ -62,13 +62,6 @@ jobs:
         # Auto-increment patch version for main branch releases
         npm version patch --no-git-tag-version
 
-    - name: Publish to GitHub Packages
-      run: |
-        cd dist/lite-form
-        npm publish --registry=https://npm.pkg.github.com
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     - name: Ensure package name is ngx-lite-form
       run: |
         cd dist/lite-form
