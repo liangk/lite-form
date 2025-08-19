@@ -65,10 +65,10 @@ jobs:
     - name: Update package name with scope
       run: |
         cd dist/lite-form
-        # Update package name to include GitHub scope
+        # Ensure package name is unscoped
         node -e "
           const pkg = require('./package.json');
-          pkg.name = '@liangk/lite-form';
+          pkg.name = 'ngx-lite-form';
           require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
         "
 
@@ -87,7 +87,7 @@ jobs:
     - name: Publish to npmjs (public)
       run: |
         cd dist/lite-form
-  npm publish --access public --registry=https://registry.npmjs.org/ --loglevel verbose
+        npm publish --access public --registry=https://registry.npmjs.org/ --loglevel verbose
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         
