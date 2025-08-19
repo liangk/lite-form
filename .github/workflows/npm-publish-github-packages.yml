@@ -62,6 +62,14 @@ jobs:
         # Auto-increment patch version for main branch releases
         npm version patch --no-git-tag-version
 
+    - name: Set package name for GitHub Packages (@liangk/lite-form)
+      run: |
+        cd dist/lite-form
+        node -e "
+          const pkg = require('./package.json');
+          pkg.name = '@liangk/lite-form';
+          require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
+        "
     - name: Publish to GitHub Packages
       run: |
         cd dist/lite-form
