@@ -72,15 +72,6 @@ jobs:
           require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
         "
 
-    - name: Create .npmrc for GitHub Packages
-      run: |
-        cd dist/lite-form
-        echo "@liangk:registry=https://npm.pkg.github.com" > .npmrc
-        echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-
     - name: Publish to GitHub Packages
       run: |
         cd dist/lite-form
