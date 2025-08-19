@@ -62,15 +62,16 @@ jobs:
         # Auto-increment patch version for main branch releases
         npm version patch --no-git-tag-version
         
-    - name: Update package name with scope
+
+    - name: Set package name for GitHub Packages (@liangk/lite-form)
       run: |
         cd dist/lite-form
-        # Update package name to include GitHub scope
         node -e "
           const pkg = require('./package.json');
           pkg.name = '@liangk/lite-form';
           require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
         "
+
 
     - name: Publish to GitHub Packages
       run: |
@@ -78,6 +79,15 @@ jobs:
         npm publish --registry=https://npm.pkg.github.com
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set package name for npmjs (ngx-lite-form)
+      run: |
+        cd dist/lite-form
+        node -e "
+          const pkg = require('./package.json');
+          pkg.name = 'ngx-lite-form';
+          require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
+        "
 
     - name: Set .npmrc for npmjs
       run: |
@@ -87,7 +97,7 @@ jobs:
     - name: Publish to npmjs (public)
       run: |
         cd dist/lite-form
-  npm publish --access public --registry=https://registry.npmjs.org/ --loglevel verbose
+        npm publish --access public --registry=https://registry.npmjs.org/ --loglevel verbose
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         
