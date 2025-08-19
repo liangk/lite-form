@@ -79,10 +79,15 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Set .npmrc for npmjs
+      run: |
+        cd dist/lite-form
+        echo "registry=https://registry.npmjs.org/" > .npmrc
+
     - name: Publish to npmjs (public)
       run: |
         cd dist/lite-form
-        npm publish --access public --registry=https://registry.npmjs.org/ --loglevel verbose
+  npm publish --access public --registry=https://registry.npmjs.org/ --loglevel verbose
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         
