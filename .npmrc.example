@@ -1,2 +1,2 @@
-# GitHub Packages configuration for @liangk scope
-@liangk:registry=https://npm.pkg.github.com
+# Example .npmrc for publishing to npmjs.org (unscoped package)
+registry=https://registry.npmjs.org/

@@ -66,9 +66,10 @@ jobs:
     - name: Set package name for GitHub Packages (@liangk/lite-form)
       run: |
         cd dist/lite-form
+        # Ensure package name is unscoped
         node -e "
           const pkg = require('./package.json');
-          pkg.name = '@liangk/lite-form';
+          pkg.name = 'ngx-lite-form';
           require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
         "
 
