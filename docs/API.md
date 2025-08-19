@@ -44,7 +44,7 @@
 
 #### Usage
 ```typescript
-import { FileFieldDto } from 'lite-form';
+import { FileFieldDto } from 'ngx-lite-form';
 import { FormControl } from '@angular/forms';
 
 fileField = new FileFieldDto('Attachments', new FormControl([]), {
@@ -102,7 +102,7 @@ fileField = new FileFieldDto('Attachments', new FormControl([]), {
 
 #### Usage
 ```typescript
-import { FieldDto } from 'lite-form';
+import { FieldDto } from 'ngx-lite-form';
 import { FormControl, Validators } from '@angular/forms';
 
 // Basic usage
@@ -166,7 +166,7 @@ strongPasswordField = new FieldDto('Strong Password', new FormControl('', [
 ]));
 
 // Password strength analysis
-import { FormUtils } from 'lite-form';
+import { FormUtils } from 'ngx-lite-form';
 const analysis = FormUtils.analyzePasswordStrength('MyStr0ng@Pass');
 // Returns: { score: 6, level: 'Good', feedback: ['Consider using 12+ characters'] }
 ```
@@ -482,7 +482,7 @@ appointmentField: FieldDto = {
 
 #### Date Range Usage
 ```typescript
-import { DateRangeFieldDto } from 'lite-form';
+import { DateRangeFieldDto } from 'ngx-lite-form';
 
 // Date range field
 eventDateField: DateRangeFieldDto = {
@@ -542,7 +542,7 @@ vacationField: DateRangeFieldDto = {
 
 #### Example
 ```typescript
-import { FieldDto } from 'lite-form';
+import { FieldDto } from 'ngx-lite-form';
 datetimeField = new FieldDto('Event Date & Time', new FormControl(''));
 ```
 ```html
@@ -825,7 +825,7 @@ Get array of human-readable error messages for a FormControl.
 
 #### Example
 ```typescript
-import { FormUtils } from 'lite-form';
+import { FormUtils } from 'ngx-lite-form';
 
 // Check if field is required
 if (FormUtils.isRequired(this.nameField.formControl)) {
