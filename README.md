@@ -410,6 +410,36 @@ imageField = new FileFieldDto(
 
 ---
 
+## Snackbar Service
+
+The library provides a simple snackbar notification service for showing messages at the top of the page. No component or template is needed.
+
+### Usage
+
+Inject the service and call `show()` with your message and type:
+
+```typescript
+import { LiteSnackbarService } from 'ngx-lite-form';
+
+constructor(private snackbar: LiteSnackbarService) {}
+
+// Show a success message
+this.snackbar.show('Operation completed!', 'done');
+
+// Show a warning
+this.snackbar.show('Please check your input.', 'warn');
+
+// Show an error (with custom duration)
+this.snackbar.show('Something went wrong.', 'error', 5000);
+```
+
+- Types: `'done' | 'warn' | 'error'`
+- Duration: Optional, in milliseconds (default: 3000)
+
+The snackbar will appear at the top of the page and auto-dismiss.
+
+---
+
 ## Data Transfer Objects (DTOs)
 
 ### FieldDto

@@ -99,3 +99,5 @@ export class FileFieldDto {
     this.showPreview = showPreview;
   }
 }
+
+export type SnackbarType = 'done' | 'warn' | 'error';
