@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { FieldDto, LiteFormModule, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto, FileFieldDto, FormUtils } from 'lite-form';
+import { FieldDto, LiteFormModule, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto, FileFieldDto, FormUtils, SnackbarType, LiteSnackbarService } from 'lite-form';
 
 @Component({
   selector: 'app-root',
@@ -137,22 +137,22 @@ export class App {
     false // no preview for docs
   );
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, public snackbar: LiteSnackbarService) {
     this.getPotterBooks();
     this.getPotterCharacters();
     this.dateDemo.formControl.setValue('2025-10-01');
-    this.dateDemo.formControl.valueChanges.subscribe(value => {
+    this.dateDemo.formControl.valueChanges.subscribe((value: any) => {
       console.log('Date changed:', value);
     });
     
     // Set initial range values
     // this.dateRangeDemo.formControl.setValue(['2025-07-01', '2025-07-15']);
-    this.dateRangeDemo.formControl.valueChanges.subscribe(value => {
+    this.dateRangeDemo.formControl.valueChanges.subscribe((value: any) => {
       console.log('Date range changed:', value);
     });
 
     // Demonstrate password strength analysis
-    this.strengthPasswordDemo.formControl.valueChanges.subscribe(password => {
+    this.strengthPasswordDemo.formControl.valueChanges.subscribe((password: any) => {
       if (password) {
         const analysis = FormUtils.analyzePasswordStrength(password);
         console.log('Password Analysis:', analysis);
@@ -245,7 +245,10 @@ export class App {
       return null;
     };
   }
-
+    // --- Snackbar Demo Methods ---
+  showSnackbar(message: string, type: SnackbarType, time: number = 3000) {
+    this.snackbar.show(message, type, time);
+  }
   getPotterBooks() {
     this.http.get<any[]>(`${this.potterApi}/books`).subscribe(books => {
       console.log(books);

@@ -33,17 +33,20 @@
   <div class="demo-buttons">
     <button (click)="testPasswordStrengths()">Test Password Strengths (Check Console)</button>
     <button (click)="analyzePassword('MyTest@Pass123')">Analyze Sample Password</button>
+    <button (click)="showSnackbar('Lorem ipsum dolor sit amet', 'done')">Test snackbar - Done</button>
+    <button (click)="showSnackbar('Lorem ipsum dolor sit amet', 'warn')">Test snackbar - Warn</button>
+    <button (click)="showSnackbar('Lorem ipsum dolor sit amet', 'error', 5000)">Test snackbar - Error</button>
   </div>
   <div class="row">
     <div class="col">
-  <h2>Textarea Demo</h2>
+      <h2>Textarea Demo</h2>
       <lite-textarea [control]="textareaDemo" [inEdit]="false"></lite-textarea>
       <lite-textarea [control]="textareaDemo"></lite-textarea>
     </div>
     <div class="col">
-        <h2>Select Demo</h2>
-        <lite-select [control]="selectDemo" [inEdit]="false"></lite-select>
-        <lite-select [control]="selectDemo"></lite-select>
+      <h2>Select Demo</h2>
+      <lite-select [control]="selectDemo" [inEdit]="false"></lite-select>
+      <lite-select [control]="selectDemo"></lite-select>
     </div>
     <div class="col">
       <h2>Multi-Select Demo</h2>
