@@ -30,7 +30,7 @@ export class LiteSelect {
   
   readonly FormUtils = FormUtils;
   
-  constructor(private elementRef: ElementRef) {
+  constructor(private _elementRef: ElementRef) {
     effect(() => {
       // Sync inputText with FormControl value when it changes
       const value = this.control().formControl.value;
@@ -46,7 +46,7 @@ export class LiteSelect {
   onDocumentClick(event: MouseEvent): void {
     if (this.showOptions === 'expand') {
       const target = event.target as HTMLElement;
-      if (!this.elementRef.nativeElement.contains(target)) {
+      if (!this._elementRef.nativeElement.contains(target)) {
         this.showOptions = 'collapse';
       }
     }

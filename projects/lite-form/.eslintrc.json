@@ -17,7 +17,7 @@
     "@angular-eslint/eslint-plugin-template"
   ],
   "rules": {
-    "no-unused-vars": "warn",
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
     "no-useless-escape": "warn"
   },
   "overrides": [
@@ -36,7 +36,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "lib",
+            "prefix": "lite",
             "style": "kebab-case"
           }
         ]

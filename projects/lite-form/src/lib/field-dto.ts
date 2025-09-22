@@ -1,4 +1,4 @@
-import { Form, FormControl } from "@angular/forms";
+import { FormControl } from "@angular/forms";
 
 export class FieldDto {
   label: string;
@@ -17,12 +17,12 @@ export class FieldDto {
 export abstract class BaseSelectFieldDto<T = any> {
   label: string;
   options: T[];
-  displayWith: (option: T) => string;
+  displayWith: (_option: T) => string;
   
   constructor(
     label: string,
     options: T[],
-    displayWith: (option: T) => string
+    displayWith: (_option: T) => string
   ) {
     this.label = label;
     this.options = options;
@@ -37,7 +37,7 @@ export class SelectFieldDto<T = any> extends BaseSelectFieldDto<T> {
     label: string,
     formControl: FormControl<T>,
     options: T[],
-    displayWith: (option: T) => string
+    displayWith: (_option: T) => string
   ) {
     super(label, options, displayWith);
     this.formControl = formControl;
@@ -51,7 +51,7 @@ export class MultiSelectFieldDto<T = any> extends BaseSelectFieldDto<T> {
     label: string,
     formControl: FormControl<T[]>,
     options: T[],
-    displayWith: (option: T) => string
+    displayWith: (_option: T) => string
   ) {
     super(label, options, displayWith);
     this.formControl = formControl;
@@ -65,7 +65,7 @@ export class RadioFieldDto<T = any> extends BaseSelectFieldDto<T> {
     label: string,
     formControl: FormControl<T>,
     options: T[],
-    displayWith: (option: T) => string
+    displayWith: (_option: T) => string
   ) {
     super(label, options, displayWith);
     this.formControl = formControl;

@@ -169,7 +169,7 @@ export class App {
     false // no preview for docs
   );
 
-  constructor(private http: HttpClient, public snackbar: LiteSnackbarService) {
+  constructor(private _http: HttpClient, public _snackbar: LiteSnackbarService) {
     this.getPotterBooks();
     this.getPotterCharacters();
     this.dateDemo.formControl.setValue('2025-10-01');
@@ -186,11 +186,11 @@ export class App {
     // Demonstrate password strength analysis
     this.strengthPasswordDemo.formControl.valueChanges.subscribe((password: any) => {
       if (password) {
-        const analysis = FormUtils.analyzePasswordStrength(password);
-        console.log('Password Analysis:', analysis);
-        console.log(`Strength: ${analysis.level} (${analysis.score}/8)`);
-        if (analysis.feedback.length > 0) {
-          console.log('Suggestions:', analysis.feedback);
+        const _analysis = FormUtils.analyzePasswordStrength(password);
+        console.log('Password Analysis:', _analysis);
+        console.log(`Strength: ${_analysis.level} (${_analysis.score}/8)`);
+        if (_analysis.feedback.length > 0) {
+          console.log('Suggestions:', _analysis.feedback);
         }
       }
     });
@@ -240,7 +240,7 @@ export class App {
 
     console.log('=== Password Strength Test Results ===');
     testPasswords.forEach(pwd => {
-      const analysis = this.analyzePassword(pwd);
+      const _analysis = this.analyzePassword(pwd);
       console.log('---');
     });
   }
@@ -255,7 +255,7 @@ export class App {
       const hasUpperCase = /[A-Z]/.test(value);
       const hasLowerCase = /[a-z]/.test(value);
       const hasNumeric = /[0-9]/.test(value);
-      const hasSpecial = /[@$!%*?&^()_+\-=\[\]{};':"\\|,.<>\/?#~`]/.test(value);
+      const hasSpecial = /[@$!%*?&^()_+\-=[]{}|;':"\\|,.<>?`#~]/.test(value);
       const minLength = value.length >= 12;
       const noRepeatingChars = !/(.)\1{2,}/.test(value);
       
@@ -277,19 +277,18 @@ export class App {
       return null;
     };
   }
-    // --- Snackbar Demo Methods ---
   showSnackbar(message: string, type: SnackbarType, time: number = 3000) {
-    this.snackbar.show(message, type, time);
+    this._snackbar.show(message, type, time);
   }
   getPotterBooks() {
-    this.http.get<any[]>(`${this.potterApi}/books`).subscribe(books => {
+    this._http.get<any[]>(`${this.potterApi}/books`).subscribe((books: any[]) => {
       console.log(books);
       this.selectDemo.options = books;
       this.selectDemo.displayWith = (option: any) => option?.title;
     });
   }
   getPotterCharacters() {
-    this.http.get<any[]>(`${this.potterApi}/characters`).subscribe(characters => {
+    this._http.get<any[]>(`${this.potterApi}/characters`).subscribe((characters: any[]) => {
       console.log(characters);
       this.multiSelectDemo.options = characters;
       this.multiSelectDemo.displayWith = (option: any) => option?.fullName;
