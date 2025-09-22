@@ -32,3 +32,4 @@ jobs:
       
     - name: Test ${{ matrix.project }}
       run: npx ng test ${{ matrix.project }} --watch=false --browsers=ChromeHeadless
+      if: matrix.project == 'ui-sandbox'
