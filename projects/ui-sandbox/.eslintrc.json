@@ -16,6 +16,10 @@
     "@angular-eslint/eslint-plugin",
     "@angular-eslint/eslint-plugin-template"
   ],
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-useless-escape": "warn"
+  },
   "overrides": [
     {
       "files": ["*.ts"],
@@ -36,6 +40,12 @@
             "style": "kebab-case"
           }
         ]
+      }
+    },
+    {
+      "files": ["*.spec.ts"],
+      "env": {
+        "jasmine": true
       }
     },
     {
