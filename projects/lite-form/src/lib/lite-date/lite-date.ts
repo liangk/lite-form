@@ -20,9 +20,10 @@ export interface DateRangeFieldDto extends Omit<FieldDto, 'formControl'> {
 }
 
 @Component({
-  selector: 'lite-date',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-date',
+  
   templateUrl: `./lite-date.html`,
   styleUrls: [`../lite-styles.scss`]
 })

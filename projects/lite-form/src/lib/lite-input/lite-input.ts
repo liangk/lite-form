@@ -5,9 +5,9 @@ import { CommonModule } from '@angular/common';
 import { FormUtils } from '../form-utils';
 
 @Component({
-  selector: 'lite-input',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-input',
   templateUrl: `./lite-input.html`,
   styleUrls: [`../lite-styles.scss`]
 })

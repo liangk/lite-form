@@ -13,9 +13,10 @@ interface CalendarDateTime {
 }
 
 @Component({
-  selector: 'lite-datetime',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-datetime',
+  
   templateUrl: `./lite-datetime.html`,
   styleUrls: [`../lite-styles.scss`]
 })

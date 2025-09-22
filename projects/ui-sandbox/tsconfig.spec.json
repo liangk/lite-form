@@ -6,7 +6,12 @@
     "outDir": "../../out-tsc/spec",
     "types": [
       "jasmine"
-    ]
+    ],
+    "paths": {
+      "lite-form": [
+        "../lite-form/src/public-api"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts"

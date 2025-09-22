@@ -18,9 +18,10 @@ export interface FileItem {
 }
 
 @Component({
-  selector: 'lite-file',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-file',
+  
   templateUrl: `./lite-file.html`,
   styleUrls: [`../lite-styles.scss`]
 })

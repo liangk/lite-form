@@ -2,12 +2,44 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { FieldDto, LiteFormModule, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto, FileFieldDto, FormUtils, SnackbarType, LiteSnackbarService } from 'lite-form';
+import {
+  LiteInput,
+  LiteTextarea,
+  LiteSelect,
+  LiteMultiSelect,
+  LiteRadio,
+  LiteCheckbox,
+  LiteDate,
+  LitePassword,
+  LiteFile,
+  LiteDateTime,
+  FieldDto,
+  SelectFieldDto,
+  MultiSelectFieldDto,
+  RadioFieldDto,
+  DateRangeFieldDto,
+  FileFieldDto,
+  FormUtils,
+  SnackbarType,
+  LiteSnackbarService
+} from 'lite-form';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, LiteFormModule],
+  imports: [
+    CommonModule,
+    LiteInput,
+    LiteTextarea,
+    LiteSelect,
+    LiteMultiSelect,
+    LiteRadio,
+    LiteCheckbox,
+    LiteDate,
+    LitePassword,
+    LiteFile,
+    LiteDateTime
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

@@ -5,9 +5,10 @@ import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { FormUtils } from '../form-utils';
 
 @Component({
-  selector: 'lite-radio',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-radio',
+  
   templateUrl: './lite-radio.html',
   styleUrls: ['../lite-styles.scss']
 })

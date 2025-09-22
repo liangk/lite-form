@@ -6,9 +6,10 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { FormUtils } from '../form-utils';
 
 @Component({
-  selector: 'lite-multi-select',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-multi-select',
+  
   templateUrl: `./lite-multi-select.html`,
   styleUrls: [`../lite-styles.scss`],
   animations: [

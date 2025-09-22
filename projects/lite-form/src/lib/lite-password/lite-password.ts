@@ -5,9 +5,10 @@ import { CommonModule } from '@angular/common';
 import { FormUtils } from '../form-utils';
 
 @Component({
-  selector: 'lite-password',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-password',
+  
   templateUrl: `./lite-password.html`,
   styleUrls: [`../lite-styles.scss`]
 })
