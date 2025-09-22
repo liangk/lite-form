@@ -6,9 +6,10 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { FormUtils } from '../form-utils';
 
 @Component({
-  selector: 'lite-multi-select',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-multi-select',
+  
   templateUrl: `./lite-multi-select.html`,
   styleUrls: [`../lite-styles.scss`],
   animations: [
@@ -43,11 +44,11 @@ export class LiteMultiSelect implements AfterViewInit {
   
   readonly FormUtils = FormUtils;
   
-  constructor(private elementRef: ElementRef) {
+  constructor(private _elementRef: ElementRef) {
     effect(() => {
       // Effect to react to FormControl value changes
       // Selected items are now displayed inline, so no need to update inputText
-      const values = this.control().formControl.value || [];
+      const _values = this.control().formControl.value || [];
       // Component will re-render automatically when values change
     });
     
@@ -72,7 +73,7 @@ export class LiteMultiSelect implements AfterViewInit {
   onDocumentClick(event: MouseEvent): void {
     if (this.showOptions === 'expand') {
       const target = event.target as HTMLElement;
-      if (!this.elementRef.nativeElement.contains(target)) {
+      if (!this._elementRef.nativeElement.contains(target)) {
         this.showOptions = 'collapse';
         this.filterText = ''; // Clear filter when closing
         // No need to update display text since selected items are shown inline

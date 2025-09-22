@@ -26,6 +26,15 @@
           "options": {
             "tsConfig": "projects/lite-form/tsconfig.spec.json"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/lite-form/**/*.ts",
+              "projects/lite-form/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -115,6 +124,15 @@
             ],
             "styles": [
               "projects/ui-sandbox/src/styles.scss"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/ui-sandbox/**/*.ts",
+              "projects/ui-sandbox/**/*.html"
             ]
           }
         }

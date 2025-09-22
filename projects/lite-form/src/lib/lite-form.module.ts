@@ -10,7 +10,7 @@ import { LiteCheckbox } from './lite-checkbox/lite-checkbox';
 import { LiteDate } from './lite-date/lite-date';
 import { LitePassword } from './lite-password/lite-password';
 import { LiteFile } from './lite-file/lite-file';
-import { LiteDateTime } from '../public-api';
+import { LiteDateTime } from './lite-datetime/lite-datetime';
 
 @NgModule({
   imports: [

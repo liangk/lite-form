@@ -7,10 +7,12 @@ Group related CSS properties on a single line when possible:
 ```
 
 ## 2. Nest Selectors Compactly
-Use single-line nesting for short rules:
+Use single-line to the inner nesting for short rules:
 ```scss
 .class {
-  .state { input { border: 1px solid #ccc; border-radius: 4px; padding: 8px; font-size: 14px; outline: none; } }
+  .state {
+    input { border: 1px solid #ccc; border-radius: 4px; padding: 8px; font-size: 14px; outline: none; }
+  }
 }
 ```
 
@@ -38,7 +40,9 @@ Use short, meaningful class and state names.
 **Example:**
 ```scss
 .component { display: flex; flex-direction: column; margin-bottom: 12px;
-  .edit { input { border: 1px solid #ccc; border-radius: 4px; padding: 8px; font-size: 14px; outline: none; } }
+  .edit {
+    input { border: 1px solid #ccc; border-radius: 4px; padding: 8px; font-size: 14px; outline: none; }
+  }
   .view { display: flex; flex-direction: column;
     label { font-weight: bold; margin-bottom: 4px; }
     .value { padding: 8px; border: 1px solid #eee; border-radius: 4px; background: #f9f9f9; }

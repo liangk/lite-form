@@ -140,7 +140,7 @@ export class FormUtils {
           }
           
           // Check if the pattern requires special characters
-          if (patternRequiredValue.includes('(?=.*[@$!%*?&]') && !/[@$!%*?&^()_+\-=\[\]{};':"\\|,.<>\/?#~`]/.test(value)) {
+          if (patternRequiredValue.includes('(?=.*[@$!%*?&]') && !/[@$!%*?&^()_+\-=[]{}|;':"\\|,.<>?`#~]/.test(value)) {
             missingRequirements.push('at least one special character (!@#$%^&*()_+-=[]{}|;\':",./<>?)');
           }
           
@@ -174,7 +174,7 @@ export class FormUtils {
             missingRequirements.push('at least one number (0-9)');
           }
           
-          if (!/[@$!%*?&^()_+\-=\[\]{};':"\\|,.<>\/?#~`]/.test(value)) {
+          if (!/[@$!%*?&^()_+\-=[]{}|;':"\\|,.<>?`#~]/.test(value)) {
             missingRequirements.push('at least one special character (!@#$%^&*()_+-=[]{}|;\':",./<>?)');
           }
         }
@@ -268,7 +268,7 @@ export class FormUtils {
     if (/\d/.test(password)) score += 1;
     else feedback.push('Add numbers');
     
-    if (/[@$!%*?&^()_+\-=\[\]{};':"\\|,.<>\/?#~`]/.test(password)) score += 1;
+    if (/[@$!%*?&^()_+\-=[]{}|;':"\\|,.<>?`#~]/.test(password)) score += 1;
     else feedback.push('Add special characters');
     
     // Additional checks

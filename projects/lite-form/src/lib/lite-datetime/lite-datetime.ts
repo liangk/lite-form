@@ -13,9 +13,10 @@ interface CalendarDateTime {
 }
 
 @Component({
-  selector: 'lite-datetime',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-datetime',
+  
   templateUrl: `./lite-datetime.html`,
   styleUrls: [`../lite-styles.scss`]
 })
@@ -114,7 +115,7 @@ export class LiteDateTime {
   
   readonly FormUtils = FormUtils;
 
-  constructor(private elementRef: ElementRef) {
+  constructor(private _elementRef: ElementRef) {
     effect(() => {
       const control = this.control();
       // console.log('LiteDateTime with control:', control);
@@ -139,7 +140,7 @@ export class LiteDateTime {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
-    if (!this.elementRef.nativeElement.contains(event.target as Node)) {
+    if (!this._elementRef.nativeElement.contains(event.target as Node)) {
       this.showCalendar.set(false);
     }
   }
@@ -317,7 +318,7 @@ export class LiteDateTime {
   }
 
   private calculateCalendarPosition(): void {
-    const element = this.elementRef.nativeElement;
+    const element = this._elementRef.nativeElement;
     const rect = element.getBoundingClientRect();
     const calendarHeight = 300; // Approximate height of calendar panel
     const spaceBelow = window.innerHeight - rect.bottom;

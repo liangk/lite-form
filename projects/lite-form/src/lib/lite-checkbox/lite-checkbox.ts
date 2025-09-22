@@ -5,9 +5,10 @@ import { CommonModule } from '@angular/common';
 import { FormUtils } from '../form-utils';
 
 @Component({
-  selector: 'lite-checkbox',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-checkbox',
+  
   templateUrl: `./lite-checkbox.html`,
   styleUrls: [`../lite-styles.scss`]
 })

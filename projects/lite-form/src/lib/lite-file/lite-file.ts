@@ -1,5 +1,5 @@
 import { Component, effect, input, signal, computed, ViewChild, ElementRef } from '@angular/core';
-import { FieldDto, FileFieldDto } from '../field-dto';
+import { FileFieldDto } from '../field-dto';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormUtils } from '../form-utils';
@@ -18,9 +18,10 @@ export interface FileItem {
 }
 
 @Component({
-  selector: 'lite-file',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-file',
+  
   templateUrl: `./lite-file.html`,
   styleUrls: [`../lite-styles.scss`]
 })
@@ -59,7 +60,7 @@ export class LiteFile {
   maxFiles = computed(() => this.control().maxFiles ?? 10);
   showPreview = computed(() => this.control().showPreview ?? true);
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor(private _sanitizer: DomSanitizer) {
     effect(() => {
       // console.log('LiteFile initialized with control:', this.control());
       
@@ -131,7 +132,7 @@ export class LiteFile {
   svgToBase64DataUrl(svgString: string): SafeHtml {
     const base64 = btoa(svgString);
     const img = `data:image/svg+xml;base64,${base64}`;
-    return this.sanitizer.bypassSecurityTrustUrl(img);
+    return this._sanitizer.bypassSecurityTrustUrl(img);
   }
 
   private handleFiles(newFiles: File[]) {

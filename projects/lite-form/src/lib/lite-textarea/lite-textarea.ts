@@ -5,9 +5,10 @@ import { CommonModule } from '@angular/common';
 import { FormUtils } from '../form-utils';
 
 @Component({
-  selector: 'lite-textarea',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-textarea',
+  
   templateUrl: `./lite-textarea.html`,
   styleUrls: [`../lite-styles.scss`]
 })

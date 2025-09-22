@@ -20,9 +20,10 @@ export interface DateRangeFieldDto extends Omit<FieldDto, 'formControl'> {
 }
 
 @Component({
-  selector: 'lite-date',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  selector: 'lite-date',
+  
   templateUrl: `./lite-date.html`,
   styleUrls: [`../lite-styles.scss`]
 })
@@ -160,14 +161,14 @@ export class LiteDate {
   
   readonly FormUtils = FormUtils;
 
-  constructor(private elementRef: ElementRef) {
+  constructor(private _elementRef: ElementRef) {
     effect(() => {
       const control = this.control();
       // console.log('LiteDate initialized with control:', control);
       
       // Subscribe to form control value changes to trigger reactivity
       if (control && control.formControl) {
-        const subscription = control.formControl.valueChanges.subscribe(value => {
+        const _subscription = control.formControl.valueChanges.subscribe(value => {
           console.log('Form value changed:', value);
           this.formValueChangeSignal.set(Date.now()); // Use timestamp to ensure change detection
         });
@@ -180,7 +181,7 @@ export class LiteDate {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
-    if (!this.elementRef.nativeElement.contains(event.target as Node)) {
+    if (!this._elementRef.nativeElement.contains(event.target as Node)) {
       this.showCalendar.set(false);
     }
   }
@@ -470,7 +471,7 @@ export class LiteDate {
   }
 
   private calculateCalendarPosition(): void {
-    const element = this.elementRef.nativeElement;
+    const element = this._elementRef.nativeElement;
     const rect = element.getBoundingClientRect();
     const calendarHeight = 300; // Approximate height of calendar panel
     const spaceBelow = window.innerHeight - rect.bottom;
