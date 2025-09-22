@@ -28,7 +28,7 @@ jobs:
       run: npm ci
       
     - name: Lint ${{ matrix.project }}
-      run: ng lint ${{ matrix.project }}
+      run: npx ng lint ${{ matrix.project }}
       
     - name: Test ${{ matrix.project }}
-      run: ng test ${{ matrix.project }} --watch=false --browsers=ChromeHeadless
+      run: npx ng test ${{ matrix.project }} --watch=false --browsers=ChromeHeadless
