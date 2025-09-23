@@ -9,12 +9,13 @@ This document provides comprehensive examples of using LiteForm components in va
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, FieldDto, SelectFieldDto, RadioFieldDto, FileFieldDto } from 'ngx-lite-form';
+import { LiteInput, LiteTextarea, LiteSelect, LiteRadio, LiteCheckbox, LiteFile } from 'ngx-lite-form';
+import { FieldDto, SelectFieldDto, RadioFieldDto, FileFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-simple-form',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [LiteInput, LiteTextarea, LiteSelect, LiteRadio, LiteCheckbox, LiteFile],
   template: `
     <form (ngSubmit)="onSubmit()">
       <lite-input [control]="nameField"></lite-input>
@@ -95,12 +96,12 @@ export class SimpleFormComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, MultiSelectFieldDto } from 'ngx-lite-form';
+import { LiteMultiSelect, MultiSelectFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-skills-form',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [LiteMultiSelect],
   template: `
     <div class="skills-form">
       <h3>Select Your Skills</h3>
@@ -173,12 +174,12 @@ export class SkillsFormComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, RadioFieldDto } from 'ngx-lite-form';
+import { LiteRadio, RadioFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-survey-form',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [LiteRadio],
   template: `
     <div class="survey-form">
       <h2>Customer Satisfaction Survey</h2>
@@ -280,12 +281,12 @@ export class SurveyFormComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, FieldDto } from 'ngx-lite-form';
+import { LiteInput, LiteCheckbox, FieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-terms-form',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [LiteInput, LiteCheckbox],
   template: `
     <div class="terms-form">
       <h2>Account Registration</h2>
@@ -417,7 +418,7 @@ interface Department {
 @Component({
   selector: 'app-department-form',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <div class="department-form">
       <lite-multi-select [control]="departmentsField"></lite-multi-select>
@@ -472,12 +473,12 @@ export class DepartmentFormComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
+import { LiteMultiSelect, MultiSelectFieldDto } from 'ngx-lite-form';
 
 @Component({
-  selector: 'app-basic-file',
+  selector: 'app-skills-form',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [LiteMultiSelect],
   template: `
     <form (ngSubmit)="onSubmit()">
       <lite-file [control]="filesField"></lite-file>
@@ -505,12 +506,12 @@ export class BasicFileComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
+import { FileFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-image-upload',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <div class="image-upload-form">
       <h3>Profile Picture Upload</h3>
@@ -580,12 +581,12 @@ export class ImageUploadComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
+import { LiteFile, FileFieldDto } from 'ngx-lite-form';
 
 @Component({
-  selector: 'app-document-upload',
+  selector: 'app-basic-file',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [LiteFile],
   template: `
     <div class="document-form">
       <h3>Document Upload</h3>
@@ -691,12 +692,12 @@ export class DocumentUploadComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
+import { LiteFile, FileFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-camera-capture',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [LiteFile],
   template: `
     <div class="camera-form">
       <h3>Photo Capture</h3>
@@ -820,7 +821,6 @@ export class CameraCaptureComponent {
     // Handle photo saving logic here
   }
 }
-```
 
 ### Advanced File Upload with Progress
 
@@ -828,7 +828,7 @@ export class CameraCaptureComponent {
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
+import { LiteFile, FileFieldDto } from 'ngx-lite-form';
 import { Observable } from 'rxjs';
 
 interface UploadProgress {
@@ -841,7 +841,7 @@ interface UploadProgress {
 @Component({
   selector: 'app-advanced-file-upload',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [LiteFile],
   template: `
     <div class="advanced-upload-form">
       <h3>Advanced File Upload</h3>
@@ -1115,12 +1115,12 @@ export class AdvancedFileUploadComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { LiteFormModule, FileFieldDto } from 'ngx-lite-form';
+import { FileFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-file-validation',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <div class="file-validation-form">
       <h3>File Upload with Custom Validation</h3>
@@ -1281,7 +1281,7 @@ interface Language {
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [LiteFormModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   template: `
     <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
       <div class="form-section">
@@ -1472,7 +1472,7 @@ function usernameAvailabilityValidator(userService: UserService): AsyncValidator
 @Component({
   selector: 'app-registration-form',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <form (ngSubmit)="onSubmit()">
       <lite-input [control]="usernameField"></lite-input>
@@ -1579,7 +1579,7 @@ interface DynamicField {
 @Component({
   selector: 'app-dynamic-form',
   standalone: true,
-  imports: [LiteFormModule, CommonModule],
+  imports: [CommonModule],
   template: `
     <div class="dynamic-form">
       <h3>Dynamic Form Builder</h3>
@@ -1761,12 +1761,12 @@ export class DynamicFormComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+import { FieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-date-basic',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <form>
       <lite-date [control]="birthdateField"></lite-date>
@@ -1784,12 +1784,12 @@ export class DateBasicComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+import { FieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-date-format',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <form>
       <lite-date 
@@ -1814,12 +1814,12 @@ export class DateFormatComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, DateRangeFieldDto } from '@kohsin/lite-form';
+import { DateRangeFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-date-range',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <form>
       <lite-date 
@@ -1845,12 +1845,12 @@ export class DateRangeComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+import { FieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-date-constraints',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <form>
       <lite-date 
@@ -1880,12 +1880,12 @@ export class DateConstraintsComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, FieldDto, DateRangeFieldDto } from '@kohsin/lite-form';
+import { FieldDto, DateRangeFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-date-form',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <form [formGroup]="dateForm" (ngSubmit)="onSubmit()">
       <h3>Event Planning Form</h3>
@@ -1980,12 +1980,12 @@ export class DateFormComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FieldDto, DateRangeFieldDto } from '@kohsin/lite-form';
+import { FieldDto, DateRangeFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-dynamic-dates',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <form>
       <div class="date-type-selector">
@@ -2060,12 +2060,12 @@ export class DynamicDatesComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+import { FieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-date-positioning',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <div class="positioning-demo">
       <h3>Calendar Positioning Demo</h3>
@@ -2124,12 +2124,12 @@ export class DatePositioningComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+import { FieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-basic-password',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <form>
       <lite-password [control]="passwordField"></lite-password>
@@ -2150,12 +2150,12 @@ export class BasicPasswordComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+import { FieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-password-strength',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <form>
       <lite-password 
@@ -2182,12 +2182,12 @@ export class PasswordStrengthComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+import { FieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-password-confirmation',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
       <lite-password 
@@ -2246,12 +2246,12 @@ export class PasswordConfirmationComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LiteFormModule, FieldDto, FormUtils } from '@kohsin/lite-form';
+import { FieldDto, FormUtils } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-password-analysis',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <div class="password-demo">
       <lite-password 
@@ -2326,12 +2326,12 @@ export class PasswordAnalysisComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { LiteFormModule, FieldDto } from '@kohsin/lite-form';
+import { FieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-advanced-password',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <form>
       <lite-password 
@@ -2566,7 +2566,7 @@ $background-color: #fff;
 @Component({
   selector: 'app-themed-form',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <div class="themed-form">
       <h2>Custom Themed Form</h2>
@@ -2621,7 +2621,7 @@ export class ThemedFormComponent {
 
 ```typescript
 import { Component } from '@angular/core';
-import { LiteFormModule, TableFieldDto } from 'ngx-lite-form';
+import { TableFieldDto } from 'ngx-lite-form';
 
 interface Employee {
   id: number;
@@ -2633,7 +2633,7 @@ interface Employee {
 @Component({
   selector: 'app-basic-table',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <div class="table-demo">
       <h3>Employee Directory</h3>
@@ -2672,7 +2672,7 @@ export class BasicTableComponent {
 
 ```typescript
 import { Component } from '@angular/core';
-import { LiteFormModule, TableFieldDto } from 'ngx-lite-form';
+import { TableFieldDto } from 'ngx-lite-form';
 
 interface Product {
   id: number;
@@ -2686,7 +2686,7 @@ interface Product {
 @Component({
   selector: 'app-template-table',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <div class="product-table-demo">
       <h3>Product Catalog</h3>
@@ -2739,7 +2739,7 @@ export class TemplateTableComponent {
 ```typescript
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LiteFormModule, TableFieldDto, PaginatorFieldDto } from 'ngx-lite-form';
+import { TableFieldDto, PaginatorFieldDto } from 'ngx-lite-form';
 
 interface User {
   name: {
@@ -2761,7 +2761,7 @@ interface User {
 @Component({
   selector: 'app-paginated-table',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <div class="user-table-demo">
       <h3>User Directory (Random User API)</h3>
@@ -2829,12 +2829,12 @@ export class PaginatedTableComponent implements OnInit {
 
 ```typescript
 import { Component } from '@angular/core';
-import { LiteFormModule, PaginatorFieldDto } from 'ngx-lite-form';
+import { PaginatorFieldDto } from 'ngx-lite-form';
 
 @Component({
   selector: 'app-pagination-demo',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <div class="pagination-demo">
       <h3>Pagination Controls</h3>
@@ -2945,7 +2945,7 @@ export class PaginationDemoComponent {
 
 ```typescript
 import { Component } from '@angular/core';
-import { LiteFormModule, TableFieldDto } from 'ngx-lite-form';
+import { TableFieldDto } from 'ngx-lite-form';
 
 interface Order {
   id: string;
@@ -2967,7 +2967,7 @@ interface Order {
 @Component({
   selector: 'app-advanced-table',
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [REPLACE_WITH_COMPONENTS],
   template: `
     <div class="orders-table-demo">
       <h3>Order Management System</h3>

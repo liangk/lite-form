@@ -2,7 +2,6 @@
 
 A modern, lightweight Angular form components library with TypeScript support, built-in validation, and responsive design.
 
-
 ## Features
 
 - 🎯 **Input Component** - Text input with floating labels
@@ -11,12 +10,14 @@ A modern, lightweight Angular form components library with TypeScript support, b
 - ☑️ **Multi-Select Component** - Multi-selection with inline display
 - 🔘 **Radio Component** - Radio button groups for single selection
 - ✅ **Checkbox Component** - Boolean input with validation support
+- 📅 **Date Picker Component** - Advanced date selection with custom formatting
 - 📎 **File Upload Component** - Drag & drop, camera capture, file management
-- � **DateTime Picker Component** - Combined date & time selection
-- �🔧 **TypeScript Support** - Fully typed with generics
+- 🕒 **DateTime Picker Component** - Combined date & time selection
+- 🔧 **TypeScript Support** - Fully typed with generics
 - ✅ **Form Validation** - Integrated Angular Reactive Forms validation
 - 🎨 **Customizable Styling** - SCSS-based theming system
 - 📱 **Responsive Design** - Mobile-friendly components
+- 🏗️ **Standalone Components** - Modern Angular architecture
 
 ## Installation
 
@@ -27,114 +28,31 @@ npm install ngx-lite-form
 ## Quick Usage
 
 ```typescript
-import { LiteFormModule } from 'ngx-lite-form';
+import { LiteInput, LiteSelect, LiteCheckbox } from 'ngx-lite-form';
 import { FormControl, Validators } from '@angular/forms';
 
-import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, FileFieldDto } from 'ngx-lite-form';
+import { FieldDto, SelectFieldDto } from 'ngx-lite-form';
 
 @Component({
   standalone: true,
-  imports: [LiteFormModule],
+  imports: [LiteInput, LiteSelect, LiteCheckbox],
   template: `
   <lite-input [control]="nameField"></lite-input>
-  <lite-textarea [control]="descriptionField"></lite-textarea>
-  <lite-checkbox [control]="agreeField"></lite-checkbox>
   <lite-select [control]="statusField"></lite-select>
-  <lite-multi-select [control]="skillsField"></lite-multi-select>
-  <lite-radio [control]="priorityField"></lite-radio>
-  <lite-file [control]="fileField"></lite-file>
-  <lite-datetime [control]="datetimeField"></lite-datetime>
+  <lite-checkbox [control]="agreeField"></lite-checkbox>
   `
 })
 export class MyFormComponent {
-  nameField = new FieldDto('Name', new FormControl(''));
-  descriptionField = new FieldDto('Description', new FormControl(''), 4);
+  nameField = new FieldDto('Name', new FormControl('', [Validators.required]));
   agreeField = new FieldDto('I agree to terms', new FormControl<boolean>(false, { nonNullable: true }));
-  
+
   statusField = new SelectFieldDto(
     'Status',
     new FormControl(''),
     ['Active', 'Inactive'],
     (option) => option
   );
-  
-  priorityField = new RadioFieldDto(
-    'Priority',
-    new FormControl('', [Validators.required]),
-    ['Low', 'Medium', 'High'],
-    (option) => option
-  );
-  
-  skillsField = new MultiSelectFieldDto(
-    'Skills',
-    new FormControl<string[]>([]),
-    ['JavaScript', 'TypeScript', 'Angular'],
-    (option) => option
-  );
-  fileField = new FileFieldDto('Attachments', new FormControl([]), {
-    multiple: true,
-    accept: 'image/*,application/pdf',
-    maxFileSize: 5 * 1024 * 1024,
-    maxFiles: 5,
-    showPreview: true
-  });
-  datetimeField = new FieldDto('Event Date & Time', new FormControl(''));
-### LiteDateTime
-Date & time picker component for selecting both date and time, with custom formatting and time granularity.
-
-**Features:**
-- Combined date and time selection in a single popup
-- Customizable date/time format (e.g., 'yyyy-MM-dd HH:mm')
-- Keyboard and mouse navigation
-- Time selection with hour and minute granularity
-- Validation and error display
-- Responsive and accessible
-
-**Example:**
-```typescript
-import { FieldDto } from 'ngx-lite-form';
-datetimeField = new FieldDto('Event Date & Time', new FormControl(''));
-```
-```html
-<lite-datetime [control]="datetimeField" format="yyyy-MM-dd HH:mm"></lite-datetime>
-```
 }
-### LiteFile
-File upload component with drag & drop, badge, file management panel, and camera capture support.
-
-**Features:**
-- File upload via button, drag & drop, or camera capture (on supported devices)
-- Badge shows file count
-- File management panel with upload area and action buttons
-- Camera capture on devices with a camera
-- Validation: max files, max file size, file type restrictions
-- Image preview for image files
-- Progress tracking for uploads
-- Accessibility: keyboard and screen reader friendly
-
-**Example:**
-```typescript
-import { FileFieldDto } from 'ngx-lite-form';
-fileField = new FileFieldDto('Upload Files', new FormControl([]));
-```
-```html
-<lite-file [control]="fileField"></lite-file>
-```
-
-### FileFieldDto
-File field configuration for the LiteFile component.
-
-```typescript
-class FileFieldDto {
-  label: string;
-  formControl: FormControl;
-  multiple?: boolean; // Allow multiple file selection (default: true)
-  accept?: string; // Accepted file types (default: '*/*')
-  maxFileSize?: number; // Maximum file size in bytes (default: 10MB)
-  maxFiles?: number; // Maximum number of files allowed (default: 10)
-  showPreview?: boolean; // Show image previews (default: true)
-}
-```
 ```
 
 ## Components
@@ -142,21 +60,121 @@ class FileFieldDto {
 ### LiteInput
 Basic text input with floating label animation and validation display.
 
+```typescript
+import { LiteInput, FieldDto } from 'ngx-lite-form';
+
+nameField = new FieldDto('Full Name', new FormControl('', [Validators.required]));
+```
+
 ### LiteTextarea
 Multi-line text input that supports configurable rows.
 
+```typescript
+import { LiteTextarea, FieldDto } from 'ngx-lite-form';
+
+descriptionField = new FieldDto('Description', new FormControl(''), 4);
+```
+
+### LitePassword
+Password input with strength indicator, toggle visibility, and advanced validation.
+
+```typescript
+import { LitePassword, FieldDto } from 'ngx-lite-form';
+
+passwordField = new FieldDto('Password', new FormControl('', [
+  Validators.required,
+  Validators.minLength(8)
+]));
+```
+
 ### LiteSelect
-Single-selection dropdown with:
-- Search/filtering functionality
-- Custom display formatting
-- Keyboard navigation
+Single-selection dropdown with search/filtering functionality.
+
+```typescript
+import { LiteSelect, SelectFieldDto } from 'ngx-lite-form';
+
+statusField = new SelectFieldDto(
+  'Status',
+  new FormControl(''),
+  ['Active', 'Inactive', 'Pending'],
+  (option) => option
+);
+```
 
 ### LiteMultiSelect
-Multi-selection dropdown with:
-- Inline selected items display
-- Dynamic height adjustment
-- Individual item removal
-- Filtering capabilities
+Multi-selection dropdown with inline selected items display and dynamic height adjustment.
+
+```typescript
+import { LiteMultiSelect, MultiSelectFieldDto } from 'ngx-lite-form';
+
+skillsField = new MultiSelectFieldDto(
+  'Skills',
+  new FormControl<string[]>([]),
+  ['JavaScript', 'TypeScript', 'Angular'],
+  (option) => option
+);
+```
+
+### LiteRadio
+Radio button group component for single selection from multiple options.
+
+```typescript
+import { LiteRadio, RadioFieldDto } from 'ngx-lite-form';
+
+priorityField = new RadioFieldDto(
+  'Priority',
+  new FormControl('', [Validators.required]),
+  ['Low', 'Medium', 'High'],
+  (option) => option
+);
+```
+
+### LiteCheckbox
+Checkbox component for boolean input with validation support.
+
+```typescript
+import { LiteCheckbox, FieldDto } from 'ngx-lite-form';
+
+agreeField = new FieldDto('I agree to terms', new FormControl<boolean>(false, {
+  nonNullable: true,
+  validators: [Validators.requiredTrue]
+}));
+```
+
+### LiteDate
+Advanced date picker component with single date and date range selection, custom formatting, and intelligent calendar positioning.
+
+```typescript
+import { LiteDate, FieldDto } from 'ngx-lite-form';
+
+birthDateField = new FieldDto('Birth Date', new FormControl(''));
+```
+
+### LiteDateTime
+Date & time picker component for selecting both date and time, with custom formatting and time granularity.
+
+```typescript
+import { LiteDateTime, FieldDto } from 'ngx-lite-form';
+
+eventDateTimeField = new FieldDto('Event Date & Time', new FormControl(''));
+```
+
+### LiteFile
+File upload component with drag & drop, badge, file management panel, and camera capture support.
+
+```typescript
+import { LiteFile, FileFieldDto } from 'ngx-lite-form';
+
+fileField = new FileFieldDto(
+  'Upload Files',
+  new FormControl([]),
+  true, // multiple
+  'image/*,application/pdf', // accept
+  5 * 1024 * 1024, // maxFileSize (5MB)
+  5, // maxFiles
+  true // showPreview
+);
+```
 
 ## Data Transfer Objects
 
@@ -186,6 +204,29 @@ class MultiSelectFieldDto<T> {
   formControl: FormControl<T[]>;
   options: T[];
   displayWith: (option: T) => string;
+}
+```
+
+### RadioFieldDto<T>
+```typescript
+class RadioFieldDto<T> {
+  label: string;
+  formControl: FormControl<T>;
+  options: T[];
+  displayWith: (option: T) => string;
+}
+```
+
+### FileFieldDto
+```typescript
+class FileFieldDto {
+  label: string;
+  formControl: FormControl;
+  multiple?: boolean;
+  accept?: string;
+  maxFileSize?: number;
+  maxFiles?: number;
+  showPreview?: boolean;
 }
 ```
 
@@ -220,7 +261,7 @@ The library includes comprehensive SCSS styling. To customize:
 
 ### Building the Library
 ```bash
-ng build ngx-lite-form
+ng build lite-form
 ```
 
 ### Publishing
@@ -231,7 +272,7 @@ npm publish
 
 ### Running Tests
 ```bash
-ng test ngx-lite-form
+ng test ui-sandbox
 ```
 
 ## Browser Support
@@ -247,17 +288,3 @@ MIT License
 ---
 
 For complete documentation and examples, visit the [main repository](https://github.com/liangk/lite-form).
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

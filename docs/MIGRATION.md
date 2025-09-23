@@ -194,10 +194,12 @@ export class MaterialFormComponent {
 
 **After (LiteForm):**
 ```typescript
-import { LiteFormModule } from 'lite-form';
-import { FieldDto, SelectFieldDto } from 'lite-form';
+import { LiteInput, LiteSelect } from 'ngx-lite-form';
+import { FieldDto, SelectFieldDto } from 'ngx-lite-form';
 
 @Component({
+  standalone: true,
+  imports: [LiteInput, LiteSelect],
   template: `
     <lite-input [control]="nameField"></lite-input>
     <lite-select [control]="countryField"></lite-select>
@@ -560,17 +562,45 @@ it('should validate required field', () => {
 
 ## Version Upgrade Guide
 
-### Upgrading from v0.x to v1.0
+#### Breaking Changes in v1.2.1
 
-#### Breaking Changes
+**CRITICAL: LiteFormModule Removed**
+
+Due to production deployment issues (circular dependency), `LiteFormModule` has been completely removed. All components are now standalone.
+
+**Migration Required:**
+```typescript
+// ❌ OLD - NO LONGER AVAILABLE
+import { LiteFormModule } from 'ngx-lite-form';
+
+@Component({
+  imports: [LiteFormModule]
+})
+
+// ✅ NEW - REQUIRED
+import { LiteInput, LiteSelect } from 'ngx-lite-form';
+
+@Component({
+  standalone: true,
+  imports: [LiteInput, LiteSelect]  // Import only needed components
+})
+```
+
+**Benefits:**
+- Smaller bundle sizes (better tree-shaking)
+- No circular dependency issues
+- Production deployments now work on Vercel/Docker
+- Follows Angular's modern standalone architecture
+
+#### Legacy Changes (v1.0 to v1.2.0)
 
 1. **Module Import Changes:**
 ```typescript
-// v0.x
-import { LiteInputModule, LiteTextareaModule } from 'lite-form';
+// v1.0 (deprecated)
+import { LiteFormModule } from 'ngx-lite-form';
 
-// v1.0
-import { LiteFormModule } from 'lite-form';
+// v1.2.1 (current)
+import { LiteInput, LiteSelect } from 'ngx-lite-form';
 ```
 
 2. **DTO Constructor Changes:**
@@ -602,9 +632,9 @@ import { join } from 'path';
 
 class LiteFormMigrator {
   private replacements = [
-    { from: /LiteInputModule/g, to: 'LiteFormModule' },
-    { from: /LiteTextareaModule/g, to: 'LiteFormModule' },
-    { from: /InputFieldDto/g, to: 'FieldDto' },
+    { from: /LiteInputModule/g, to: 'LiteInput' },
+    { from: /LiteTextareaModule/g, to: 'LiteTextarea' },
+    { from: /LiteFormModule/g, to: 'LiteInput, LiteTextarea, LiteSelect' },
     { from: /\[field\]=/g, to: '[control]=' },
     { from: /\[editMode\]=/g, to: '[inEdit]=' }
   ];

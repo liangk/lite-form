@@ -62,28 +62,47 @@ npm install ngx-lite-form
 
 ## Quick Start
 
-### 1. Import the Module
+### 1. Import Components
 
 ```typescript
-import { LiteFormModule } from 'ngx-lite-form';
+import { 
+  LiteInput, 
+  LitePassword, 
+  LiteTextarea,
+  LiteSelect,
+  LiteMultiSelect,
+  LiteRadio,
+  LiteCheckbox,
+  LiteDate,
+  LiteDateTime,
+  LiteFile,
+  LiteTable,
+  LitePaginator
+} from 'ngx-lite-form';
+import { FormControl, Validators } from '@angular/forms';
+
+import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto, FileFieldDto, TableFieldDto, PaginatorFieldDto } from 'ngx-lite-form';
 
 @Component({
   standalone: true,
-  imports: [LiteFormModule],
-  // ...
+  imports: [
+    LiteInput,
+    LitePassword,
+    LiteTextarea,
+    LiteSelect,
+    LiteMultiSelect,
+    LiteRadio,
+    LiteCheckbox,
+    LiteDate,
+    LiteDateTime,
+    LiteFile,
+    LiteTable,
+    LitePaginator
+  ],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
 })
-export class YourComponent {
-  // ...
-}
-```
-
-### 2. Create Form Controls
-
-```typescript
-import { FormControl } from '@angular/forms';
-import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto, FileFieldDto } from 'ngx-lite-form';
-
-export class YourComponent {
+export class AppComponent {
   // Basic input
   nameField = new FieldDto('Full Name', new FormControl(''));
   
