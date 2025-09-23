@@ -109,4 +109,16 @@
       (itemsPerPageChange)="onItemsPerPageChange($event)">
     </lite-paginator>
   </div>
+  <h2>Table Demo (Basic)</h2>
+  <div class="row">
+    <lite-table [table]="tableDemo"></lite-table>
+  </div>
+  <h2>Table Demo (With Paginator)</h2>
+  <div class="row">
+    <lite-table
+      [table]="tableWithPaginatorDemo"
+      (pageChange)="onTablePageChange($event)"
+      (itemsPerPageChange)="onTableItemsPerPageChange($event)">
+    </lite-table>
+  </div>
 </div>

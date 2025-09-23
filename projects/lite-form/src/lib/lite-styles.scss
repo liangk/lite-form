@@ -542,3 +542,29 @@ input, .label, textarea {
     .total-text { white-space: nowrap; }
   }
 }
+
+.lite-table { width: 100%; background: #fff;
+  .table-header { background: #f8f8f8; border-bottom: 1px solid #dee2e6;
+    .header-row { display: flex;
+      .header-cell { padding: 5px 10px; text-align: left; font-weight: 600; color: #333; font-size: 0.9em; border-right: 1px solid #dee2e6; min-height: 36px; display: flex; align-items: center;
+        &:last-child { border-right: none; }
+        &.sortable { cursor: pointer; user-select: none;
+          &:hover { background: #e9ecef; }
+        }
+      }
+    }
+  }
+  .table-body {
+    .data-row { display: flex; border-bottom: 1px solid #dee2e6; transition: background-color 0.2s ease;
+      &:hover { background: #f8f9fa; }
+      &:last-child { border-bottom: none; }
+      .data-cell { padding: 5px 10px; border-right: 1px solid #dee2e6; font-size: 0.9em; color: #333; min-height: 36px; display: flex; align-items: center;
+        &:last-child { border-right: none; }
+      }
+    }
+    .empty-row { display: flex; border-bottom: 1px solid #dee2e6;
+      .empty-cell { padding: 40px 16px; text-align: center; color: #6c757d; font-style: italic; font-size: 0.9em; }
+    }
+  }
+  .table-paginator { margin-top: 16px; display: flex; justify-content: center; }
+}

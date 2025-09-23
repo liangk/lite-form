@@ -11,6 +11,8 @@ Lite Form is a comprehensive Angular library that provides lightweight, customiz
 - ✅ **Password Security** - Advanced password validation and strength analysis
 - ✅ **Date Handling** - Single date and date range selection with custom formatting
 - ✅ **File Upload** - Drag & drop file upload with camera capture and file management
+- ✅ **Data Tables** - Flexible table component with custom columns, sorting, and pagination
+- ✅ **Pagination** - Standalone pagination component with customizable navigation
 - ✅ **Customizable Styling** - SCSS-based styling system
 - ✅ **Accessibility** - ARIA-compliant form controls
 - ✅ **Animations** - Smooth transitions and interactions
@@ -43,6 +45,12 @@ Advanced date picker component with single date and date range selection, custom
 
 ### 📎 LiteFile
 File upload component with drag & drop, badge, file management panel, and camera capture support.
+
+### 📊 LiteTable
+Flexible data table component with custom columns, cell templates, nested property access, and integrated pagination.
+
+### 📄 LitePaginator
+Standalone pagination component with customizable page navigation, items per page selection, and total item display.
 
 ---
 
@@ -139,6 +147,34 @@ export class YourComponent {
     maxFiles: 5,
     showPreview: true
   });
+
+  // Table with custom columns
+  employeeTable = new TableFieldDto(
+    [
+      { key: 'name', label: 'Name', flex: '1' },
+      { key: 'department', label: 'Department', flex: '0 0 150px' },
+      { key: 'salary', label: 'Salary', flex: '0 0 120px', cellTemplate: (value) => `$${value?.toLocaleString() || '0'}` }
+    ],
+    [
+      { name: 'John Smith', department: 'Engineering', salary: 75000 },
+      { name: 'Sarah Johnson', department: 'Marketing', salary: 65000 }
+    ]
+  );
+
+  // Paginated table
+  userTable = new TableFieldDto(
+    [
+      { key: 'name', label: 'Name', flex: '1' },
+      { key: 'email', label: 'Email', flex: '1' },
+      { key: 'location.country', label: 'Country', flex: '0 0 120px' }
+    ],
+    [], // Will be populated by API
+    true, // Enable pagination
+    new PaginatorFieldDto(1, 100, 10) // Page 1, 100 total items, 10 per page
+  );
+
+  // Standalone paginator
+  paginator = new PaginatorFieldDto(1, 500, 25);
 }
 ```
 
@@ -157,6 +193,23 @@ export class YourComponent {
   <lite-date [control]="eventDateField" [range]="true" [format]="'dd/MM/yyyy'"></lite-date>
   <lite-file [control]="fileField"></lite-file>
 </form>
+
+<!-- Data Table -->
+<lite-table [table]="employeeTable"></lite-table>
+
+<!-- Paginated Table -->
+<lite-table
+  [table]="userTable"
+  (pageChange)="onPageChange($event)"
+  (itemsPerPageChange)="onItemsPerPageChange($event)">
+</lite-table>
+
+<!-- Standalone Paginator -->
+<lite-paginator
+  [paginator]="paginator"
+  (pageChange)="onPaginatorPageChange($event)"
+  (itemsPerPageChange)="onPaginatorItemsChange($event)">
+</lite-paginator>
 ```
 ---
 
@@ -408,7 +461,89 @@ imageField = new FileFieldDto(
 - Use action buttons to upload files, take a picture, or close the panel
 - Remove files individually or clear all files
 
----
+### LiteTable Component
+
+**Selector:** `lite-table`
+
+**Inputs:**
+- `table: TableFieldDto<T>` - Table configuration including columns and data
+
+**Outputs:**
+- `pageChange: number` - Emitted when user changes page (for paginated tables)
+- `itemsPerPageChange: number` - Emitted when user changes items per page
+
+**Features:**
+- Flexbox-based responsive layout for modern table design
+- Custom column definitions with labels, flex sizing, and cell templates
+- Support for nested object property access (dot notation)
+- Integrated pagination with lite-paginator component
+- Custom cell templates for advanced formatting (images, status indicators, dates)
+- Automatic handling of special data formats (name objects, nested properties)
+- Empty state display when no data is available
+- Sorting indicators (visual styling support)
+
+**Example:**
+```typescript
+// Component
+import { TableFieldDto, TableColumn } from 'ngx-lite-form';
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  inStock: boolean;
+}
+
+const columns: TableColumn[] = [
+  { key: 'id', label: 'ID', flex: '0 0 80px' },
+  { key: 'name', label: 'Product Name', flex: '2' },
+  { key: 'price', label: 'Price', flex: '0 0 100px', cellTemplate: (value) => `$${value?.toFixed(2)}` },
+  { key: 'category', label: 'Category', flex: '1' },
+  { key: 'inStock', label: 'Status', flex: '0 0 100px', cellTemplate: (value) => value ? '✓ In Stock' : '✗ Out of Stock' }
+];
+
+productTable = new TableFieldDto(columns, productData, false);
+
+// Template
+<lite-table [table]="productTable"></lite-table>
+```
+
+### LitePaginator Component
+
+**Selector:** `lite-paginator`
+
+**Inputs:**
+- `paginator: PaginatorFieldDto` - Pagination configuration including current page, total items, and items per page
+
+**Outputs:**
+- `pageChange: number` - Emitted when user changes page
+- `itemsPerPageChange: number` - Emitted when user changes items per page
+
+**Features:**
+- Previous/Next navigation buttons with disabled states
+- Numbered page buttons with active state highlighting
+- Items per page dropdown selection
+- Total items display with customizable formatting
+- Keyboard navigation support (arrow keys)
+- Responsive design that adapts to different screen sizes
+- Accessibility features with ARIA labels and screen reader support
+- Configurable page range display and navigation controls
+
+**Example:**
+```typescript
+// Component
+import { PaginatorFieldDto } from 'ngx-lite-form';
+
+paginator = new PaginatorFieldDto(1, 500, 25); // Page 1, 500 total items, 25 per page
+
+// Template
+<lite-paginator
+  [paginator]="paginator"
+  (pageChange)="onPageChange($event)"
+  (itemsPerPageChange)="onItemsPerPageChange($event)">
+</lite-paginator>
+```
 
 ## Snackbar Service
 
@@ -506,6 +641,37 @@ class FileFieldDto {
 }
 ```
 
+### TableFieldDto<T>
+Table configuration for the LiteTable component.
+
+```typescript
+class TableFieldDto<T = any> {
+  columns: TableColumn[];
+  data: T[];
+  showPaginator?: boolean;
+  paginatorConfig: PaginatorFieldDto;
+}
+
+interface TableColumn {
+  key: string;              // Data property key (supports dot notation)
+  label: string;            // Column header text
+  flex?: string;            // CSS flex property (e.g., '0 0 100px', '1')
+  sortable?: boolean;       // Show sorting indicator
+  cellTemplate?: (value: any, row: any) => string; // Custom HTML template
+}
+```
+
+### PaginatorFieldDto
+Pagination configuration for table and standalone pagination components.
+
+```typescript
+class PaginatorFieldDto {
+  currentPage: number;
+  totalItems: number;
+  itemsPerPage: number;
+}
+```
+
 ---
 
 ## Validation
@@ -578,6 +744,8 @@ projects/lite-form/            # Library source
 │   ├── lite-checkbox/        # Checkbox component
 │   ├── lite-date/            # Date picker component
 │   ├── lite-file/            # File upload component
+│   ├── lite-table/           # Data table component
+│   ├── lite-paginator/       # Pagination component
 │   ├── field-dto.ts          # Data transfer objects
 │   ├── form-utils.ts         # Utility functions
 │   ├── lite-styles.scss      # Shared styles
@@ -662,6 +830,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 ## Changelog
+
+### v1.2.0
+- **LiteTable Component**: Flexible data table with custom columns, cell templates, nested property access, and integrated pagination
+- **LitePaginator Component**: Standalone pagination component with customizable navigation, items per page selection, and total item display
+- **TableFieldDto & PaginatorFieldDto**: New data transfer objects for table and pagination configuration
+- **Flexbox Table Layout**: Modern CSS flexbox approach instead of traditional table elements
+- **Custom Cell Rendering**: HTML template functions for advanced cell formatting
+- **Nested Data Access**: Dot notation support for complex object structures
+- **Real API Integration**: Demo using Random User API for authentic data
+- **Enhanced Documentation**: Comprehensive API documentation and usage examples
 
 ### v1.0.0
 - Initial release with input, textarea, select, and multi-select components

@@ -551,6 +551,212 @@ datetimeField = new FieldDto('Event Date & Time', new FormControl(''));
 
 ---
 
+### LitePaginator
+
+**Selector:** `lite-paginator`
+
+**Description:** A flexible pagination component that supports customizable page navigation, items per page selection, and total item display.
+
+#### Inputs
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `paginator` | `PaginatorFieldDto` | - | Pagination configuration including current page, total items, and items per page |
+
+#### Outputs
+| Property | Type | Description |
+|----------|------|-------------|
+| `pageChange` | `number` | Emitted when user changes page |
+| `itemsPerPageChange` | `number` | Emitted when user changes items per page |
+
+#### Features
+- **Page Navigation:** Previous/Next buttons and numbered page buttons
+- **Items Per Page:** Configurable dropdown for selecting items per page
+- **Total Display:** Optional display of total items
+- **Responsive Design:** Adapts to different screen sizes
+- **Keyboard Navigation:** Arrow key support for page navigation
+- **Accessibility:** ARIA labels and screen reader support
+
+#### Methods
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `goToPage(page)` | `void` | Navigate to specific page |
+| `changeItemsPerPage(count)` | `void` | Change items per page |
+| `getTotalPages()` | `number` | Get total number of pages |
+| `hasPreviousPage()` | `boolean` | Check if previous page exists |
+| `hasNextPage()` | `boolean` | Check if next page exists |
+
+#### Usage
+```typescript
+import { PaginatorFieldDto } from 'ngx-lite-form';
+
+// Basic pagination
+const paginator = new PaginatorFieldDto(1, 150, 10);
+
+// Advanced configuration
+const advancedPaginator = new PaginatorFieldDto(
+  2,    // current page
+  500,  // total items
+  25    // items per page
+);
+```
+
+```html
+<lite-paginator
+  [paginator]="paginator"
+  (pageChange)="onPageChange($event)"
+  (itemsPerPageChange)="onItemsPerPageChange($event)">
+</lite-paginator>
+```
+
+#### Configuration Options
+The `PaginatorFieldDto` supports the following options:
+- `currentPage`: Current active page (starts from 1)
+- `totalItems`: Total number of items across all pages
+- `itemsPerPage`: Number of items displayed per page
+
+#### Styling
+- `.lite-paginator` - Root container
+- `.paginator-controls` - Main controls container
+- `.page-btn` - Individual page buttons
+- `.page-btn.active` - Active page button
+- `.page-btn.disabled` - Disabled page buttons
+- `.nav-btn` - Previous/Next navigation buttons
+- `.items-select` - Items per page dropdown
+- `.total-info` - Total items display
+
+---
+
+### LiteTable
+
+**Selector:** `lite-table`
+
+**Description:** A flexible data table component with support for custom columns, cell templates, sorting, and integrated pagination.
+
+#### Inputs
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `table` | `TableFieldDto<T>` | - | Table configuration including columns and data |
+
+#### Outputs
+| Property | Type | Description |
+|----------|------|-------------|
+| `pageChange` | `number` | Emitted when user changes page (for paginated tables) |
+| `itemsPerPageChange` | `number` | Emitted when user changes items per page |
+
+#### Features
+- **Flexible Columns:** Custom column definitions with labels, widths, and templates
+- **Data Flexibility:** Supports both primitive and object data types
+- **Custom Cell Templates:** HTML templates for advanced cell formatting
+- **Nested Property Access:** Dot notation for accessing nested object properties
+- **Integrated Pagination:** Optional `lite-paginator` integration
+- **Responsive Design:** Flexbox-based layout that adapts to content
+- **Sorting Support:** Column sorting indicators (visual only)
+- **Empty State:** Automatic display when no data is available
+
+#### Methods
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `getCellValue(row, column)` | `string` | Get formatted cell value for display |
+| `getValue(row, key)` | `any` | Extract value from row using dot notation |
+
+#### Column Configuration
+```typescript
+interface TableColumn {
+  key: string;              // Data property key (supports dot notation)
+  label: string;            // Column header text
+  flex?: string;            // CSS flex property (e.g., '0 0 100px', '1')
+  sortable?: boolean;       // Show sorting indicator
+  cellTemplate?: (value: any, row: any) => string; // Custom HTML template
+}
+```
+
+#### Usage
+```typescript
+import { TableFieldDto, TableColumn } from 'ngx-lite-form';
+
+// Define columns
+const columns: TableColumn[] = [
+  { key: 'name', label: 'Name', flex: '1' },
+  { key: 'email', label: 'Email', flex: '1' },
+  { key: 'location.country', label: 'Country', flex: '0 0 120px' },
+  {
+    key: 'salary',
+    label: 'Salary',
+    flex: '0 0 120px',
+    cellTemplate: (value) => `$${value?.toLocaleString() || '0'}`
+  }
+];
+
+// Basic table
+const table = new TableFieldDto(columns, userData, false);
+
+// Table with pagination
+const paginatedTable = new TableFieldDto(
+  columns,
+  userData,
+  true, // enable pagination
+  new PaginatorFieldDto(1, userData.length, 10)
+);
+```
+
+```html
+<!-- Basic table -->
+<lite-table [table]="table"></lite-table>
+
+<!-- Table with pagination -->
+<lite-table
+  [table]="paginatedTable"
+  (pageChange)="onTablePageChange($event)"
+  (itemsPerPageChange)="onTableItemsPerPageChange($event)">
+</lite-table>
+```
+
+#### Advanced Cell Templates
+```typescript
+// Image column
+{
+  key: 'picture.medium',
+  label: 'Photo',
+  flex: '0 0 80px',
+  cellTemplate: (value) => `<img src="${value}" style="width: 40px; height: 40px; border-radius: 50%;" />`
+}
+
+// Status indicator
+{
+  key: 'status',
+  label: 'Status',
+  flex: '0 0 100px',
+  cellTemplate: (value) => `<span class="status-${value}">${value}</span>`
+}
+
+// Formatted date
+{
+  key: 'dob.date',
+  label: 'Birth Date',
+  flex: '0 0 120px',
+  cellTemplate: (value) => new Date(value).toLocaleDateString('en-AU')
+}
+```
+
+#### Special Data Handling
+The table automatically handles special data formats:
+- **Name Objects:** `{name: {first: "John", last: "Doe"}}` → "John Doe"
+- **Nested Properties:** `location.country` extracts from nested objects
+- **HTML Templates:** Cell templates support full HTML rendering
+
+#### Styling
+- `.lite-table` - Root table container
+- `.table-header` - Header section
+- `.header-row` - Header flex row
+- `.header-cell` - Individual header cells
+- `.table-body` - Body section
+- `.data-row` - Data flex rows
+- `.data-cell` - Individual data cells
+- `.table-paginator` - Paginator container
+- `.empty-row` - Empty state row
+
+---
+
 ## Data Transfer Objects
 
 ### FileFieldDto

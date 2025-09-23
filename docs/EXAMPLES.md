@@ -2613,4 +2613,481 @@ export class ThemedFormComponent {
 }
 ```
 
+---
+
+## Table and Pagination Examples
+
+### Basic Table with Static Data
+
+```typescript
+import { Component } from '@angular/core';
+import { LiteFormModule, TableFieldDto } from 'ngx-lite-form';
+
+interface Employee {
+  id: number;
+  name: string;
+  department: string;
+  salary: number;
+}
+
+@Component({
+  selector: 'app-basic-table',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="table-demo">
+      <h3>Employee Directory</h3>
+      <lite-table [table]="employeeTable"></lite-table>
+    </div>
+  `,
+  styles: [`
+    .table-demo {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+  `]
+})
+export class BasicTableComponent {
+  employeeTable = new TableFieldDto<Employee>(
+    [
+      { key: 'id', label: 'ID', flex: '0 0 80px' },
+      { key: 'name', label: 'Name', flex: '1' },
+      { key: 'department', label: 'Department', flex: '0 0 150px' },
+      { key: 'salary', label: 'Salary', flex: '0 0 120px', cellTemplate: (value) => `$${value?.toLocaleString() || '0'}` }
+    ],
+    [
+      { id: 1, name: 'John Smith', department: 'Engineering', salary: 75000 },
+      { id: 2, name: 'Sarah Johnson', department: 'Marketing', salary: 65000 },
+      { id: 3, name: 'Mike Wilson', department: 'Sales', salary: 55000 },
+      { id: 4, name: 'Emily Davis', department: 'HR', salary: 60000 },
+      { id: 5, name: 'David Brown', department: 'Finance', salary: 70000 }
+    ],
+    false // No pagination
+  );
+}
+```
+
+### Table with Custom Cell Templates
+
+```typescript
+import { Component } from '@angular/core';
+import { LiteFormModule, TableFieldDto } from 'ngx-lite-form';
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  inStock: boolean;
+  rating: number;
+}
+
+@Component({
+  selector: 'app-template-table',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="product-table-demo">
+      <h3>Product Catalog</h3>
+      <lite-table [table]="productTable"></lite-table>
+    </div>
+  `,
+  styles: [`
+    .product-table-demo {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+  `]
+})
+export class TemplateTableComponent {
+  productTable = new TableFieldDto<Product>(
+    [
+      { key: 'id', label: 'ID', flex: '0 0 70px' },
+      { key: 'name', label: 'Product Name', flex: '2' },
+      { key: 'price', label: 'Price', flex: '0 0 100px', cellTemplate: (value) => `<strong>$${value?.toFixed(2)}</strong>` },
+      { key: 'category', label: 'Category', flex: '1' },
+      { key: 'inStock', label: 'Status', flex: '0 0 100px', cellTemplate: (value) => value ? '<span style="color: green;">✓ In Stock</span>' : '<span style="color: red;">✗ Out of Stock</span>' },
+      { key: 'rating', label: 'Rating', flex: '0 0 120px', cellTemplate: (value) => this.renderStars(value) }
+    ],
+    [
+      { id: 1, name: 'Wireless Headphones', price: 199.99, category: 'Electronics', inStock: true, rating: 4.5 },
+      { id: 2, name: 'Ergonomic Chair', price: 399.99, category: 'Furniture', inStock: false, rating: 4.8 },
+      { id: 3, name: 'Coffee Maker', price: 79.99, category: 'Appliances', inStock: true, rating: 4.2 },
+      { id: 4, name: 'Yoga Mat', price: 29.99, category: 'Sports', inStock: true, rating: 4.0 },
+      { id: 5, name: 'Smart Watch', price: 299.99, category: 'Electronics', inStock: false, rating: 4.7 }
+    ],
+    false // No pagination for this example
+  );
+
+  private renderStars(rating: number): string {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+    return '★'.repeat(fullStars) +
+           (hasHalfStar ? '☆' : '') +
+           '☆'.repeat(emptyStars) +
+           ` (${rating})`;
+  }
+}
+```
+
+### Paginated Table with API Data
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { LiteFormModule, TableFieldDto, PaginatorFieldDto } from 'ngx-lite-form';
+
+interface User {
+  name: {
+    first: string;
+    last: string;
+  };
+  email: string;
+  location: {
+    country: string;
+  };
+  dob: {
+    date: string;
+  };
+  picture: {
+    medium: string;
+  };
+}
+
+@Component({
+  selector: 'app-paginated-table',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="user-table-demo">
+      <h3>User Directory (Random User API)</h3>
+      <lite-table
+        [table]="userTable"
+        (pageChange)="onPageChange($event)"
+        (itemsPerPageChange)="onItemsPerPageChange($event)">
+      </lite-table>
+    </div>
+  `,
+  styles: [`
+    .user-table-demo {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+  `]
+})
+export class PaginatedTableComponent implements OnInit {
+  userTable = new TableFieldDto<User>(
+    [
+      { key: 'name', label: 'Name', flex: '1' },
+      { key: 'email', label: 'Email', flex: '1.5' },
+      { key: 'location.country', label: 'Country', flex: '0 0 120px' },
+      { key: 'dob.date', label: 'Birth Date', flex: '0 0 120px', cellTemplate: (value) => new Date(value).toLocaleDateString('en-AU') },
+      { key: 'picture.medium', label: 'Photo', flex: '0 0 80px', cellTemplate: (value) => `<img src="${value}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />` }
+    ],
+    [], // Will be populated by API
+    true, // Enable pagination
+    new PaginatorFieldDto(1, 20, 5) // Start with page 1, 20 total items, 5 per page
+  );
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.loadUsers(1, 5);
+  }
+
+  private loadUsers(page: number, perPage: number) {
+    // Using Random User API for demo data
+    this.http.get<{results: User[]}>(`https://randomuser.me/api/?page=${page}&results=${perPage}`)
+      .subscribe(response => {
+        this.userTable.data = response.results;
+        // Force change detection
+        this.userTable = { ...this.userTable };
+      });
+  }
+
+  onPageChange(page: number) {
+    const paginator = this.userTable.paginatorConfig!;
+    paginator.currentPage = page;
+    this.loadUsers(page, paginator.itemsPerPage);
+  }
+
+  onItemsPerPageChange(itemsPerPage: number) {
+    const paginator = this.userTable.paginatorConfig!;
+    paginator.itemsPerPage = itemsPerPage;
+    paginator.currentPage = 1; // Reset to first page
+    this.loadUsers(1, itemsPerPage);
+  }
+}
+```
+
+### Standalone Pagination Component
+
+```typescript
+import { Component } from '@angular/core';
+import { LiteFormModule, PaginatorFieldDto } from 'ngx-lite-form';
+
+@Component({
+  selector: 'app-pagination-demo',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="pagination-demo">
+      <h3>Pagination Controls</h3>
+
+      <div class="demo-section">
+        <h4>Basic Pagination</h4>
+        <lite-paginator
+          [paginator]="basicPaginator"
+          (pageChange)="onBasicPageChange($event)"
+          (itemsPerPageChange)="onBasicItemsChange($event)">
+        </lite-paginator>
+        <p>Current: Page {{ basicPaginator.currentPage }}, {{ basicPaginator.itemsPerPage }} items per page</p>
+      </div>
+
+      <div class="demo-section">
+        <h4>Large Dataset Pagination</h4>
+        <lite-paginator
+          [paginator]="largePaginator"
+          (pageChange)="onLargePageChange($event)"
+          (itemsPerPageChange)="onLargeItemsChange($event)">
+        </lite-paginator>
+        <p>Current: Page {{ largePaginator.currentPage }}, {{ largePaginator.itemsPerPage }} items per page</p>
+      </div>
+
+      <div class="demo-section">
+        <h4>Compact Pagination</h4>
+        <lite-paginator
+          [paginator]="compactPaginator"
+          (pageChange)="onCompactPageChange($event)">
+        </lite-paginator>
+        <p>Current: Page {{ compactPaginator.currentPage }}, {{ compactPaginator.itemsPerPage }} items per page</p>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .pagination-demo {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .demo-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+    }
+    .demo-section h4 {
+      margin-top: 0;
+      color: #333;
+    }
+    .demo-section p {
+      margin-bottom: 0;
+      color: #666;
+      font-style: italic;
+    }
+  `]
+})
+export class PaginationDemoComponent {
+  basicPaginator = new PaginatorFieldDto(1, 100, 10);
+  largePaginator = new PaginatorFieldDto(1, 1000, 25);
+  compactPaginator = new PaginatorFieldDto(1, 50, 10);
+
+  onBasicPageChange(page: number) {
+    this.basicPaginator = {
+      ...this.basicPaginator,
+      currentPage: page
+    };
+    console.log('Basic paginator page changed to:', page);
+  }
+
+  onBasicItemsChange(itemsPerPage: number) {
+    this.basicPaginator = {
+      ...this.basicPaginator,
+      itemsPerPage,
+      currentPage: 1
+    };
+    console.log('Basic paginator items per page changed to:', itemsPerPage);
+  }
+
+  onLargePageChange(page: number) {
+    this.largePaginator = {
+      ...this.largePaginator,
+      currentPage: page
+    };
+    console.log('Large paginator page changed to:', page);
+  }
+
+  onLargeItemsChange(itemsPerPage: number) {
+    this.largePaginator = {
+      ...this.largePaginator,
+      itemsPerPage,
+      currentPage: 1
+    };
+    console.log('Large paginator items per page changed to:', itemsPerPage);
+  }
+
+  onCompactPageChange(page: number) {
+    this.compactPaginator = {
+      ...this.compactPaginator,
+      currentPage: page
+    };
+    console.log('Compact paginator page changed to:', page);
+  }
+}
+```
+
+### Advanced Table with Nested Data and Complex Templates
+
+```typescript
+import { Component } from '@angular/core';
+import { LiteFormModule, TableFieldDto } from 'ngx-lite-form';
+
+interface Order {
+  id: string;
+  customer: {
+    name: string;
+    email: string;
+    avatar: string;
+  };
+  items: Array<{
+    name: string;
+    quantity: number;
+    price: number;
+  }>;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  total: number;
+  createdAt: string;
+}
+
+@Component({
+  selector: 'app-advanced-table',
+  standalone: true,
+  imports: [LiteFormModule],
+  template: `
+    <div class="orders-table-demo">
+      <h3>Order Management System</h3>
+      <lite-table [table]="ordersTable"></lite-table>
+    </div>
+  `,
+  styles: [`
+    .orders-table-demo {
+      max-width: 1500px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+  `]
+})
+export class AdvancedTableComponent {
+  ordersTable = new TableFieldDto<Order>(
+    [
+      { key: 'id', label: 'Order ID', flex: '0 0 120px' },
+      {
+        key: 'customer',
+        label: 'Customer',
+        flex: '1',
+        cellTemplate: (customer) => `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="${customer.avatar}" style="width: 32px; height: 32px; border-radius: 50%;" />
+            <div>
+              <div style="font-weight: 500;">${customer.name}</div>
+              <div style="font-size: 0.8em; color: #666;">${customer.email}</div>
+            </div>
+          </div>
+        `
+      },
+      {
+        key: 'items',
+        label: 'Items',
+        flex: '0 0 150px',
+        cellTemplate: (items) => `${items.length} item${items.length !== 1 ? 's' : ''}`
+      },
+      {
+        key: 'total',
+        label: 'Total',
+        flex: '0 0 100px',
+        cellTemplate: (value) => `<strong>$${value?.toFixed(2)}</strong>`
+      },
+      {
+        key: 'status',
+        label: 'Status',
+        flex: '0 0 120px',
+        cellTemplate: (status) => this.getStatusBadge(status)
+      },
+      {
+        key: 'createdAt',
+        label: 'Created',
+        flex: '0 0 140px',
+        cellTemplate: (value) => new Date(value).toLocaleString('en-AU')
+      }
+    ],
+    [
+      {
+        id: 'ORD-001',
+        customer: {
+          name: 'Alice Johnson',
+          email: 'alice@example.com',
+          avatar: 'https://randomuser.me/api/portraits/women/1.jpg'
+        },
+        items: [
+          { name: 'Wireless Headphones', quantity: 1, price: 199.99 },
+          { name: 'Phone Case', quantity: 2, price: 29.99 }
+        ],
+        status: 'delivered',
+        total: 259.97,
+        createdAt: '2024-01-15T10:30:00Z'
+      },
+      {
+        id: 'ORD-002',
+        customer: {
+          name: 'Bob Smith',
+          email: 'bob@example.com',
+          avatar: 'https://randomuser.me/api/portraits/men/2.jpg'
+        },
+        items: [
+          { name: 'Laptop', quantity: 1, price: 1299.99 }
+        ],
+        status: 'processing',
+        total: 1299.99,
+        createdAt: '2024-01-20T14:15:00Z'
+      },
+      {
+        id: 'ORD-003',
+        customer: {
+          name: 'Carol Williams',
+          email: 'carol@example.com',
+          avatar: 'https://randomuser.me/api/portraits/women/3.jpg'
+        },
+        items: [
+          { name: 'Mouse', quantity: 1, price: 49.99 },
+          { name: 'Keyboard', quantity: 1, price: 89.99 },
+          { name: 'Monitor', quantity: 1, price: 299.99 }
+        ],
+        status: 'shipped',
+        total: 439.97,
+        createdAt: '2024-01-22T09:45:00Z'
+      }
+    ],
+    false // No pagination for this demo
+  );
+
+  private getStatusBadge(status: string): string {
+    const statusConfig = {
+      pending: { color: '#ffc107', text: 'Pending' },
+      processing: { color: '#007bff', text: 'Processing' },
+      shipped: { color: '#17a2b8', text: 'Shipped' },
+      delivered: { color: '#28a745', text: 'Delivered' },
+      cancelled: { color: '#dc3545', text: 'Cancelled' }
+    };
+
+    const config = statusConfig[status as keyof typeof statusConfig] || { color: '#6c757d', text: status };
+    return `<span style="background: ${config.color}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8em; font-weight: 500;">${config.text}</span>`;
+  }
+}
+```
+
 These examples demonstrate the flexibility and power of the LiteForm library, showing how to create simple forms, complex multi-step forms, dynamic forms, and custom-styled forms to meet various application needs.
