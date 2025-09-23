@@ -8,6 +8,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2025-09-23
+
+### Fixed
+- **CRITICAL**: Fixed "Cannot access 'LiteDateTime' before initialization" error in production deployments (Vercel/Docker)
+- **BREAKING**: Removed `LiteFormModule` from public API exports to resolve circular dependency issues
+- Updated library architecture to use standalone components exclusively
+- Updated package README.md to reflect standalone component usage with proper import examples
+- Fixed ui-sandbox project to use individual component imports instead of module imports
+
+### Changed
+- **BREAKING**: Consumers must now import components individually instead of using `LiteFormModule`:
+  ```typescript
+  // New way (recommended)
+  import { LiteInput, LiteDateTime, LiteSelect } from 'ngx-lite-form';
+  
+  // Old way (no longer available)
+  import { LiteFormModule } from 'ngx-lite-form';
+  ```
+- Improved build stability and reduced bundle size through better tree-shaking
+
+### Migration Notes
+- **For Existing Users**: Update your imports to use individual component imports instead of `LiteFormModule`
+- **Benefits**: Smaller bundle sizes, better tree-shaking, no circular dependency issues
+- **Production Fix**: This resolves deployment failures on Vercel, Docker, and other production platforms
+
+## [1.2.0] - 2025-09-23
+
+### Added
 - **LiteDateTime Component** - Combined date & time picker for selecting both date and time, with custom formatting and time granularity
 - **LiteRadio Component** - Radio button group for single selection from multiple options
 - **LiteCheckbox Component** - Checkbox component for boolean input with validation support
