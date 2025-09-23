@@ -101,3 +101,19 @@ export class FileFieldDto {
 }
 
 export type SnackbarType = 'done' | 'warn' | 'error';
+
+export class PaginatorFieldDto {
+  currentPage: number;
+  totalItems: number;
+  itemsPerPage: number;
+
+  constructor(
+    currentPage: number = 1,
+    totalItems: number = 0,
+    itemsPerPage: number = 10,
+  ) {
+    this.currentPage = currentPage;
+    this.totalItems = totalItems;
+    this.itemsPerPage = itemsPerPage;
+  }
+}

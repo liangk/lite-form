@@ -3,16 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import {
-  LiteInput,
-  LiteTextarea,
-  LiteSelect,
-  LiteMultiSelect,
-  LiteRadio,
-  LiteCheckbox,
-  LiteDate,
-  LitePassword,
-  LiteFile,
-  LiteDateTime,
   FieldDto,
   SelectFieldDto,
   MultiSelectFieldDto,
@@ -21,25 +11,15 @@ import {
   FileFieldDto,
   FormUtils,
   SnackbarType,
-  LiteSnackbarService
+  LiteSnackbarService,
+  LiteFormModule,
+  PaginatorFieldDto
 } from 'lite-form';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    CommonModule,
-    LiteInput,
-    LiteTextarea,
-    LiteSelect,
-    LiteMultiSelect,
-    LiteRadio,
-    LiteCheckbox,
-    LiteDate,
-    LitePassword,
-    LiteFile,
-    LiteDateTime
-  ],
+  imports: [CommonModule, LiteFormModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -169,6 +149,13 @@ export class App {
     false // no preview for docs
   );
 
+  // Paginator demo
+  paginatorDemo: PaginatorFieldDto = new PaginatorFieldDto(
+    1, // currentPage
+    150, // totalItems
+    10, // itemsPerPage
+  );
+
   constructor(private _http: HttpClient, public _snackbar: LiteSnackbarService) {
     this.getPotterBooks();
     this.getPotterCharacters();
@@ -293,5 +280,28 @@ export class App {
       this.multiSelectDemo.options = characters;
       this.multiSelectDemo.displayWith = (option: any) => option?.fullName;
     });
+  }
+
+  // Paginator event handlers
+  onPageChange(page: number) {
+    // Create a new object to trigger change detection in the paginator component
+    this.paginatorDemo = {
+      ...this.paginatorDemo,
+      currentPage: page
+    };
+    console.log('Page changed to:', page);
+    // Here you would typically fetch new data based on the page
+    this.showSnackbar(`Switched to page ${page}`, 'done');
+  }
+
+  onItemsPerPageChange(itemsPerPage: number) {
+    // Create a new object to trigger change detection in the paginator component
+    this.paginatorDemo = {
+      ...this.paginatorDemo,
+      itemsPerPage,
+      currentPage: 1 // Reset to first page when changing items per page
+    };
+    console.log('Items per page changed to:', itemsPerPage);
+    this.showSnackbar(`Items per page set to ${itemsPerPage}`, 'done');
   }
 }

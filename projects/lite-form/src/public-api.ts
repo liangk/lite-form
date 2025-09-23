@@ -16,3 +16,4 @@ export * from './lib/lite-datetime/lite-datetime';
 export * from './lib/lite-password/lite-password';
 export * from './lib/lite-file/lite-file';
 export * from './lib/lite-snackbar/lite-snackbar.service';
+export * from './lib/lite-paginator/lite-paginator';
