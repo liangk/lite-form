@@ -1,0 +1,48 @@
+<div class="lite-table">
+  <!-- Table Header -->
+  <div class="table-header">
+    <div class="header-row">
+      @for (column of table().columns; track column.key) {
+        <div
+          class="header-cell"
+          [style.flex]="column.flex || '1'"
+          [class.sortable]="column.sortable">
+          {{ column.label }}
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Table Body -->
+  <div class="table-body">
+    @for (row of paginatedData(); track $index) {
+      <div class="data-row">
+        @for (column of table().columns; track column.key) {
+          <div class="data-cell" [style.flex]="column.flex || '1'">
+            <span [innerHTML]="getCellValue(row, column)"></span>
+          </div>
+        }
+      </div>
+    }
+    @if (paginatedData().length === 0) {
+      <div class="empty-row">
+        <div
+          class="empty-cell"
+          [style.flex]="'1'">
+          No data available
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Paginator -->
+  @if (table().showPaginator) {
+    <div class="table-paginator">
+      <lite-paginator
+        [paginator]="table().paginatorConfig"
+        (pageChange)="onPageChange($event)"
+        (itemsPerPageChange)="onItemsPerPageChange($event)">
+      </lite-paginator>
+    </div>
+  }
+</div>

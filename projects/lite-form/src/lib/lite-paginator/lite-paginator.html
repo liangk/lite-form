@@ -1,0 +1,60 @@
+<div class="lite-paginator">
+  <!-- Previous Button -->
+  <button
+    class="paginator-btn previous-btn"
+    [disabled]="!hasPrevious()"
+    (click)="goToPrevious()"
+    [title]="'Previous page'"
+    type="button">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- Page Numbers -->
+  <div class="page-numbers">
+    @for (page of getPageNumbers(); track page) {
+      <button
+        class="page-number"
+        [class.active]="page === paginator().currentPage"
+        (click)="goToPage(page)"
+        type="button">
+        {{ page }}
+      </button>
+    }
+  </div>
+
+  <!-- Next Button -->
+  <button
+    class="paginator-btn next-btn"
+    [disabled]="!hasNext()"
+    (click)="goToNext()"
+    [title]="'Next page'"
+    type="button">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- Items per page selector -->
+  <div class="items-per-page">
+    <select
+      [value]="paginator().itemsPerPage"
+      (change)="changeItemsPerPage(+$any($event.target).value)"
+      class="items-select">
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+    <span class="items-label">per page</span>
+  </div>
+
+  <!-- Total items info -->
+  <div class="total-info">
+    <span class="total-text">
+      {{ startItem() }}-{{ endItem() }} of {{ paginator().totalItems }}
+    </span>
+  </div>
+</div>

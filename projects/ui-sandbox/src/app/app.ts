@@ -3,16 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import {
-  LiteInput,
-  LiteTextarea,
-  LiteSelect,
-  LiteMultiSelect,
-  LiteRadio,
-  LiteCheckbox,
-  LiteDate,
-  LitePassword,
-  LiteFile,
-  LiteDateTime,
   FieldDto,
   SelectFieldDto,
   MultiSelectFieldDto,
@@ -21,25 +11,16 @@ import {
   FileFieldDto,
   FormUtils,
   SnackbarType,
-  LiteSnackbarService
+  LiteSnackbarService,
+  LiteFormModule,
+  PaginatorFieldDto,
+  TableFieldDto
 } from 'lite-form';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    CommonModule,
-    LiteInput,
-    LiteTextarea,
-    LiteSelect,
-    LiteMultiSelect,
-    LiteRadio,
-    LiteCheckbox,
-    LiteDate,
-    LitePassword,
-    LiteFile,
-    LiteDateTime
-  ],
+  imports: [CommonModule, LiteFormModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -169,9 +150,45 @@ export class App {
     false // no preview for docs
   );
 
+  // Paginator demo
+  paginatorDemo: PaginatorFieldDto = new PaginatorFieldDto(
+    1, // currentPage
+    150, // totalItems
+    10, // itemsPerPage
+  );
+
+  // Table demo data
+  tableDemo: TableFieldDto = new TableFieldDto(
+    [
+      { key: 'name', label: 'Name', flex: '1' },
+      { key: 'location.country', label: 'Country', flex: '0 0 120px' },
+      { key: 'picture.medium', label: 'Picture', flex: '0 0 80px', cellTemplate: (value) => `<img src="${value}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />` },
+      { key: 'dob.date', label: 'Date of Birth', flex: '0 0 120px', cellTemplate: (value) => new Date(value).toLocaleDateString('en-AU') },
+      { key: 'registered.date', label: 'Registered', flex: '0 0 160px', cellTemplate: (value) => new Date(value).toLocaleString('en-AU') }
+    ],
+    [], // Will be populated by API call
+    false // No paginator for basic demo
+  );
+
+  // Table demo with paginator
+  tableWithPaginatorDemo: TableFieldDto = new TableFieldDto(
+    [
+      { key: 'name', label: 'Name', flex: '1' },
+      { key: 'email', label: 'Email', flex: '1' },
+      { key: 'gender', label: 'Gender', flex: '0 0 100px' },
+      { key: 'location.country', label: 'Country', flex: '0 0 120px' },
+      { key: 'phone', label: 'Phone', flex: '0 0 140px' }
+    ],
+    [], // Will be populated by API call
+    true, // Enable paginator
+    new PaginatorFieldDto(1, 20, 10) // Start with page 1, 20 items total, 20 per page
+  );
+
   constructor(private _http: HttpClient, public _snackbar: LiteSnackbarService) {
     this.getPotterBooks();
     this.getPotterCharacters();
+    this.getTableDemoData();
+    this.getTableWithPaginatorDemoData();
     this.dateDemo.formControl.setValue('2025-10-01');
     this.dateDemo.formControl.valueChanges.subscribe((value: any) => {
       console.log('Date changed:', value);
@@ -293,5 +310,70 @@ export class App {
       this.multiSelectDemo.options = characters;
       this.multiSelectDemo.displayWith = (option: any) => option?.fullName;
     });
+  }
+
+  getTableDemoData() {
+    // Fetch 10 users from page 1
+    this._http.get<any>('https://randomuser.me/api/?page=1&results=10').subscribe((response: any) => {
+      console.log('Table demo data:', response.results);
+      this.tableDemo.data = response.results;
+      // Force change detection by reassigning the object
+      this.tableDemo = { ...this.tableDemo };
+    });
+  }
+
+  getTableWithPaginatorDemoData() {
+    // Fetch all 20 users for client-side pagination
+    this._http.get<any>('https://randomuser.me/api/?page=1&results=20').subscribe((response: any) => {
+      console.log('Table with paginator demo data:', response.results);
+      this.tableWithPaginatorDemo.data = response.results;
+      // Update paginator config with actual total
+      this.tableWithPaginatorDemo.paginatorConfig.totalItems = response.results.length;
+      // Force change detection by reassigning the object
+      this.tableWithPaginatorDemo = { ...this.tableWithPaginatorDemo };
+    });
+  }
+
+  // Paginator event handlers
+  onPageChange(page: number) {
+    // Create a new object to trigger change detection in the paginator component
+    this.paginatorDemo = {
+      ...this.paginatorDemo,
+      currentPage: page
+    };
+    console.log('Page changed to:', page);
+    // Here you would typically fetch new data based on the page
+    this.showSnackbar(`Switched to page ${page}`, 'done');
+  }
+
+  onItemsPerPageChange(itemsPerPage: number) {
+    // Create a new object to trigger change detection in the paginator component
+    this.paginatorDemo = {
+      ...this.paginatorDemo,
+      itemsPerPage,
+      currentPage: 1 // Reset to first page when changing items per page
+    };
+    console.log('Items per page changed to:', itemsPerPage);
+    this.showSnackbar(`Items per page set to ${itemsPerPage}`, 'done');
+  }
+
+  // Table event handlers
+  onTablePageChange(page: number) {
+    if (this.tableWithPaginatorDemo.paginatorConfig) {
+      this.tableWithPaginatorDemo.paginatorConfig.currentPage = page;
+      // No need to fetch new data - table handles client-side pagination
+      this.tableWithPaginatorDemo = { ...this.tableWithPaginatorDemo };
+      this.showSnackbar(`Table page changed to ${page}`, 'done');
+    }
+  }
+
+  onTableItemsPerPageChange(itemsPerPage: number) {
+    if (this.tableWithPaginatorDemo.paginatorConfig) {
+      this.tableWithPaginatorDemo.paginatorConfig.itemsPerPage = itemsPerPage;
+      this.tableWithPaginatorDemo.paginatorConfig.currentPage = 1; // Reset to first page
+      // No need to fetch new data - table handles client-side pagination
+      this.tableWithPaginatorDemo = { ...this.tableWithPaginatorDemo };
+      this.showSnackbar(`Table items per page set to ${itemsPerPage}`, 'done');
+    }
   }
 }

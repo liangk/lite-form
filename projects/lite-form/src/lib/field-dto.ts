@@ -101,3 +101,46 @@ export class FileFieldDto {
 }
 
 export type SnackbarType = 'done' | 'warn' | 'error';
+
+export class PaginatorFieldDto {
+  currentPage: number;
+  totalItems: number;
+  itemsPerPage: number;
+
+  constructor(
+    currentPage: number = 1,
+    totalItems: number = 0,
+    itemsPerPage: number = 10
+  ) {
+    this.currentPage = currentPage;
+    this.totalItems = totalItems;
+    this.itemsPerPage = itemsPerPage;
+  }
+}
+
+export interface TableColumn {
+  key: string;
+  label: string;
+  flex?: string;
+  sortable?: boolean;
+  cellTemplate?: (value: any, row: any) => string;
+}
+
+export class TableFieldDto<T = any> {
+  columns: TableColumn[];
+  data: T[];
+  showPaginator?: boolean;
+  paginatorConfig: PaginatorFieldDto;
+
+  constructor(
+    columns: TableColumn[],
+    data: T[],
+    showPaginator: boolean = false,
+    paginatorConfig: PaginatorFieldDto = new PaginatorFieldDto()
+  ) {
+    this.columns = columns;
+    this.data = data;
+    this.showPaginator = showPaginator;
+    this.paginatorConfig = paginatorConfig;
+  }
+}

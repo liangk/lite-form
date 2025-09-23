@@ -1,3 +1,4 @@
+* { box-sizing: border-box; }
 input, .label, textarea {
   font-size: 1em; color: #333;
 }
@@ -8,9 +9,9 @@ input, .label, textarea {
 }
 .lite-input.in-edit {
   .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
-  font-size: 1em; line-height: 36px; font-weight: normal; }
+  font-size: 1em; line-height: 40px; font-weight: normal; }
   input { border: 1px solid #ccc; border-radius: 4px; padding: 0 8px; font-size: 1em; outline: none;
-    line-height: 36px; height: 36px; }
+    line-height: 40px; height: 40px; }
   input:focus {
     border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5);
   }
@@ -19,7 +20,7 @@ input, .label, textarea {
     line-height: initial;
   }
   input.invalid {
-    border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25);
+    border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 2px 1px rgba(220, 53, 69, 0.25);
   }
 }
 .lite-password {
@@ -31,11 +32,11 @@ input, .label, textarea {
   .input-container {
     position: relative; display: flex; align-items: center;
     input { border: 1px solid #ccc; border-radius: 4px; padding: 0 2.5em 0 8px; font-size: 1em; outline: none;
-      line-height: 36px; height: 36px; width: 100%; }
+      line-height: 40px; height: 40px; width: 100%; }
     input:focus { border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5); }
     input.invalid { border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25); }
     .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
-      font-size: 1em; line-height: 36px; font-weight: normal; }
+      font-size: 1em; line-height: 40px; font-weight: normal; }
     input:focus + .label, input:not(:placeholder-shown) + .label {
       transform: translateY(-10px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
       line-height: initial; }
@@ -86,9 +87,9 @@ input, .label, textarea {
 }
 .lite-textarea.in-edit {
   .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
-  font-size: 1em; line-height: 36px; font-weight: normal; }
+  font-size: 1em; line-height: 40px; font-weight: normal; }
   textarea { border: 1px solid #ccc; border-radius: 4px; padding: 5px 8px; font-size: 1em; outline: none;
-    line-height: 36px; }
+    line-height: 40px; }
   textarea:focus {
     border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5);
   }
@@ -107,9 +108,9 @@ input, .label, textarea {
 }
 .lite-select.in-edit {
   .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
-  font-size: 1em; line-height: 36px; font-weight: normal; }
+  font-size: 1em; line-height: 40px; font-weight: normal; }
   input { border: 1px solid #ccc; border-radius: 4px; padding: 0 2em 0 8px; font-size: 1em; outline: none;
-    line-height: 36px; height: 36px; }
+    line-height: 40px; height: 40px; }
   input:focus {
     border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5);
   }
@@ -147,11 +148,11 @@ input, .label, textarea {
 }
 .lite-multi-select.in-edit {
   .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
-    font-size: 1em; line-height: 36px; font-weight: normal; }
+    font-size: 1em; line-height: 40px; font-weight: normal; }
   
   .input-container {
     border: 1px solid #ccc; border-radius: 4px; background: #fff; outline: none;
-    min-height: 36px; padding: 0 2em 0 8px; position: relative;
+    min-height: 40px; padding: 0 2em 0 8px; position: relative;
     transition: height 0.2s ease-in-out;
     &:focus-within { border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5); }
     &.invalid { border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25); }
@@ -179,7 +180,7 @@ input, .label, textarea {
     }    
     .filter-input {
       border: none; outline: none; background: transparent; font-size: 1em;
-      width: 100%; height: 100%; min-height: 36px; position: relative; z-index: 2;
+      width: 100%; height: 100%; min-height: 40px; position: relative; z-index: 2;
       &::placeholder { color: #aaa; }
     }
   }
@@ -278,9 +279,9 @@ input, .label, textarea {
 .lite-date.in-edit {
   position: relative;
   .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
-    font-size: 1em; line-height: 36px; font-weight: normal; }
+    font-size: 1em; line-height: 40px; font-weight: normal; }
   input { border: 1px solid #ccc; border-radius: 4px; padding: 0 2em 0 8px; font-size: 1em; outline: none;
-    line-height: 36px; height: 36px; color-scheme: light; }
+    line-height: 40px; height: 40px; color-scheme: light; }
   input:focus { border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5); }
   input:focus + .label, input:not([value=""]) + .label, .label.float {
     transform: translateY(-10px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
@@ -518,4 +519,52 @@ input, .label, textarea {
       small { font-size: 0.9em; }
     }
   }
+}
+
+.lite-paginator { display: flex; align-items: center; gap: 12px; padding: 8px 0; flex-wrap: wrap; justify-content: center;
+  .paginator-btn { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border: 1px solid #ccc; background: #fff; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; color: #666;
+    &:hover:not(:disabled) { background: #f8f9fa; border-color: #2079e1; color: #2079e1; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+    svg { width: 16px; height: 16px; }
+  }
+  .page-numbers { display: flex; gap: 4px; align-items: center; }
+  .page-number { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border: 1px solid #ccc; background: #fff; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; font-size: 0.85em; color: #666;
+    &:hover { background: #f8f9fa; border-color: #2079e1; color: #2079e1; }
+    &.active { background: #2079e1; border-color: #2079e1; color: #fff; font-weight: 600; }
+  }
+  .items-per-page { display: flex; align-items: center; gap: 6px; font-size: 0.85em; color: #666;
+    .items-select { padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-size: 0.85em; cursor: pointer; min-width: 60px; color: #666;
+      &:focus { outline: none; border-color: #2079e1; box-shadow: 0 0 0 2px rgba(32, 121, 225, 0.2); }
+    }
+    .items-label { white-space: nowrap; }
+  }
+  .total-info { font-size: 0.85em; color: #666;
+    .total-text { white-space: nowrap; }
+  }
+}
+
+.lite-table { width: 100%; background: #fff;
+  .table-header { background: #f8f8f8; border-bottom: 1px solid #dee2e6;
+    .header-row { display: flex;
+      .header-cell { padding: 5px 10px; text-align: left; font-weight: 600; color: #333; font-size: 0.9em; border-right: 1px solid #dee2e6; min-height: 36px; display: flex; align-items: center;
+        &:last-child { border-right: none; }
+        &.sortable { cursor: pointer; user-select: none;
+          &:hover { background: #e9ecef; }
+        }
+      }
+    }
+  }
+  .table-body {
+    .data-row { display: flex; border-bottom: 1px solid #dee2e6; transition: background-color 0.2s ease;
+      &:hover { background: #f8f9fa; }
+      &:last-child { border-bottom: none; }
+      .data-cell { padding: 5px 10px; border-right: 1px solid #dee2e6; font-size: 0.9em; color: #333; min-height: 36px; display: flex; align-items: center;
+        &:last-child { border-right: none; }
+      }
+    }
+    .empty-row { display: flex; border-bottom: 1px solid #dee2e6;
+      .empty-cell { padding: 40px 16px; text-align: center; color: #6c757d; font-style: italic; font-size: 0.9em; }
+    }
+  }
+  .table-paginator { margin-top: 16px; display: flex; justify-content: center; }
 }
