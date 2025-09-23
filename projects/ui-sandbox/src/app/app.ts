@@ -12,7 +12,18 @@ import {
   FormUtils,
   SnackbarType,
   LiteSnackbarService,
-  LiteFormModule,
+  LiteInput,
+  LitePassword,
+  LiteTextarea,
+  LiteSelect,
+  LiteMultiSelect,
+  LiteRadio,
+  LiteCheckbox,
+  LiteDate,
+  LiteDateTime,
+  LiteFile,
+  LitePaginator,
+  LiteTable,
   PaginatorFieldDto,
   TableFieldDto
 } from 'lite-form';
@@ -20,7 +31,21 @@ import {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, LiteFormModule],
+  imports: [
+    CommonModule,
+    LiteInput,
+    LitePassword,
+    LiteTextarea,
+    LiteSelect,
+    LiteMultiSelect,
+    LiteRadio,
+    LiteCheckbox,
+    LiteDate,
+    LiteDateTime,
+    LiteFile,
+    LitePaginator,
+    LiteTable
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
