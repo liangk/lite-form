@@ -22,10 +22,12 @@ import {
   LiteDate,
   LiteDateTime,
   LiteFile,
+  LitePanel,
   LitePaginator,
   LiteTable,
   PaginatorFieldDto,
-  TableFieldDto
+  TableFieldDto,
+  LitePanelAction
 } from 'lite-form';
 
 @Component({
@@ -43,6 +45,7 @@ import {
     LiteDate,
     LiteDateTime,
     LiteFile,
+    LitePanel,
     LitePaginator,
     LiteTable
   ],
@@ -209,6 +212,16 @@ export class App {
     new PaginatorFieldDto(1, 20, 10) // Start with page 1, 20 items total, 20 per page
   );
 
+  // Lite panel demos
+  basicPanelOpen = signal(false);
+  confirmationPanelOpen = signal(false);
+  panelResult = signal<unknown | null>(null);
+
+  confirmationPanelActions: LitePanelAction[] = [
+    { label: 'Delete', value: 'delete', variant: 'danger' },
+    { label: 'Cancel', value: null, variant: 'secondary' }
+  ];
+
   constructor(private _http: HttpClient, public _snackbar: LiteSnackbarService) {
     this.getPotterBooks();
     this.getPotterCharacters();
@@ -249,6 +262,32 @@ export class App {
     this.documentFileDemo.formControl.valueChanges.subscribe((files: any[]) => {
       console.log('Document files changed:', files);
     });
+  }
+
+  openBasicPanel() {
+    this.panelResult.set(null);
+    this.basicPanelOpen.set(true);
+  }
+
+  onBasicPanelClosed(result: unknown | null) {
+    this.panelResult.set(result ?? null);
+    this.basicPanelOpen.set(false);
+  }
+
+  openConfirmationPanel() {
+    this.panelResult.set(null);
+    this.confirmationPanelOpen.set(true);
+  }
+
+  onConfirmationPanelClosed(result: unknown | null) {
+    this.panelResult.set(result ?? null);
+    this.confirmationPanelOpen.set(false);
+
+    if (result === 'delete') {
+      this.showSnackbar('Item deleted successfully.', 'done');
+    } else if (result === null) {
+      this.showSnackbar('Action cancelled.', 'warn');
+    }
   }
 
   /**

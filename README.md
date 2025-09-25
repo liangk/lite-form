@@ -1,19 +1,20 @@
 # Lite Form - Angular Form Components Library
 
 ## Overview
-Lite Form is a comprehensive Angular library that provides lightweight, customizable form components with built-in validation, styling, and animations. It includes input, password, textarea, select, multi-select, radio, checkbox, file upload, advanced date picker, and datetime-picker components designed for Angular 17+ with standalone component support.
+Lite Form is a comprehensive Angular library that provides lightweight, customizable form components with built-in validation, styling, and animations. It includes input, password, textarea, select, multi-select, radio, checkbox, file upload, advanced date picker, datetime-picker, and panel components designed for Angular 20+ with standalone component support.
 
 ## Features
-- ✅ **Modern Angular 17+** - Built with standalone components and signals
-- ✅ **TypeScript Support** - Fully typed with generic support
+- ✅ **Modern Angular 20+** - Built with standalone components, signals, and latest CLI tooling
+- ✅ **TypeScript Support** - Fully typed with generic support and DTO helpers
 - ✅ **Reactive Forms** - Integrated with Angular Reactive Forms
-- ✅ **Built-in Validation** - Form validation with error messages
+- ✅ **Built-in Validation** - Form validation with error messages and utilities
 - ✅ **Password Security** - Advanced password validation and strength analysis
 - ✅ **Date Handling** - Single date and date range selection with custom formatting
 - ✅ **File Upload** - Drag & drop file upload with camera capture and file management
+- ✅ **Panels & Dialogs** - Template-driven modal panels with configurable action buttons
 - ✅ **Data Tables** - Flexible table component with custom columns, sorting, and pagination
 - ✅ **Pagination** - Standalone pagination component with customizable navigation
-- ✅ **Customizable Styling** - SCSS-based styling system
+- ✅ **Customizable Styling** - Space-saving SCSS style guide for consistent overrides
 - ✅ **Accessibility** - ARIA-compliant form controls
 - ✅ **Animations** - Smooth transitions and interactions
 
@@ -22,10 +23,10 @@ Lite Form is a comprehensive Angular library that provides lightweight, customiz
 ### 🎯 LiteInput
 Basic text input component with floating labels and validation.
 
-### � LitePassword
+### 🔐 LitePassword
 Password input component with toggle visibility, strength indicator, and advanced validation features.
 
-### �📝 LiteTextarea  
+### 📝 LiteTextarea  
 Multi-line text input with auto-resize capabilities.
 
 ### 📋 LiteSelect
@@ -46,11 +47,17 @@ Advanced date picker component with single date and date range selection, custom
 ### 📎 LiteFile
 File upload component with drag & drop, badge, file management panel, and camera capture support.
 
+### 📅 LiteDateTime
+Date and time picker with timezone-safe handling and consistent formatting utilities.
+
 ### 📊 LiteTable
 Flexible data table component with custom columns, cell templates, nested property access, and integrated pagination.
 
 ### 📄 LitePaginator
 Standalone pagination component with customizable page navigation, items per page selection, and total item display.
+
+### 🪟 LitePanel
+Modal-style panel component that renders custom templates, configurable header text, and action buttons via `LitePanelAction` definitions. Supports custom `width`, `height`, `maxWidth`, and `maxHeight` inputs with automatic `px` suffix for numeric values.
 
 ---
 
@@ -65,9 +72,9 @@ npm install ngx-lite-form
 ### 1. Import Components
 
 ```typescript
-import { 
-  LiteInput, 
-  LitePassword, 
+import {
+  LiteInput,
+  LitePassword,
   LiteTextarea,
   LiteSelect,
   LiteMultiSelect,
@@ -77,11 +84,22 @@ import {
   LiteDateTime,
   LiteFile,
   LiteTable,
-  LitePaginator
+  LitePaginator,
+  LitePanel
 } from 'ngx-lite-form';
 import { FormControl, Validators } from '@angular/forms';
 
-import { FieldDto, SelectFieldDto, MultiSelectFieldDto, RadioFieldDto, DateRangeFieldDto, FileFieldDto, TableFieldDto, PaginatorFieldDto } from 'ngx-lite-form';
+import {
+  FieldDto,
+  SelectFieldDto,
+  MultiSelectFieldDto,
+  RadioFieldDto,
+  DateRangeFieldDto,
+  FileFieldDto,
+  TableFieldDto,
+  PaginatorFieldDto,
+  LitePanelAction
+} from 'ngx-lite-form';
 
 @Component({
   standalone: true,
@@ -194,6 +212,24 @@ export class AppComponent {
 
   // Standalone paginator
   paginator = new PaginatorFieldDto(1, 500, 25);
+
+  // Panel demo state
+  basicPanelOpen = signal(false);
+  panelResult = signal<unknown | null>(null);
+  confirmationActions: LitePanelAction[] = [
+    { label: 'Confirm', value: 'confirm', variant: 'danger' },
+    { label: 'Cancel', value: null, variant: 'secondary' }
+  ];
+
+  openPanel() {
+    this.panelResult.set(null);
+    this.basicPanelOpen.set(true);
+  }
+
+  onPanelClosed(result: unknown | null) {
+    this.panelResult.set(result);
+    this.basicPanelOpen.set(false);
+  }
 }
 ```
 
@@ -229,6 +265,23 @@ export class AppComponent {
   (pageChange)="onPaginatorPageChange($event)"
   (itemsPerPageChange)="onPaginatorItemsChange($event)">
 </lite-paginator>
+
+<!-- Lite Panel -->
+<button type="button" (click)="openPanel()">Open Panel</button>
+
+@if (basicPanelOpen()) {
+  <lite-panel
+    [title]="'Review details'"
+    [content]="panelTemplate"
+    [actions]="confirmationActions"
+    (closed)="onPanelClosed($event)">
+  </lite-panel>
+}
+
+<ng-template #panelTemplate let-close="close">
+  <p>Panel content can render any Angular template.</p>
+  <button type="button" (click)="close('acknowledged')">Acknowledge</button>
+</ng-template>
 ```
 ---
 
@@ -731,141 +784,28 @@ The library includes pre-built SCSS styles that provide:
 - Responsive design
 
 ### Custom Styling
-Override the default styles by importing and customizing the SCSS:
-
-```scss
-@import 'ngx-lite-form/src/lib/lite-styles.scss';
-
-// Override variables
-.lite-input.in-edit {
-  input:focus {
-    border-color: #your-brand-color;
-    box-shadow: 0 0 5px rgba(your-brand-color, 0.5);
-  }
-}
-```
+- Follow the compact SCSS conventions described in [docs/STYLEGUIDE.md](https://github.com/liangk/lite-form/blob/main/docs/STYLEGUIDE.md).
+- Components expose BEM-style class names for targeted overrides.
+- Import `lite-styles.scss` to leverage shared design tokens and mixins.
 
 ---
 
 ## Development
-
-### Project Structure
+Project layout at a glance:
 
 ```
-projects/lite-form/            # Library source
-├── src/lib/
-│   ├── lite-input/           # Input component
-│   ├── lite-password/        # Password component
-│   ├── lite-textarea/        # Textarea component  
-│   ├── lite-select/          # Select component
-│   ├── lite-multi-select/    # Multi-select component
-│   ├── lite-radio/           # Radio button component
-│   ├── lite-checkbox/        # Checkbox component
-│   ├── lite-date/            # Date picker component
-│   ├── lite-file/            # File upload component
-│   ├── lite-table/           # Data table component
-│   ├── lite-paginator/       # Pagination component
-│   ├── field-dto.ts          # Data transfer objects
-│   ├── form-utils.ts         # Utility functions
-│   ├── lite-styles.scss      # Shared styles
-│   └── lite-form.module.ts   # Module definition
-└── public-api.ts            # Public exports
-
-projects/ui-sandbox/          # Demo application
-├── src/app/
-│   ├── app.html             # Component demos
-│   ├── app.ts               # Demo logic
-│   └── app.scss             # Demo styles
+lite-form/
+├── projects/lite-form/       # Library source and public API
+├── projects/ui-sandbox/      # Demo application showcasing components
+├── docs/                     # Documentation, guides, and changelog
+└── scripts/                  # Build and publishing utilities
 ```
 
-### Building the Library
-
-```bash
-# Build the library
-ng build ngx-lite-form
-
-# Build with watch mode
-ng build ngx-lite-form --watch
-
-# Run the demo application
-ng serve ui-sandbox
-```
-
-### Running Tests
-
-```bash
-# Unit tests
-ng test ngx-lite-form
-
-# E2E tests  
-ng e2e ui-sandbox
-```
-
----
-
-## API Reference
-
-### FormUtils
-Utility class providing helper methods for form validation:
-
-```typescript
-class FormUtils {
-  static isRequired(control: FormControl): boolean
-  static hasErrors(control: FormControl): boolean  
-  static getErrorMessages(control: FormControl, fieldLabel: string): string[]
-}
-```
-
-### Component Methods
-
-#### LiteMultiSelect
-- `hasSelection(): boolean` - Check if any items are selected
-- `getSelectedCount(): number` - Get number of selected items
-- `getSelectedItems(): T[]` - Get array of selected items
-- `removeSelectedItem(item: T): void` - Remove specific selected item
-
----
-
-## Browser Support
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
----
-
-## Contributing
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
+For the full contributor guide and extended structure diagram, see [docs/CONTRIBUTING.md](https://github.com/liangk/lite-form/blob/main/docs/CONTRIBUTING.md).
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/liangk/lite-form/blob/main/LICENSE) file for details.
 
 ---
 
 ## Changelog
-
-### v1.2.0
-- **LiteTable Component**: Flexible data table with custom columns, cell templates, nested property access, and integrated pagination
-- **LitePaginator Component**: Standalone pagination component with customizable navigation, items per page selection, and total item display
-- **TableFieldDto & PaginatorFieldDto**: New data transfer objects for table and pagination configuration
-- **Flexbox Table Layout**: Modern CSS flexbox approach instead of traditional table elements
-- **Custom Cell Rendering**: HTML template functions for advanced cell formatting
-- **Nested Data Access**: Dot notation support for complex object structures
-- **Real API Integration**: Demo using Random User API for authentic data
-- **Enhanced Documentation**: Comprehensive API documentation and usage examples
-
-### v1.0.0
-- Initial release with input, textarea, select, and multi-select components
-- TypeScript support with generic DTOs
-- Built-in validation and error handling
-- Responsive SCSS styling
-- Angular 17+ standalone component support
-
-## SCSS Style Guide
-See [`docs/STYLEGUIDE.md`](docs/STYLEGUIDE.md) for conventions on writing compact, maintainable SCSS.
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.0` release with `LitePanel` and SCSS style-guide updates.

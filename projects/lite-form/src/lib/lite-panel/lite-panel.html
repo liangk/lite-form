@@ -1,0 +1,39 @@
+<div class="lite-panel__backdrop" (click)="onBackdropClick()"></div>
+
+<div
+  class="lite-panel"
+  role="dialog"
+  aria-modal="true"
+  [ngStyle]="panelStyles()"
+  [attr.aria-labelledby]="title() ? panelTitleId : null">
+  @if (title()) {
+    <header class="lite-panel__header">
+      <h2 class="lite-panel__title" [id]="panelTitleId">{{ title() }}</h2>
+      <button type="button" class="lite-panel__close" (click)="close(null)" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </header>
+  }
+
+  <section class="lite-panel__content">
+    @if (contentTemplate()) {
+      <ng-container *ngTemplateOutlet="contentTemplate(); context: templateContext"></ng-container>
+    } @else if (contentText()) {
+      <p class="lite-panel__content-text">{{ contentText() }}</p>
+    } @else {
+      <ng-content></ng-content>
+    }
+  </section>
+
+  <footer class="lite-panel__actions">
+    @for (action of resolvedActions(); track action) {
+      <button
+        type="button"
+        [ngClass]="getActionClasses(action)"
+        (click)="onAction(action)"
+      >
+        {{ action.label }}
+      </button>
+    }
+  </footer>
+</div>

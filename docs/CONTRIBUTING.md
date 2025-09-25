@@ -30,8 +30,8 @@ This project and everyone participating in it is governed by our Code of Conduct
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- npm or yarn
+- Node.js (v18 or higher)
+- npm (ships with Node) or yarn
 - Angular CLI (v17 or higher)
 - Git
 
@@ -78,7 +78,9 @@ lite-form/
 - `npm run build` - Build the library
 - `npm run test` - Run unit tests
 - `npm run test:watch` - Run tests in watch mode
-- `npm run lint` - Run linting
+- `npm run lint` - Run linting for all configured projects
+- `npx ng lint lite-form` - Lint the library only
+- `npx ng lint ui-sandbox` - Lint the demo application
 - `npm run build:lib` - Build library only
 
 ## Contributing Guidelines
@@ -192,11 +194,18 @@ Follow our SCSS structure:
 
 ### Styling Standards
 
-- Use space-saving format (properties on same line when short)
+- Use the space-saving SCSS format outlined in `docs/STYLEGUIDE.md`
 - Follow existing color scheme and spacing
-- Ensure responsive design
+- Ensure responsive design across component breakpoints
 - Test across different browsers
-- Use CSS custom properties for theming
+- Use CSS custom properties for theming when appropriate
+
+#### SCSS Style Guide
+
+- Keep declarations compact, grouping related properties when practical
+- Prefer shorthand syntax for margin, padding, border, and background
+- Limit nesting depth and keep selectors concise
+- Reference `docs/STYLEGUIDE.md` before submitting style updates
 
 ### Performance Considerations
 
@@ -249,7 +258,14 @@ describe('Lite{Component}Component', () => {
 
 ### Integration Tests
 
-Test components within the ui-sandbox application to ensure real-world functionality.
+- Test components within the ui-sandbox application to ensure real-world functionality.
+- Validate SCSS changes against the sandbox to confirm style guide compliance.
+
+### Component Highlights
+
+- `LitePanel` delivers modal-style panels with configurable templates and action buttons.
+- Demo usage lives in `projects/ui-sandbox/src/app/app.html` and includes confirmation and information workflows.
+- Reuse the shared DTOs (`LitePanelAction`, etc.) exported via `projects/lite-form/src/public-api.ts`.
 
 ## Documentation
 
