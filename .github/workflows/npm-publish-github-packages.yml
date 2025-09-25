@@ -52,7 +52,7 @@ jobs:
         SOURCE_VERSION=$(node -p "require('./projects/lite-form/package.json').version")
         echo "SOURCE_VERSION=$SOURCE_VERSION" >> $GITHUB_ENV
         cd dist/lite-form
-        node -e "const fs=require('fs'); const path=require('path'); const pkgPath=path.resolve('package.json'); const pkg=JSON.parse(fs.readFileSync(pkgPath,'utf8')); const version=process.env.SOURCE_VERSION; if(pkg.version!==version){pkg.version=version; fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2)+'\n');}"
+        node -e "const fs=require('fs'); const path=require('path'); const version=process.argv[1]; if(!version){throw new Error('Missing version argument');} const pkgPath=path.resolve('package.json'); const pkg=JSON.parse(fs.readFileSync(pkgPath,'utf8')); if(pkg.version!==version){pkg.version=version;} fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2)+'\n');" "$SOURCE_VERSION"
 
     - name: Publish to npmjs (public)
       if: github.ref == 'refs/heads/main'
