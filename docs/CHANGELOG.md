@@ -5,7 +5,18 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.0] - 2025-09-23
+## [1.3.0] - 2025-09-25
+
+### Added
+- LitePanel component with configurable templates and action buttons exported via `projects/lite-form/src/public-api.ts`.
+- UI sandbox demos showcasing LitePanel confirmation and information flows in `projects/ui-sandbox/src/app/app.html`.
+- SCSS style guide enforcement for sandbox and library styles based on `docs/STYLEGUIDE.md`.
+
+### Changed
+- Updated TypeScript path mapping (`tsconfig.json`) so the sandbox consumes the library source during development.
+- Consolidated documentation to live under `docs/`, removing duplicate root `CONTRIBUTING.md` and `CHANGELOG.md` files.
+
+## [1.2.3] - 2025-09-23
 
 ### Added
 - **LiteTable Component**: Flexible data table with custom columns and pagination

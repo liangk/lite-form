@@ -8,6 +8,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "paths": {
       "lite-form": [
+        "./projects/lite-form/src/public-api",
         "./dist/lite-form"
       ]
     },

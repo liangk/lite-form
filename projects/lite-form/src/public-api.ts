@@ -17,3 +17,4 @@ export * from './lib/lite-file/lite-file';
 export * from './lib/lite-snackbar/lite-snackbar.service';
 export * from './lib/lite-paginator/lite-paginator';
 export * from './lib/lite-table/lite-table';
+export * from './lib/lite-panel/lite-panel';

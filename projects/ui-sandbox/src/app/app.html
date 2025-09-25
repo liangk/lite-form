@@ -37,6 +37,16 @@
     <button (click)="showSnackbar('Lorem ipsum dolor sit amet', 'warn')">Test snackbar - Warn</button>
     <button (click)="showSnackbar('Lorem ipsum dolor sit amet', 'error', 5000)">Test snackbar - Error</button>
   </div>
+  <div class="row panel-demo">
+    <div class="col">
+      <h2>Panel Demo</h2>
+      <div class="panel-demo__buttons">
+        <button (click)="openBasicPanel()">Open Basic Panel</button>
+        <button (click)="openConfirmationPanel()">Open Confirmation Panel</button>
+      </div>
+      <p>Last action result: <strong>{{ panelResult() === null ? 'none' : panelResult() }}</strong></p>
+    </div>
+  </div>
   <div class="row">
     <div class="col">
       <h2>Textarea Demo</h2>
@@ -121,4 +131,39 @@
       (itemsPerPageChange)="onTableItemsPerPageChange($event)">
     </lite-table>
   </div>
+
+  @if (basicPanelOpen()) {
+    <lite-panel
+      [title]="'Welcome to Lite Panel'"
+      [content]="basicPanelTemplate"
+      width="480"
+      maxHeight="75vh"
+      (closed)="onBasicPanelClosed($event)"
+    ></lite-panel>
+  }
+
+  @if (confirmationPanelOpen()) {
+    <lite-panel
+      [title]="'Delete item'"
+      [content]="confirmationTemplate"
+      [actions]="confirmationPanelActions"
+      width="520px"
+      height="340px"
+      (closed)="onConfirmationPanelClosed($event)"
+    ></lite-panel>
+  }
+
+  <ng-template #basicPanelTemplate let-close="close">
+    <div class="description">
+      Lite Panel can display simple text content or custom templates.
+      Click the action below to close and return a value to the caller.
+      <button class="acknowledge-button" (click)="close('acknowledged')">Acknowledge</button>
+    </div>
+  </ng-template>
+
+  <ng-template #confirmationTemplate let-close="close">
+    <div class="description">
+      Deleting this item cannot be undone. Are you sure you want to continue?
+    </div>
+  </ng-template>
 </div>
