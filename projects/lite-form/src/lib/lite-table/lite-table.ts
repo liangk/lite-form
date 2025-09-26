@@ -1,4 +1,4 @@
-import { Component, input, computed, output } from '@angular/core';
+import { Component, input, computed, output, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableFieldDto, TableColumn } from '../field-dto';
 import { LitePaginator } from '../lite-paginator/lite-paginator';
@@ -14,6 +14,11 @@ export class LiteTable<T = any> {
   table = input.required<TableFieldDto<T>>();
   pageChange = output<number>();
   itemsPerPageChange = output<number>();
+  // Emits when a row menu action is selected
+  menuAction = output<{ action: string; row: T }>();
+
+  // Track which row's menu is open (by paginated row index)
+  openMenuIndex: number | null = null;
 
   // Computed properties for pagination
   paginatedData = computed(() => {
@@ -73,5 +78,23 @@ export class LiteTable<T = any> {
 
   onItemsPerPageChange(itemsPerPage: number) {
     this.itemsPerPageChange.emit(itemsPerPage);
+  }
+
+  // Row menu handlers
+  toggleMenu(rowIndex: number, event?: MouseEvent) {
+    event?.stopPropagation();
+    this.openMenuIndex = this.openMenuIndex === rowIndex ? null : rowIndex;
+  }
+
+  onMenuItemClick(action: string, row: T, event?: MouseEvent) {
+    event?.stopPropagation();
+    this.menuAction.emit({ action, row });
+    this.openMenuIndex = null;
+  }
+
+  // Close any open menu when clicking outside
+  @HostListener('document:click')
+  onDocumentClick() {
+    this.openMenuIndex = null;
   }
 }

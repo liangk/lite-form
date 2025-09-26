@@ -5,6 +5,18 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2025-09-26
+
+### Added
+- LiteTable row actions menu (kebab/tri-dot) via `TableColumn.type = 'menu'` and `menuItems` configuration
+  - New `menuAction` output on `lite-table` emitting `{ action: string; row: T }`
+  - Shared SCSS for compact menu button and dropdown styling
+
+### Changed
+- Updated README (root and library) and docs/API.md to document the row menu feature and `TableColumn` updates
+- Sandbox demos (`projects/ui-sandbox/src/app/app.ts`, `app.html`) wired to show per-row Edit/Delete actions
+- Minor table style adjustments to reduce borders in header and cells
+
 ## [1.3.0] - 2025-09-25
 
 ### Added

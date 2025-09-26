@@ -543,6 +543,7 @@ imageField = new FileFieldDto(
 **Outputs:**
 - `pageChange: number` - Emitted when user changes page (for paginated tables)
 - `itemsPerPageChange: number` - Emitted when user changes items per page
+- `menuAction: { action: string; row: T }` - Emitted when a row action is selected from a menu-type column
 
 **Features:**
 - Flexbox-based responsive layout for modern table design
@@ -553,6 +554,7 @@ imageField = new FileFieldDto(
 - Automatic handling of special data formats (name objects, nested properties)
 - Empty state display when no data is available
 - Sorting indicators (visual styling support)
+- Per-row actions menu via a dedicated `menu`-type column (kebab/tri-dot)
 
 **Example:**
 ```typescript
@@ -579,6 +581,45 @@ productTable = new TableFieldDto(columns, productData, false);
 
 // Template
 <lite-table [table]="productTable"></lite-table>
+```
+
+#### Row Actions Menu
+
+Add a dedicated menu column to show a kebab (tri-dot) button per row. Configure menu items on the column and handle the `(menuAction)` output.
+
+```typescript
+import { TableFieldDto, TableColumn } from 'ngx-lite-form';
+
+const columns: TableColumn[] = [
+  { key: 'name', label: 'Name', flex: '1' },
+  { key: 'email', label: 'Email', flex: '1' },
+  // Menu column (last column)
+  {
+    key: 'actions',
+    label: '',
+    flex: '0 0 44px',
+    type: 'menu',
+    menuItems: [
+      { label: 'Edit', value: 'edit' },
+      { label: 'Delete', value: 'delete', variant: 'danger' }
+    ]
+  }
+];
+
+table = new TableFieldDto(columns, userData, false);
+
+// In your component class
+onRowMenuAction(event: { action: string; row: any }) {
+  if (event.action === 'edit') {
+    // handle edit
+  } else if (event.action === 'delete') {
+    // handle delete
+  }
+}
+```
+
+```html
+<lite-table [table]="table" (menuAction)="onRowMenuAction($event)"></lite-table>
 ```
 
 ### LitePaginator Component
@@ -730,6 +771,8 @@ interface TableColumn {
   flex?: string;            // CSS flex property (e.g., '0 0 100px', '1')
   sortable?: boolean;       // Show sorting indicator
   cellTemplate?: (value: any, row: any) => string; // Custom HTML template
+  type?: 'text' | 'menu';   // Optional column type (default: 'text')
+  menuItems?: Array<{ label: string; value: string; variant?: 'danger' | 'default' }>; // For 'menu' type columns
 }
 ```
 
@@ -808,4 +851,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 ---
 
 ## Changelog
-- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.0` release with `LitePanel` and SCSS style-guide updates.
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.1` release with `LiteTable` row menu actions and README updates.

@@ -192,7 +192,11 @@ export class App {
       { key: 'location.country', label: 'Country', flex: '0 0 120px' },
       { key: 'picture.medium', label: 'Picture', flex: '0 0 80px', cellTemplate: (value) => `<img src="${value}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />` },
       { key: 'dob.date', label: 'Date of Birth', flex: '0 0 120px', cellTemplate: (value) => new Date(value).toLocaleDateString('en-AU') },
-      { key: 'registered.date', label: 'Registered', flex: '0 0 160px', cellTemplate: (value) => new Date(value).toLocaleString('en-AU') }
+      { key: 'registered.date', label: 'Registered', flex: '0 0 160px', cellTemplate: (value) => new Date(value).toLocaleString('en-AU') },
+      { key: 'actions', label: '', flex: '0 0 44px', type: 'menu', menuItems: [
+        { label: 'Edit', value: 'edit' },
+        { label: 'Delete', value: 'delete', variant: 'danger' }
+      ] }
     ],
     [], // Will be populated by API call
     false // No paginator for basic demo
@@ -205,7 +209,11 @@ export class App {
       { key: 'email', label: 'Email', flex: '1' },
       { key: 'gender', label: 'Gender', flex: '0 0 100px' },
       { key: 'location.country', label: 'Country', flex: '0 0 120px' },
-      { key: 'phone', label: 'Phone', flex: '0 0 140px' }
+      { key: 'phone', label: 'Phone', flex: '0 0 140px' },
+      { key: 'actions', label: '', flex: '0 0 44px', type: 'menu', menuItems: [
+        { label: 'Edit', value: 'edit' },
+        { label: 'Delete', value: 'delete', variant: 'danger' }
+      ] }
     ],
     [], // Will be populated by API call
     true, // Enable paginator
@@ -439,5 +447,42 @@ export class App {
       this.tableWithPaginatorDemo = { ...this.tableWithPaginatorDemo };
       this.showSnackbar(`Table items per page set to ${itemsPerPage}`, 'done');
     }
+  }
+
+  // Row menu handler for both tables
+  onRowMenuAction(event: { action: string; row: any }) {
+    const { action, row } = event;
+    const fullName = row?.name ? `${row.name.first ?? ''} ${row.name.last ?? ''}`.trim() : '';
+
+    if (action === 'edit') {
+      this.showSnackbar(`Edit clicked${fullName ? ' for ' + fullName : ''}`, 'done');
+      console.log('Edit row:', row);
+      return;
+    }
+
+    if (action === 'delete') {
+      const id = row?.login?.uuid ?? row?.email ?? null;
+      const removeById = (arr: any[]) => arr.filter(r => (r?.login?.uuid ?? r?.email) !== id);
+
+      // Basic table
+      if (Array.isArray(this.tableDemo.data)) {
+        this.tableDemo.data = id ? removeById(this.tableDemo.data) : this.tableDemo.data.filter(r => r !== row);
+        this.tableDemo = { ...this.tableDemo };
+      }
+
+      // Table with paginator
+      if (Array.isArray(this.tableWithPaginatorDemo.data)) {
+        this.tableWithPaginatorDemo.data = id ? removeById(this.tableWithPaginatorDemo.data) : this.tableWithPaginatorDemo.data.filter(r => r !== row);
+        if (this.tableWithPaginatorDemo.paginatorConfig) {
+          this.tableWithPaginatorDemo.paginatorConfig.totalItems = this.tableWithPaginatorDemo.data.length;
+        }
+        this.tableWithPaginatorDemo = { ...this.tableWithPaginatorDemo };
+      }
+
+      this.showSnackbar(`Row deleted${fullName ? ': ' + fullName : ''}`, 'done');
+      return;
+    }
+
+    console.log('Unknown action:', event);
   }
 }
