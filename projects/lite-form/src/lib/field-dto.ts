@@ -124,6 +124,10 @@ export interface TableColumn {
   flex?: string;
   sortable?: boolean;
   cellTemplate?: (value: any, row: any) => string;
+  // Optional type for special rendering. Defaults to 'text'.
+  type?: 'text' | 'menu';
+  // When type is 'menu', provide menu items shown in the row actions dropdown.
+  menuItems?: Array<{ label: string; value: string; variant?: 'danger' | 'default' }>;
 }
 
 export class TableFieldDto<T = any> {

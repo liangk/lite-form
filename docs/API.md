@@ -642,6 +642,7 @@ The `PaginatorFieldDto` supports the following options:
 |----------|------|-------------|
 | `pageChange` | `number` | Emitted when user changes page (for paginated tables) |
 | `itemsPerPageChange` | `number` | Emitted when user changes items per page |
+| `menuAction` | `{ action: string; row: T }` | Emitted when a row action is selected from a menu-type column |
 
 #### Features
 - **Flexible Columns:** Custom column definitions with labels, widths, and templates
@@ -667,6 +668,8 @@ interface TableColumn {
   flex?: string;            // CSS flex property (e.g., '0 0 100px', '1')
   sortable?: boolean;       // Show sorting indicator
   cellTemplate?: (value: any, row: any) => string; // Custom HTML template
+  type?: 'text' | 'menu';   // Optional column type (default: 'text')
+  menuItems?: Array<{ label: string; value: string; variant?: 'danger' | 'default' }>; // For 'menu' type columns
 }
 ```
 
@@ -700,15 +703,7 @@ const paginatedTable = new TableFieldDto(
 ```
 
 ```html
-<!-- Basic table -->
-<lite-table [table]="table"></lite-table>
-
-<!-- Table with pagination -->
-<lite-table
-  [table]="paginatedTable"
-  (pageChange)="onTablePageChange($event)"
-  (itemsPerPageChange)="onTableItemsPerPageChange($event)">
-</lite-table>
+<lite-table [table]="table" (menuAction)="onRowMenuAction($event)"></lite-table>
 ```
 
 #### Advanced Cell Templates

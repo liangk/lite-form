@@ -121,12 +121,13 @@
   </div>
   <h2>Table Demo (Basic)</h2>
   <div class="row">
-    <lite-table [table]="tableDemo"></lite-table>
+    <lite-table [table]="tableDemo" (menuAction)="onRowMenuAction($event)"></lite-table>
   </div>
   <h2>Table Demo (With Paginator)</h2>
   <div class="row">
     <lite-table
       [table]="tableWithPaginatorDemo"
+      (menuAction)="onRowMenuAction($event)"
       (pageChange)="onTablePageChange($event)"
       (itemsPerPageChange)="onTableItemsPerPageChange($event)">
     </lite-table>
