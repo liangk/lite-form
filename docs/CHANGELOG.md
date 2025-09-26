@@ -5,6 +5,17 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2025-09-26
+
+### Added
+- LiteTable single-action button rendering for menu columns with exactly one `menuItems` entry
+  - Compact inline button instead of kebab dropdown when only one action is available
+  - Neutral default styling with optional `danger` variant for red (destructive) actions
+
+### Changed
+- Updated default styling for single-action buttons to be neutral (grey border/text) instead of always red
+- Danger variant applies red styling when specified (`variant: 'danger'`)
+
 ## [1.3.1] - 2025-09-26
 
 ### Added

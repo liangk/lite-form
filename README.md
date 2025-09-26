@@ -1,7 +1,33 @@
-# Lite Form - Angular Form Components Library
+# Lite Form: A Lightweight and Powerful Angular Form Library
 
-## Overview
-Lite Form is a comprehensive Angular library that provides lightweight, customizable form components with built-in validation, styling, and animations. It includes input, password, textarea, select, multi-select, radio, checkbox, file upload, advanced date picker, datetime-picker, and panel components designed for Angular 20+ with standalone component support.
+**Lite Form is a comprehensive, open-source library of 12+ standalone components for building modern, reactive forms in Angular (v17+). It provides lightweight, customizable, and fully-typed form controls—from basic inputs to advanced data tables—designed to accelerate development and improve user experience.**
+
+This library is built for developers who need a robust, out-of-the-box solution for form-heavy applications without the overhead of heavy-weight dependencies. All components are standalone, tree-shakable, and integrate seamlessly with Angular's Reactive Forms module.
+
+## Why Choose Lite Form?
+
+- **🚀 Accelerate Development**: Get a complete suite of form controls ready to use, including complex components like date pickers, file uploads, and data tables. Drastically reduce boilerplate code.
+- **💎 Lightweight & Performant**: Built with modern Angular practices. All components are standalone and tree-shakable, ensuring a minimal bundle size.
+- **✅ Fully Typed & Integrated**: Enjoy excellent developer experience with fully-typed APIs for all components and Data Transfer Objects (DTOs), ensuring type safety and easier integration.
+- **🎨 Highly Customizable**: While providing a clean default UI, the library is designed for easy styling. A clear SCSS structure and BEM-style classes allow for deep customization to match your brand.
+- **🔒 Secure & Accessible**: Components are built with security and accessibility (ARIA) in mind, including advanced password strength analysis and accessible form field structures.
+
+## Live Demo
+
+Experience Lite Form in action with our interactive live demo on StackBlitz. Test out all the components and see how they work in a real Angular application.
+
+[**🚀 Launch Live Demo on StackBlitz**](https://stackblitz.com/edit/angular-ivy-hfgxpd?file=src%2Fapp%2Fapp.ts)
+
+
+## Use Cases
+
+Lite Form is ideal for a wide range of applications, including but not limited to:
+
+- **Enterprise Applications**: Build complex forms for data entry, configuration, and management with robust validation.
+- **Dashboards and Admin Panels**: Quickly create settings pages, user management forms, and data tables.
+- **Customer-Facing Websites**: Implement user-friendly registration, login, and profile forms.
+- **E-commerce**: Develop streamlined checkout processes and product configuration forms.
+- **Internal Tools**: Rapidly prototype and build internal tools for data collection and management.
 
 ## Features
 - ✅ **Modern Angular 20+** - Built with standalone components, signals, and latest CLI tooling
@@ -291,9 +317,10 @@ export class AppComponent {
 
 **Selector:** `lite-input`
 
-**Inputs:**
-- `control: FieldDto` - Field configuration and form control
-- `inEdit: boolean` - Whether the field is in edit mode (default: true)
+| Input    | Type        | Default | Description                               |
+| :------- | :---------- | :------ | :---------------------------------------- |
+| `control`| `FieldDto`  | -       | Field configuration and form control.     |
+| `inEdit` | `boolean`   | `true`  | Toggles between edit and read-only mode. |
 
 **Example:**
 ```typescript
@@ -308,11 +335,12 @@ nameField = new FieldDto('Full Name', new FormControl('', [Validators.required])
 
 **Selector:** `lite-password`
 
-**Inputs:**
-- `control: FieldDto` - Field configuration and form control
-- `inEdit: boolean` - Whether the field is in edit mode (default: true)
-- `showToggle: boolean` - Whether to show the password visibility toggle (default: true)
-- `showStrengthIndicator: boolean` - Whether to show password strength indicator (default: false)
+| Input                   | Type      | Default | Description                                            |
+| :---------------------- | :-------- | :------ | :----------------------------------------------------- |
+| `control`               | `FieldDto`| -       | Field configuration and form control.                  |
+| `inEdit`                | `boolean` | `true`  | Toggles between edit and read-only mode.               |
+| `showToggle`            | `boolean` | `true`  | If `true`, shows the password visibility toggle button.  |
+| `showStrengthIndicator` | `boolean` | `false` | If `true`, shows the password strength analysis bar.   |
 
 **Features:**
 - Password visibility toggle with eye/eye-off icons
@@ -355,9 +383,10 @@ const analysis = FormUtils.analyzePasswordStrength('MyStr0ng@Pass');
 
 **Selector:** `lite-textarea`
 
-**Inputs:**
-- `control: FieldDto` - Field configuration and form control (supports `rows` property)
-- `inEdit: boolean` - Whether the field is in edit mode (default: true)
+| Input     | Type       | Default | Description                                                   |
+| :-------- | :--------- | :------ | :------------------------------------------------------------ |
+| `control` | `FieldDto` | -       | Field configuration, including `rows` for initial height.     |
+| `inEdit`  | `boolean`  | `true`  | Toggles between edit and read-only mode.                      |
 
 **Example:**
 ```typescript
@@ -373,9 +402,10 @@ descriptionField = new FieldDto('Description', new FormControl(''), 4);
 
 **Selector:** `lite-select`
 
-**Inputs:**
-- `control: SelectFieldDto<T>` - Select field configuration with options
-- `inEdit: boolean` - Whether the field is in edit mode (default: true)
+| Input     | Type                | Default | Description                                      |
+| :-------- | :------------------ | :------ | :----------------------------------------------- |
+| `control` | `SelectFieldDto<T>` | -       | Field configuration, including `options`.        |
+| `inEdit`  | `boolean`           | `true`  | Toggles between edit and read-only mode.         |
 
 **Example:**
 ```typescript
@@ -398,9 +428,10 @@ statusField = new SelectFieldDto(
 
 **Selector:** `lite-multi-select`
 
-**Inputs:**
-- `control: MultiSelectFieldDto<T>` - Multi-select field configuration
-- `inEdit: boolean` - Whether the field is in edit mode (default: true)
+| Input     | Type                     | Default | Description                                      |
+| :-------- | :----------------------- | :------ | :----------------------------------------------- |
+| `control` | `MultiSelectFieldDto<T>` | -       | Field configuration, including `options`.        |
+| `inEdit`  | `boolean`                | `true`  | Toggles between edit and read-only mode.         |
 
 **Features:**
 - Inline selected items display
@@ -426,11 +457,12 @@ tagsField = new MultiSelectFieldDto(
 
 **Selector:** `lite-date`
 
-**Inputs:**
-- `control: FieldDto | DateRangeFieldDto` - Date field configuration
-- `inEdit: boolean` - Whether the field is in edit mode (default: true)
-- `format: string` - Date display format (default: 'dd/MM/yyyy')
-- `range: boolean` - Enable date range selection (default: false)
+| Input     | Type                          | Default        | Description                                      |
+| :-------- | :---------------------------- | :------------- | :----------------------------------------------- |
+| `control` | `FieldDto` or `DateRangeFieldDto` | -              | Field configuration for single or range date.    |
+| `inEdit`  | `boolean`                     | `true`         | Toggles between edit and read-only mode.         |
+| `format`  | `string`                      | `'dd/MM/yyyy'` | Date display format string.                      |
+| `range`   | `boolean`                     | `false`        | If `true`, enables date range selection mode.    |
 
 **Features:**
 - Single date and date range selection
@@ -483,9 +515,10 @@ eventDateField: DateRangeFieldDto = {
 
 **Selector:** `lite-file`
 
-**Inputs:**
-- `control: FileFieldDto` - File field configuration including label, FormControl, and file options
-- `inEdit: boolean` - Whether the field is in edit mode (default: true)
+| Input     | Type           | Default | Description                                      |
+| :-------- | :------------- | :------ | :----------------------------------------------- |
+| `control` | `FileFieldDto` | -       | Field configuration for file uploads.            |
+| `inEdit`  | `boolean`      | `true`  | Toggles between edit and read-only mode.         |
 
 **Features:**
 - File upload via button, drag & drop, or camera capture (on supported devices)
@@ -537,13 +570,15 @@ imageField = new FileFieldDto(
 
 **Selector:** `lite-table`
 
-**Inputs:**
-- `table: TableFieldDto<T>` - Table configuration including columns and data
+| Input   | Type                | Default | Description                                      |
+| :------ | :------------------ | :------ | :----------------------------------------------- |
+| `table` | `TableFieldDto<T>`  | -       | Table configuration including columns and data.  |
 
-**Outputs:**
-- `pageChange: number` - Emitted when user changes page (for paginated tables)
-- `itemsPerPageChange: number` - Emitted when user changes items per page
-- `menuAction: { action: string; row: T }` - Emitted when a row action is selected from a menu-type column
+| Output               | Type                             | Description                                            |
+| :------------------- | :------------------------------- | :----------------------------------------------------- |
+| `pageChange`         | `number`                         | Emitted with the new page number on page change.       |
+| `itemsPerPageChange` | `number`                         | Emitted with the new items-per-page count.             |
+| `menuAction`         | `{ action: string; row: T }`     | Emitted when a row action is selected from a menu.     |
 
 **Features:**
 - Flexbox-based responsive layout for modern table design
@@ -626,12 +661,14 @@ onRowMenuAction(event: { action: string; row: any }) {
 
 **Selector:** `lite-paginator`
 
-**Inputs:**
-- `paginator: PaginatorFieldDto` - Pagination configuration including current page, total items, and items per page
+| Input       | Type                | Default | Description                                      |
+| :---------- | :------------------ | :------ | :----------------------------------------------- |
+| `paginator` | `PaginatorFieldDto` | -       | Paginator configuration object.                  |
 
-**Outputs:**
-- `pageChange: number` - Emitted when user changes page
-- `itemsPerPageChange: number` - Emitted when user changes items per page
+| Output               | Type     | Description                                      |
+| :------------------- | :------- | :----------------------------------------------- |
+| `pageChange`         | `number` | Emitted with the new page number on page change. |
+| `itemsPerPageChange` | `number` | Emitted with the new items-per-page count.     |
 
 **Features:**
 - Previous/Next navigation buttons with disabled states
@@ -851,4 +888,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 ---
 
 ## Changelog
-- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.1` release with `LiteTable` row menu actions and README updates.
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.2` release adding `LiteTable` single-action button rendering for one-item menus and neutral default styling (with optional `danger` variant).
