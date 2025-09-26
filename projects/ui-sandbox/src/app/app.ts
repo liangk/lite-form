@@ -193,9 +193,8 @@ export class App {
       { key: 'picture.medium', label: 'Picture', flex: '0 0 80px', cellTemplate: (value) => `<img src="${value}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />` },
       { key: 'dob.date', label: 'Date of Birth', flex: '0 0 120px', cellTemplate: (value) => new Date(value).toLocaleDateString('en-AU') },
       { key: 'registered.date', label: 'Registered', flex: '0 0 160px', cellTemplate: (value) => new Date(value).toLocaleString('en-AU') },
-      { key: 'actions', label: '', flex: '0 0 44px', type: 'menu', menuItems: [
-        { label: 'Edit', value: 'edit' },
-        { label: 'Delete', value: 'delete', variant: 'danger' }
+      { key: 'actions', label: '', flex: '0 0 72px', type: 'menu', menuItems: [
+        { label: 'Delete', value: 'delete' }
       ] }
     ],
     [], // Will be populated by API call
