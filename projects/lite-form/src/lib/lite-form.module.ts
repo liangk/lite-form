@@ -14,14 +14,15 @@ import { LiteFile } from './lite-file/lite-file';
 import { LitePaginator } from './lite-paginator/lite-paginator';
 import { LiteTable } from './lite-table/lite-table';
 import { LitePanel } from './lite-panel/lite-panel';
+import { LiteLoading } from './lite-loading/lite-loading';
 
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    LiteInput, LiteTextarea, LiteSelect, LiteMultiSelect, LiteRadio, LiteCheckbox, LiteDate, LiteDateTime, LitePassword, LiteFile, LitePaginator, LiteTable, LitePanel
+    LiteInput, LiteTextarea, LiteSelect, LiteMultiSelect, LiteRadio, LiteCheckbox, LiteDate, LiteDateTime, LitePassword, LiteFile, LitePaginator, LiteTable, LitePanel, LiteLoading
   ],
   exports: [
-    LiteInput, LiteTextarea, LiteSelect, LiteMultiSelect, LiteRadio, LiteCheckbox, LiteDate, LiteDateTime, LitePassword, LiteFile, LitePaginator, LiteTable, LitePanel
+    LiteInput, LiteTextarea, LiteSelect, LiteMultiSelect, LiteRadio, LiteCheckbox, LiteDate, LiteDateTime, LitePassword, LiteFile, LitePaginator, LiteTable, LitePanel, LiteLoading
   ]
 })
 export class LiteFormModule { }

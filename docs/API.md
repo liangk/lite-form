@@ -2,6 +2,107 @@
 
 ## Components
 
+### LiteLoading
+
+**Selector:** `lite-loading`
+
+**Description:** Loading indicator component with view toggle for spinner (loading wheel) or progress bar modes. Supports defined progress percentage or indeterminate animation.
+
+#### Inputs
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `view` | `'spinner' \| 'progress'` | `'spinner'` | The view type: spinner for loading wheel, progress for progress bar |
+| `progress` | `number \| undefined` | `undefined` | Progress percentage (0-100). If undefined, shows indeterminate progress |
+| `message` | `string \| undefined` | `undefined` | Optional message to display below the loading indicator |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Size of the spinner (only applies to spinner view) |
+| `visible` | `boolean` | `true` | Whether the loading indicator is visible |
+
+#### Features
+- **View Toggle:** Switch between spinner (loading wheel) and progress bar
+- **Spinner Sizes:** Three size variants - small (24px), medium (40px), large (64px)
+- **Defined Progress:** Shows percentage (0-100%) with visual progress bar
+- **Indeterminate Progress:** Animated sliding bar for unknown duration operations
+- **Optional Message:** Display text below the indicator for context
+- **Visibility Control:** Conditionally show/hide the loading indicator
+- **Smooth Animations:** CSS-based animations for spinner rotation and progress sliding
+- **Accessibility:** ARIA attributes for progress bar (role, aria-valuenow, aria-valuemin, aria-valuemax)
+
+#### Usage
+```typescript
+import { LiteLoading } from 'ngx-lite-form';
+import { signal } from '@angular/core';
+
+// Basic usage
+isLoading = signal(true);
+
+// Progress tracking
+uploadProgress = signal(0);
+
+// Simulate progress
+startUpload() {
+  this.uploadProgress.set(0);
+  const interval = setInterval(() => {
+    const current = this.uploadProgress();
+    if (current >= 100) {
+      clearInterval(interval);
+    } else {
+      this.uploadProgress.set(current + 10);
+    }
+  }, 300);
+}
+```
+
+```html
+<!-- Basic spinner (default) -->
+<lite-loading></lite-loading>
+
+<!-- Spinner with message -->
+<lite-loading [message]="'Loading data...'"></lite-loading>
+
+<!-- Large spinner -->
+<lite-loading [size]="'large'" [message]="'Processing...'"></lite-loading>
+
+<!-- Defined progress bar -->
+<lite-loading 
+  [view]="'progress'" 
+  [progress]="uploadProgress()" 
+  [message]="'Uploading files...'">
+</lite-loading>
+
+<!-- Indeterminate progress bar -->
+<lite-loading 
+  [view]="'progress'" 
+  [message]="'Processing your request...'">
+</lite-loading>
+
+<!-- Controlled visibility -->
+<lite-loading 
+  [visible]="isLoading()" 
+  [message]="'Please wait...'">
+</lite-loading>
+```
+
+#### Styling
+- `.lite-loading` - Root container
+- `.lite-loading__spinner-container` - Spinner wrapper
+- `.lite-loading__spinner` - Spinner element with size variants
+- `.lite-loading__spinner-circle` - Animated spinner circle
+- `.lite-loading__progress-container` - Progress bar wrapper
+- `.lite-loading__progress-bar` - Progress bar track
+- `.lite-loading__progress-fill` - Progress bar fill (defined progress)
+- `.lite-loading__progress-fill-indeterminate` - Animated fill (indeterminate)
+- `.lite-loading__progress-text` - Percentage text display
+- `.lite-loading__message` - Message text below indicator
+
+#### Use Cases
+- **Data Loading:** Show spinner while fetching data from API
+- **File Upload:** Display progress bar with percentage during file uploads
+- **Form Submission:** Indicate processing state during form submission
+- **Background Tasks:** Show indeterminate progress for unknown duration operations
+- **Page Transitions:** Display loading state during navigation or route changes
+
+---
+
 ### LiteFile
 
 **Selector:** `lite-file`
@@ -85,8 +186,6 @@ fileField = new FileFieldDto('Attachments', new FormControl([]), {
 - On unsupported devices, the feature is gracefully degraded.
 
 ---
-
-## Components
 
 ### LiteInput
 

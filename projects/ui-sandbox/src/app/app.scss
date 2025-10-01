@@ -6,12 +6,7 @@
     .col { flex: 1; display: flex; flex-direction: column; gap: 10px; }
     lite-textarea, lite-input, lite-select, lite-multi-select, lite-radio, lite-checkbox, lite-date, lite-password, lite-file, lite-datetime, lite-table { width: 100%; }
   }
-  .demo-buttons { display: flex; gap: 10px; margin: 20px 0; border-radius: 8px;
-    button { padding: 8px 16px; border: 1px solid #007bff; background: #007bff; color: #fff; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background-color 0.2s;
-      &:hover { background: #0056b3; }
-      &:active { transform: translateY(1px); }
-    }
-  }
+  .demo-buttons { display: flex; gap: 10px; margin: 20px 0; border-radius: 8px; }
   lite-table {
     ::ng-deep {
       .data-cell img { width: 100%; height: auto; }
@@ -26,9 +21,10 @@
   }
   .panel-demo { margin-bottom: 24px;
     .panel-demo__buttons { display: flex; gap: 12px; margin-bottom: 12px;
-      button { padding: 8px 16px; border-radius: 6px; border: 1px solid #0052cc; background: #0052cc; color: #fff; cursor: pointer; transition: background-color 0.2s ease;
-        &:hover { background: #003d99; }
-      }
     }
+  }
+  button { padding: 8px 16px; border: 1px solid #007bff; background: #007bff; color: #fff; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background-color 0.2s;
+    &:hover { background: #0056b3; }
+    &:active { transform: translateY(1px); }
   }
 }

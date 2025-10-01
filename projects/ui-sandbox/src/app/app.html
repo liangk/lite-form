@@ -133,6 +133,57 @@
     </lite-table>
   </div>
 
+  <h2>Loading Demo</h2>
+  <div class="row">
+    <div class="col">
+      <h3>Spinner (Default)</h3>
+      <lite-loading [visible]="showSpinner()" [message]="'Loading data...'"></lite-loading>
+      <button (click)="toggleSpinner()">Toggle Spinner</button>
+    </div>
+    <div class="col">
+      <h3>Spinner Sizes</h3>
+      <div style="display: flex; gap: 2rem; align-items: center;">
+        <lite-loading [size]="'small'" [message]="'Small'"></lite-loading>
+        <lite-loading [size]="'medium'" [message]="'Medium'"></lite-loading>
+        <lite-loading [size]="'large'" [message]="'Large'"></lite-loading>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3>Progress Bar (Defined)</h3>
+      <lite-loading 
+        [view]="'progress'" 
+        [progress]="progressValue()" 
+        [visible]="showProgressDefined()"
+        [message]="'Uploading files...'">
+      </lite-loading>
+      <div class="demo-buttons">
+        <button (click)="toggleProgressDefined()">Toggle Progress</button>
+        <button (click)="simulateLoading()">Simulate Loading</button>
+      </div>
+    </div>
+    <div class="col">
+      <h3>Progress Bar (Indeterminate)</h3>
+      <lite-loading 
+        [view]="'progress'" 
+        [visible]="showProgressIndeterminate()"
+        [message]="'Processing your request...'">
+      </lite-loading>
+      <button (click)="toggleProgressIndeterminate()">Toggle Indeterminate Progress</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3>Loading Without Message</h3>
+      <lite-loading></lite-loading>
+    </div>
+    <div class="col">
+      <h3>Progress Without Message</h3>
+      <lite-loading [view]="'progress'" [progress]="75"></lite-loading>
+    </div>
+  </div>
+
   @if (basicPanelOpen()) {
     <lite-panel
       [title]="'Welcome to Lite Panel'"

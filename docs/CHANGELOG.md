@@ -5,6 +5,30 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.3] - 2025-10-01
+
+### Added
+- **LiteLoading Component**: New loading indicator component with flexible display modes
+  - View toggle between spinner (loading wheel) and progress bar
+  - Spinner mode with three size variants: small, medium, large
+  - Progress bar mode with defined percentage (0-100%) or indeterminate animation
+  - Optional message display below the loading indicator
+  - Visibility control for conditional rendering
+  - Smooth CSS animations for spinner rotation and indeterminate progress
+  - Accessible with ARIA attributes (role, aria-valuenow, aria-valuemin, aria-valuemax)
+  - Exported via `projects/lite-form/src/public-api.ts`
+
+### Enhanced
+- **Documentation**: Updated README and API documentation with LiteLoading component
+  - Complete usage examples with TypeScript and HTML
+  - Configuration options for all input properties
+  - Examples for spinner sizes, defined/indeterminate progress, and visibility control
+- **UI Sandbox**: Added comprehensive demos in `projects/ui-sandbox/src/app/`
+  - Spinner with size variants and toggle functionality
+  - Defined progress bar with auto-incrementing simulation
+  - Indeterminate progress bar for unknown duration operations
+  - Interactive controls for testing all component features
+
 ## [1.3.2] - 2025-09-26
 
 ### Added

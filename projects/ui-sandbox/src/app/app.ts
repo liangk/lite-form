@@ -27,7 +27,8 @@ import {
   LiteTable,
   PaginatorFieldDto,
   TableFieldDto,
-  LitePanelAction
+  LitePanelAction,
+  LiteLoading
 } from 'lite-form';
 
 @Component({
@@ -47,7 +48,8 @@ import {
     LiteFile,
     LitePanel,
     LitePaginator,
-    LiteTable
+    LiteTable,
+    LiteLoading
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
@@ -224,6 +226,13 @@ export class App {
   confirmationPanelOpen = signal(false);
   panelResult = signal<unknown | null>(null);
 
+  // Lite loading demos
+  showSpinner = signal(true);
+  showProgressDefined = signal(true);
+  showProgressIndeterminate = signal(true);
+  progressValue = signal(0);
+  progressInterval: any = null;
+
   confirmationPanelActions: LitePanelAction[] = [
     { label: 'Delete', value: 'delete', variant: 'danger' },
     { label: 'Cancel', value: null, variant: 'secondary' }
@@ -234,6 +243,7 @@ export class App {
     this.getPotterCharacters();
     this.getTableDemoData();
     this.getTableWithPaginatorDemoData();
+    this.startProgressSimulation();
     this.dateDemo.formControl.setValue('2025-10-01');
     this.dateDemo.formControl.valueChanges.subscribe((value: any) => {
       console.log('Date changed:', value);
@@ -483,5 +493,47 @@ export class App {
     }
 
     console.log('Unknown action:', event);
+  }
+
+  // Loading demos
+  startProgressSimulation() {
+    if (this.progressInterval) {
+      clearInterval(this.progressInterval);
+    }
+    this.progressValue.set(0);
+    this.progressInterval = setInterval(() => {
+      const current = this.progressValue();
+      if (current >= 100) {
+        this.progressValue.set(0);
+      } else {
+        this.progressValue.set(current + 1);
+      }
+    }, 100);
+  }
+
+  toggleSpinner() {
+    this.showSpinner.update(v => !v);
+  }
+
+  toggleProgressDefined() {
+    this.showProgressDefined.update(v => !v);
+  }
+
+  toggleProgressIndeterminate() {
+    this.showProgressIndeterminate.update(v => !v);
+  }
+
+  simulateLoading() {
+    this.showProgressDefined.set(true);
+    this.progressValue.set(0);
+    const interval = setInterval(() => {
+      const current = this.progressValue();
+      if (current >= 100) {
+        clearInterval(interval);
+        this.showSnackbar('Loading complete!', 'done');
+      } else {
+        this.progressValue.set(current + 10);
+      }
+    }, 300);
   }
 }
