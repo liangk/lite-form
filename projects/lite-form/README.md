@@ -1,6 +1,6 @@
 # Lite Form: A Lightweight and Powerful Angular Form Library
 
-**Lite Form is a comprehensive, open-source library of 12+ standalone components for building modern, reactive forms in Angular (v17+). It provides lightweight, customizable, and fully-typed form controls—from basic inputs to advanced data tables—designed to accelerate development and improve user experience.**
+**Lite Form is a comprehensive, open-source library of 13+ standalone components for building modern, reactive forms in Angular (v20+). It provides lightweight, customizable, and fully-typed form controls—from basic inputs to advanced data tables and loading indicators—designed to accelerate development and improve user experience.**
 
 This library is built for developers who need a robust, out-of-the-box solution for form-heavy applications without the overhead of heavy-weight dependencies. All components are standalone, tree-shakable, and integrate seamlessly with Angular's Reactive Forms module.
 
@@ -16,7 +16,7 @@ This library is built for developers who need a robust, out-of-the-box solution 
 
 Experience Lite Form in action with our interactive live demo on StackBlitz. Test out all the components and see how they work in a real Angular application.
 
-[**🚀 Launch Live Demo on StackBlitz**](https://stackblitz.com/edit/angular-ivy-hfgxpd?file=src%2Fapp%2Fapp.ts)
+[**🚀 Launch Live Demo on StackBlitz**](https://stackblitz.com/~/github.com/liangk/lite-form)
 
 
 ## Use Cases
@@ -40,6 +40,7 @@ Lite Form is ideal for a wide range of applications, including but not limited t
 - ✅ **Panels & Dialogs** - Template-driven modal panels with configurable action buttons
 - ✅ **Data Tables** - Flexible table component with custom columns, sorting, and pagination
 - ✅ **Pagination** - Standalone pagination component with customizable navigation
+- ✅ **Loading Indicators** - Spinner and progress bar components with defined/indeterminate states
 - ✅ **Customizable Styling** - Space-saving SCSS style guide for consistent overrides
 - ✅ **Accessibility** - ARIA-compliant form controls
 - ✅ **Animations** - Smooth transitions and interactions
@@ -85,6 +86,9 @@ Standalone pagination component with customizable page navigation, items per pag
 ### 🪟 LitePanel
 Modal-style panel component that renders custom templates, configurable header text, and action buttons via `LitePanelAction` definitions. Supports custom `width`, `height`, `maxWidth`, and `maxHeight` inputs with automatic `px` suffix for numeric values.
 
+### ⏳ LiteLoading
+Loading indicator component with view toggle for spinner (loading wheel) or progress bar modes. Supports defined progress percentage (0-100) or indeterminate animation, optional message display, and configurable spinner sizes (small, medium, large).
+
 ---
 
 ## Installation
@@ -111,7 +115,8 @@ import {
   LiteFile,
   LiteTable,
   LitePaginator,
-  LitePanel
+  LitePanel,
+  LiteLoading
 } from 'ngx-lite-form';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -141,7 +146,8 @@ import {
     LiteDateTime,
     LiteFile,
     LiteTable,
-    LitePaginator
+    LitePaginator,
+    LiteLoading
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -308,6 +314,27 @@ export class AppComponent {
   <p>Panel content can render any Angular template.</p>
   <button type="button" (click)="close('acknowledged')">Acknowledge</button>
 </ng-template>
+
+<!-- Loading Indicators -->
+<!-- Spinner (default) -->
+<lite-loading [message]="'Loading data...'"></lite-loading>
+
+<!-- Spinner with size -->
+<lite-loading [size]="'large'" [message]="'Processing...'"></lite-loading>
+
+<!-- Progress bar with defined percentage -->
+<lite-loading 
+  [view]="'progress'" 
+  [progress]="75" 
+  [message]="'Uploading files...'"></lite-loading>
+
+<!-- Indeterminate progress bar -->
+<lite-loading 
+  [view]="'progress'" 
+  [message]="'Processing your request...'"></lite-loading>
+
+<!-- Controlled visibility -->
+<lite-loading [visible]="isLoading" [message]="'Please wait...'"></lite-loading>
 ```
 ---
 
@@ -657,6 +684,77 @@ onRowMenuAction(event: { action: string; row: any }) {
 <lite-table [table]="table" (menuAction)="onRowMenuAction($event)"></lite-table>
 ```
 
+### LiteLoading Component
+
+**Selector:** `lite-loading`
+
+| Input      | Type                            | Default     | Description                                                  |
+| :--------- | :------------------------------ | :---------- | :----------------------------------------------------------- |
+| `view`     | `'spinner' \| 'progress'`       | `'spinner'` | The view type: spinner for loading wheel, progress for bar. |
+| `progress` | `number \| undefined`           | `undefined` | Progress percentage (0-100). Undefined shows indeterminate.  |
+| `message`  | `string \| undefined`           | `undefined` | Optional message to display below the indicator.             |
+| `size`     | `'small' \| 'medium' \| 'large'`| `'medium'`  | Size of the spinner (only applies to spinner view).          |
+| `visible`  | `boolean`                       | `true`      | Whether the loading indicator is visible.                    |
+
+**Features:**
+- View toggle between spinner (loading wheel) and progress bar
+- Defined progress with percentage display (0-100%)
+- Indeterminate progress with animated sliding bar
+- Three spinner sizes: small, medium, large
+- Optional message display below indicator
+- Visibility control for conditional rendering
+- Smooth animations and transitions
+- Accessible with ARIA attributes
+
+**Example:**
+```typescript
+// Component
+import { signal } from '@angular/core';
+
+isLoading = signal(true);
+uploadProgress = signal(0);
+
+// Simulate progress
+startUpload() {
+  this.uploadProgress.set(0);
+  const interval = setInterval(() => {
+    const current = this.uploadProgress();
+    if (current >= 100) {
+      clearInterval(interval);
+      this.isLoading.set(false);
+    } else {
+      this.uploadProgress.set(current + 10);
+    }
+  }, 300);
+}
+```
+
+```html
+<!-- Basic spinner -->
+<lite-loading></lite-loading>
+
+<!-- Spinner with message and size -->
+<lite-loading 
+  [size]="'large'" 
+  [message]="'Loading data...'"></lite-loading>
+
+<!-- Defined progress bar -->
+<lite-loading 
+  [view]="'progress'" 
+  [progress]="uploadProgress()" 
+  [message]="'Uploading files...'"></lite-loading>
+
+<!-- Indeterminate progress bar -->
+<lite-loading 
+  [view]="'progress'" 
+  [message]="'Processing your request...'\"></lite-loading>
+
+<!-- Controlled visibility -->
+<lite-loading 
+  [visible]="isLoading()" 
+  [message]="'Please wait...'"></lite-loading>
+```
+
 ### LitePaginator Component
 
 **Selector:** `lite-paginator`
@@ -888,4 +986,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 ---
 
 ## Changelog
-- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.2` release adding `LiteTable` single-action button rendering for one-item menus and neutral default styling (with optional `danger` variant).
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.3` release adding the `LiteLoading` component with spinner and progress bar views.

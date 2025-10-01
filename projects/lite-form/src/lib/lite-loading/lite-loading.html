@@ -1,0 +1,37 @@
+@if (visible()) {
+  <div class="lite-loading">
+    @if (view() === 'spinner') {
+      <div class="lite-loading__spinner-container">
+        <div class="lite-loading__spinner" [ngClass]="spinnerSizeClass()">
+          <div class="lite-loading__spinner-circle"></div>
+        </div>
+      </div>
+    } @else if (view() === 'progress') {
+      <div class="lite-loading__progress-container">
+        @if (isProgressDefined()) {
+          <!-- Defined progress bar -->
+          <div class="lite-loading__progress-bar">
+            <div 
+              class="lite-loading__progress-fill" 
+              [style.width.%]="progressValue()"
+              role="progressbar"
+              [attr.aria-valuenow]="progressValue()"
+              aria-valuemin="0"
+              aria-valuemax="100">
+            </div>
+          </div>
+          <div class="lite-loading__progress-text">{{ progressValue() }}%</div>
+        } @else {
+          <!-- Indeterminate progress bar -->
+          <div class="lite-loading__progress-bar lite-loading__progress-bar--indeterminate">
+            <div class="lite-loading__progress-fill-indeterminate"></div>
+          </div>
+        }
+      </div>
+    }
+    
+    @if (message()) {
+      <div class="lite-loading__message">{{ message() }}</div>
+    }
+  </div>
+}
