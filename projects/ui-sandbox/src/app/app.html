@@ -43,6 +43,7 @@
       <div class="panel-demo__buttons">
         <button (click)="openBasicPanel()">Open Basic Panel</button>
         <button (click)="openConfirmationPanel()">Open Confirmation Panel</button>
+        <button (click)="openComponentPanel()">Open Component Panel</button>
       </div>
       <p>Last action result: <strong>{{ panelResult() === null ? 'none' : panelResult() }}</strong></p>
     </div>
@@ -218,4 +219,15 @@
       Deleting this item cannot be undone. Are you sure you want to continue?
     </div>
   </ng-template>
+
+  @if (componentPanelOpen()) {
+    <lite-panel
+      [title]="'User Registration Form'"
+      [content]="userFormComponent"
+      [actions]="componentPanelActions"
+      width="600px"
+      maxHeight="80vh"
+      (closed)="onComponentPanelClosed($event)"
+    ></lite-panel>
+  }
 </div>

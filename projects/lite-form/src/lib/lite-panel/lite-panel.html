@@ -16,7 +16,9 @@
   }
 
   <section class="lite-panel__content">
-    @if (contentTemplate()) {
+    @if (contentComponent()) {
+      <ng-container #dynamicComponentContainer></ng-container>
+    } @else if (contentTemplate()) {
       <ng-container *ngTemplateOutlet="contentTemplate(); context: templateContext"></ng-container>
     } @else if (contentText()) {
       <p class="lite-panel__content-text">{{ contentText() }}</p>

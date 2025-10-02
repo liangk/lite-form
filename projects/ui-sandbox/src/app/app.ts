@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, signal } from '@angular/core';
+import { Component, signal, Type } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import {
   FieldDto,
@@ -30,6 +30,7 @@ import {
   LitePanelAction,
   LiteLoading
 } from 'lite-form';
+import { UserFormPanelComponent } from './components/user-form-panel.component';
 
 @Component({
   selector: 'app-root',
@@ -224,7 +225,9 @@ export class App {
   // Lite panel demos
   basicPanelOpen = signal(false);
   confirmationPanelOpen = signal(false);
+  componentPanelOpen = signal(false);
   panelResult = signal<unknown | null>(null);
+  userFormComponent: Type<any> = UserFormPanelComponent;
 
   // Lite loading demos
   showSpinner = signal(true);
@@ -235,6 +238,11 @@ export class App {
 
   confirmationPanelActions: LitePanelAction[] = [
     { label: 'Delete', value: 'delete', variant: 'danger' },
+    { label: 'Cancel', value: null, variant: 'secondary' }
+  ];
+
+  componentPanelActions: LitePanelAction[] = [
+    { label: 'Submit', value: 'submit', variant: 'primary' },
     { label: 'Cancel', value: null, variant: 'secondary' }
   ];
 
@@ -304,6 +312,22 @@ export class App {
       this.showSnackbar('Item deleted successfully.', 'done');
     } else if (result === null) {
       this.showSnackbar('Action cancelled.', 'warn');
+    }
+  }
+
+  openComponentPanel() {
+    this.panelResult.set(null);
+    this.componentPanelOpen.set(true);
+  }
+
+  onComponentPanelClosed(result: unknown | null) {
+    this.panelResult.set(result ?? null);
+    this.componentPanelOpen.set(false);
+
+    if (result === 'submit') {
+      this.showSnackbar('Form submitted successfully!', 'done');
+    } else if (result === null) {
+      this.showSnackbar('Form cancelled.', 'warn');
     }
   }
 

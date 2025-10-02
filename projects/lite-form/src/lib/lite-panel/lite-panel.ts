@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, TemplateRef, computed, input, output } from '@angular/core';
+import { Component, TemplateRef, Type, ViewContainerRef, ViewChild, ComponentRef, AfterViewInit, OnDestroy, computed, input, output } from '@angular/core';
 
 export interface LitePanelAction {
   label: string;
@@ -19,9 +19,10 @@ let panelIdCounter = 0;
   templateUrl: './lite-panel.html',
   styleUrls: ['../lite-styles.scss', './lite-panel.scss']
 })
-export class LitePanel {
+export class LitePanel implements AfterViewInit, OnDestroy {
   title = input<string | null>(null);
-  content = input<string | TemplateRef<unknown> | null>(null);
+  content = input<string | TemplateRef<unknown> | Type<any> | null>(null);
+  contentInputs = input<Record<string, any> | null>(null);
   actions = input<LitePanelAction[] | null>(null);
   closeOnOverlayClick = input<boolean>(true);
   width = input<string | number | null>(null);
@@ -31,7 +32,10 @@ export class LitePanel {
 
   closed = output<unknown | null>();
 
+  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer?: ViewContainerRef;
+
   readonly panelTitleId = `lite-panel-title-${++panelIdCounter}`;
+  private componentRef?: ComponentRef<any>;
 
   private readonly defaultActions = [{ label: 'OK', value: null, variant: 'primary' }] satisfies LitePanelAction[];
 
@@ -48,6 +52,12 @@ export class LitePanel {
   readonly contentText = computed(() => {
     const value = this.content();
     return typeof value === 'string' ? value : null;
+  });
+
+  readonly contentComponent = computed(() => {
+    const value = this.content();
+    // Check if it's a component type (function/class but not TemplateRef)
+    return value && typeof value === 'function' && !(value instanceof TemplateRef) ? value : null;
   });
 
   readonly templateContext: { panel: LitePanel; close: (value?: unknown) => void } = {
@@ -113,5 +123,33 @@ export class LitePanel {
     }
 
     return false;
+  }
+
+  ngAfterViewInit(): void {
+    this.loadDynamicComponent();
+  }
+
+  ngOnDestroy(): void {
+    this.componentRef?.destroy();
+  }
+
+  private loadDynamicComponent(): void {
+    const component = this.contentComponent();
+    if (component && this.dynamicComponentContainer) {
+      this.dynamicComponentContainer.clear();
+      this.componentRef = this.dynamicComponentContainer.createComponent(component);
+      
+      // Apply inputs if provided
+      const inputs = this.contentInputs();
+      if (inputs) {
+        Object.entries(inputs).forEach(([key, value]) => {
+          if (this.componentRef && key in this.componentRef.instance) {
+            this.componentRef.instance[key] = value;
+          }
+        });
+      }
+      
+      this.componentRef.changeDetectorRef.detectChanges();
+    }
   }
 }
