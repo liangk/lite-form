@@ -6,17 +6,17 @@ This library is built for developers who need a robust, out-of-the-box solution 
 
 ## Why Choose Lite Form?
 
-- **🚀 Accelerate Development**: Get a complete suite of form controls ready to use, including complex components like date pickers, file uploads, and data tables. Drastically reduce boilerplate code.
-- **💎 Lightweight & Performant**: Built with modern Angular practices. All components are standalone and tree-shakable, ensuring a minimal bundle size.
-- **✅ Fully Typed & Integrated**: Enjoy excellent developer experience with fully-typed APIs for all components and Data Transfer Objects (DTOs), ensuring type safety and easier integration.
-- **🎨 Highly Customizable**: While providing a clean default UI, the library is designed for easy styling. A clear SCSS structure and BEM-style classes allow for deep customization to match your brand.
-- **🔒 Secure & Accessible**: Components are built with security and accessibility (ARIA) in mind, including advanced password strength analysis and accessible form field structures.
+- **Accelerate Development**: Get a complete suite of form controls ready to use, including complex components like date pickers, file uploads, and data tables. Drastically reduce boilerplate code.
+- **Lightweight & Performant**: Built with modern Angular practices. All components are standalone and tree-shakable, ensuring a minimal bundle size.
+- **Fully Typed & Integrated**: Enjoy excellent developer experience with fully-typed APIs for all components and Data Transfer Objects (DTOs), ensuring type safety and easier integration.
+- **Highly Customizable**: While providing a clean default UI, the library is designed for easy styling. A clear SCSS structure and BEM-style classes allow for deep customization to match your brand.
+- **Secure & Accessible**: Components are built with security and accessibility (ARIA) in mind, including advanced password strength analysis and accessible form field structures.
 
 ## Live Demo
 
 Experience Lite Form in action with our interactive live demo on StackBlitz. Test out all the components and see how they work in a real Angular application.
 
-[**🚀 Launch Live Demo on StackBlitz**](https://stackblitz.com/~/github.com/liangk/lite-form)
+[**Launch Live Demo on StackBlitz**](https://stackblitz.com/~/github.com/liangk/lite-form)
 
 
 ## Use Cases
@@ -30,63 +30,63 @@ Lite Form is ideal for a wide range of applications, including but not limited t
 - **Internal Tools**: Rapidly prototype and build internal tools for data collection and management.
 
 ## Features
-- ✅ **Modern Angular 20+** - Built with standalone components, signals, and latest CLI tooling
-- ✅ **TypeScript Support** - Fully typed with generic support and DTO helpers
-- ✅ **Reactive Forms** - Integrated with Angular Reactive Forms
-- ✅ **Built-in Validation** - Form validation with error messages and utilities
-- ✅ **Password Security** - Advanced password validation and strength analysis
-- ✅ **Date Handling** - Single date and date range selection with custom formatting
-- ✅ **File Upload** - Drag & drop file upload with camera capture and file management
-- ✅ **Panels & Dialogs** - Template-driven modal panels with configurable action buttons
-- ✅ **Data Tables** - Flexible table component with custom columns, sorting, and pagination
-- ✅ **Pagination** - Standalone pagination component with customizable navigation
-- ✅ **Loading Indicators** - Spinner and progress bar components with defined/indeterminate states
-- ✅ **Customizable Styling** - Space-saving SCSS style guide for consistent overrides
-- ✅ **Accessibility** - ARIA-compliant form controls
-- ✅ **Animations** - Smooth transitions and interactions
+- **Modern Angular 20+** - Built with standalone components, signals, and latest CLI tooling
+- **TypeScript Support** - Fully typed with generic support and DTO helpers
+- **Reactive Forms** - Integrated with Angular Reactive Forms
+- **Built-in Validation** - Form validation with error messages and utilities
+- **Password Security** - Advanced password validation and strength analysis
+- **Date Handling** - Single date and date range selection with custom formatting
+- **File Upload** - Drag & drop file upload with camera capture and file management
+- **Panels & Dialogs** - Modal panels supporting string, template, or component content with configurable action buttons
+- **Data Tables** - Flexible table component with custom columns, sorting, and pagination
+- **Pagination** - Standalone pagination component with customizable navigation
+- **Loading Indicators** - Spinner and progress bar components with defined/indeterminate states
+- **Customizable Styling** - Space-saving SCSS style guide for consistent overrides
+- **Accessibility** - ARIA-compliant form controls
+- **Animations** - Smooth transitions and interactions
 
 ## Components
 
-### 🎯 LiteInput
+### LiteInput
 Basic text input component with floating labels and validation.
 
-### 🔐 LitePassword
+### LitePassword
 Password input component with toggle visibility, strength indicator, and advanced validation features.
 
-### 📝 LiteTextarea  
+### LiteTextarea  
 Multi-line text input with auto-resize capabilities.
 
-### 📋 LiteSelect
+### LiteSelect
 Single-selection dropdown with search and filtering.
 
-### ☑️ LiteMultiSelect
+### LiteMultiSelect
 Multi-selection dropdown with inline selected items display and dynamic height adjustment.
 
-### 🔘 LiteRadio
+### LiteRadio
 Radio button group component for single selection from multiple options.
 
-### ✅ LiteCheckbox
+### LiteCheckbox
 Checkbox component for boolean input with validation support.
 
-### 📅 LiteDate
+### LiteDate
 Advanced date picker component with single date and date range selection, custom formatting, and intelligent calendar positioning.
 
-### 📎 LiteFile
+### LiteFile
 File upload component with drag & drop, badge, file management panel, and camera capture support.
 
-### 📅 LiteDateTime
+### LiteDateTime
 Date and time picker with timezone-safe handling and consistent formatting utilities.
 
-### 📊 LiteTable
+### LiteTable
 Flexible data table component with custom columns, cell templates, nested property access, and integrated pagination.
 
-### 📄 LitePaginator
+### LitePaginator
 Standalone pagination component with customizable page navigation, items per page selection, and total item display.
 
-### 🪟 LitePanel
-Modal-style panel component that renders custom templates, configurable header text, and action buttons via `LitePanelAction` definitions. Supports custom `width`, `height`, `maxWidth`, and `maxHeight` inputs with automatic `px` suffix for numeric values.
+### LitePanel
+Modal-style panel component that renders string content, Angular templates, or dynamic components. Supports configurable header text and action buttons via `LitePanelAction` definitions. Accepts custom `width`, `height`, `maxWidth`, and `maxHeight` inputs with automatic `px` suffix for numeric values.
 
-### ⏳ LiteLoading
+### LiteLoading
 Loading indicator component with view toggle for spinner (loading wheel) or progress bar modes. Supports defined progress percentage (0-100) or indeterminate animation, optional message display, and configurable spinner sizes (small, medium, large).
 
 ---
@@ -682,6 +682,149 @@ onRowMenuAction(event: { action: string; row: any }) {
 
 ```html
 <lite-table [table]="table" (menuAction)="onRowMenuAction($event)"></lite-table>
+```
+
+### LitePanel Component
+
+**Selector:** `lite-panel`
+
+| Input | Type | Default | Description |
+| :---- | :--- | :------ | :---------- |
+| `title` | `string \| null` | `null` | Panel header title text |
+| `content` | `string \| TemplateRef \| Type<any> \| null` | `null` | Content to display: string, template, or component |
+| `contentInputs` | `Record<string, any> \| null` | `null` | Inputs to pass to dynamic component content |
+| `actions` | `LitePanelAction[] \| null` | `null` | Action buttons (defaults to single OK button) |
+| `closeOnOverlayClick` | `boolean` | `true` | Whether clicking backdrop closes the panel |
+| `width` | `string \| number \| null` | `null` | Panel width (numeric values get px suffix) |
+| `height` | `string \| number \| null` | `null` | Panel height (numeric values get px suffix) |
+| `maxWidth` | `string \| number \| null` | `null` | Maximum panel width |
+| `maxHeight` | `string \| number \| null` | `null` | Maximum panel height |
+
+| Output | Type | Description |
+| :----- | :--- | :---------- |
+| `closed` | `unknown \| null` | Emitted when panel closes with action value or null |
+
+**Features:**
+- Three content types: string, Angular template, or dynamic component
+- Configurable action buttons with variants (primary, secondary, danger)
+- Customizable dimensions with automatic px suffix for numbers
+- Backdrop click to close (configurable)
+- Close button in header
+- Component content with input binding support
+- Accessible with ARIA attributes
+
+**String Content Example:**
+```typescript
+panelOpen = signal(false);
+
+openPanel() {
+  this.panelOpen.set(true);
+}
+
+onPanelClosed(result: unknown | null) {
+  this.panelOpen.set(false);
+}
+```
+
+```html
+@if (panelOpen()) {
+  <lite-panel
+    [title]="'Information'"
+    [content]="'This is simple text content.'"
+    (closed)="onPanelClosed($event)">
+  </lite-panel>
+}
+```
+
+**Template Content Example:**
+```typescript
+panelActions: LitePanelAction[] = [
+  { label: 'Confirm', value: 'confirm', variant: 'primary' },
+  { label: 'Cancel', value: null, variant: 'secondary' }
+];
+```
+
+```html
+@if (panelOpen()) {
+  <lite-panel
+    [title]="'Confirmation'"
+    [content]="confirmTemplate"
+    [actions]="panelActions"
+    width="500px"
+    (closed)="onPanelClosed($event)">
+  </lite-panel>
+}
+
+<ng-template #confirmTemplate let-close="close">
+  <p>Are you sure you want to proceed?</p>
+  <button (click)="close('custom-value')">Custom Action</button>
+</ng-template>
+```
+
+**Component Content Example:**
+```typescript
+import { Component, Type } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { LiteInput, FieldDto } from 'ngx-lite-form';
+
+// Create a standalone component for panel content
+@Component({
+  selector: 'user-form',
+  standalone: true,
+  imports: [LiteInput],
+  template: `
+    <div class="form-content">
+      <p>Fill out the form below:</p>
+      <lite-input [control]="nameField"></lite-input>
+      <lite-input [control]="emailField"></lite-input>
+    </div>
+  `
+})
+export class UserFormComponent {
+  nameField = new FieldDto('Name', new FormControl('', [Validators.required]));
+  emailField = new FieldDto('Email', new FormControl('', [Validators.required, Validators.email]));
+}
+
+// In your main component
+userFormComponent: Type<any> = UserFormComponent;
+panelActions: LitePanelAction[] = [
+  { label: 'Submit', value: 'submit', variant: 'primary' },
+  { label: 'Cancel', value: null, variant: 'secondary' }
+];
+```
+
+```html
+@if (panelOpen()) {
+  <lite-panel
+    [title]="'User Registration'"
+    [content]="userFormComponent"
+    [actions]="panelActions"
+    width="600px"
+    maxHeight="80vh"
+    (closed)="onPanelClosed($event)">
+  </lite-panel>
+}
+```
+
+**Passing Inputs to Component Content:**
+```typescript
+// Component with inputs
+@Component({...})
+export class DataViewComponent {
+  @Input() userId!: number;
+  @Input() mode!: string;
+}
+
+// Usage
+componentInputs = { userId: 123, mode: 'edit' };
+```
+
+```html
+<lite-panel
+  [content]="dataViewComponent"
+  [contentInputs]="componentInputs"
+  (closed)="onPanelClosed($event)">
+</lite-panel>
 ```
 
 ### LiteLoading Component

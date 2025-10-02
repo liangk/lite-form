@@ -851,6 +851,208 @@ The table automatically handles special data formats:
 
 ---
 
+### LitePanel
+
+**Selector:** `lite-panel`
+
+**Description:** Modal-style panel component that supports string content, Angular templates, or dynamic components with configurable action buttons.
+
+#### Inputs
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `title` | `string \| null` | `null` | Panel header title text |
+| `content` | `string \| TemplateRef<unknown> \| Type<any> \| null` | `null` | Content to display: string, template reference, or component class |
+| `contentInputs` | `Record<string, any> \| null` | `null` | Object containing inputs to pass to dynamic component content |
+| `actions` | `LitePanelAction[] \| null` | `null` | Array of action button configurations (defaults to single OK button) |
+| `closeOnOverlayClick` | `boolean` | `true` | Whether clicking the backdrop closes the panel |
+| `width` | `string \| number \| null` | `null` | Panel width (numeric values automatically get px suffix) |
+| `height` | `string \| number \| null` | `null` | Panel height (numeric values automatically get px suffix) |
+| `maxWidth` | `string \| number \| null` | `null` | Maximum panel width |
+| `maxHeight` | `string \| number \| null` | `null` | Maximum panel height |
+
+#### Outputs
+| Property | Type | Description |
+|----------|------|-------------|
+| `closed` | `unknown \| null` | Emitted when panel closes, returns action value or null |
+
+#### Features
+- **Multiple Content Types:** Supports string, Angular TemplateRef, or dynamic component
+- **Action Buttons:** Configurable buttons with variants (primary, secondary, danger)
+- **Flexible Sizing:** Custom width, height, maxWidth, maxHeight with automatic px conversion
+- **Backdrop Control:** Optional backdrop click to close
+- **Component Inputs:** Pass data to dynamically loaded components via contentInputs
+- **Accessibility:** ARIA-compliant with proper dialog roles and labels
+- **Close Button:** Built-in header close button
+
+#### Methods
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `close(value?)` | `void` | Close panel and emit value through closed output |
+| `onBackdropClick()` | `void` | Handle backdrop click based on closeOnOverlayClick setting |
+| `onAction(action)` | `void` | Handle action button click and close panel with action value |
+
+#### LitePanelAction Interface
+```typescript
+interface LitePanelAction {
+  label: string;
+  value?: unknown;
+  variant?: 'primary' | 'secondary' | 'danger';
+}
+```
+
+#### String Content Usage
+```typescript
+import { signal } from '@angular/core';
+
+panelOpen = signal(false);
+
+openPanel() {
+  this.panelOpen.set(true);
+}
+
+onPanelClosed(result: unknown | null) {
+  this.panelOpen.set(false);
+  console.log('Panel closed with:', result);
+}
+```
+
+```html
+@if (panelOpen()) {
+  <lite-panel
+    [title]="'Notification'"
+    [content]="'This is a simple text message.'"
+    (closed)="onPanelClosed($event)">
+  </lite-panel>
+}
+```
+
+#### Template Content Usage
+```typescript
+panelActions: LitePanelAction[] = [
+  { label: 'Delete', value: 'delete', variant: 'danger' },
+  { label: 'Cancel', value: null, variant: 'secondary' }
+];
+```
+
+```html
+@if (panelOpen()) {
+  <lite-panel
+    [title]="'Confirm Deletion'"
+    [content]="confirmTemplate"
+    [actions]="panelActions"
+    width="480px"
+    (closed)="onPanelClosed($event)">
+  </lite-panel>
+}
+
+<ng-template #confirmTemplate let-close="close">
+  <p>Are you sure you want to delete this item?</p>
+  <p>This action cannot be undone.</p>
+</ng-template>
+```
+
+#### Component Content Usage
+```typescript
+import { Component, Type, Input } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { LiteInput, LiteTextarea, FieldDto } from 'ngx-lite-form';
+
+// Standalone component for panel content
+@Component({
+  selector: 'user-form',
+  standalone: true,
+  imports: [LiteInput, LiteTextarea],
+  template: `
+    <div class="form-content">
+      <p>Complete the form below:</p>
+      <lite-input [control]="nameField"></lite-input>
+      <lite-input [control]="emailField"></lite-input>
+      <lite-textarea [control]="bioField"></lite-textarea>
+    </div>
+  `,
+  styles: [`
+    .form-content { display: flex; flex-direction: column; gap: 1rem; }
+  `]
+})
+export class UserFormComponent {
+  nameField = new FieldDto('Full Name', new FormControl('', [Validators.required]));
+  emailField = new FieldDto('Email', new FormControl('', [Validators.required, Validators.email]));
+  bioField = new FieldDto('Bio', new FormControl(''));
+}
+
+// In parent component
+userFormComponent: Type<any> = UserFormComponent;
+formActions: LitePanelAction[] = [
+  { label: 'Submit', value: 'submit', variant: 'primary' },
+  { label: 'Cancel', value: null, variant: 'secondary' }
+];
+```
+
+```html
+@if (formPanelOpen()) {
+  <lite-panel
+    [title]="'User Registration'"
+    [content]="userFormComponent"
+    [actions]="formActions"
+    width="600px"
+    maxHeight="80vh"
+    (closed)="onFormPanelClosed($event)">
+  </lite-panel>
+}
+```
+
+#### Passing Inputs to Component Content
+```typescript
+// Component with @Input properties
+@Component({
+  selector: 'data-viewer',
+  standalone: true,
+  template: `<div>Viewing user {{ userId }} in {{ mode }} mode</div>`
+})
+export class DataViewerComponent {
+  @Input() userId!: number;
+  @Input() mode!: 'view' | 'edit';
+}
+
+// Usage in parent
+dataViewerComponent: Type<any> = DataViewerComponent;
+componentInputs = {
+  userId: 123,
+  mode: 'edit' as const
+};
+```
+
+```html
+<lite-panel
+  [title]="'Data Viewer'"
+  [content]="dataViewerComponent"
+  [contentInputs]="componentInputs"
+  (closed)="onPanelClosed($event)">
+</lite-panel>
+```
+
+#### Styling
+- `.lite-panel__backdrop` - Backdrop overlay
+- `.lite-panel` - Main panel container
+- `.lite-panel__header` - Header section
+- `.lite-panel__title` - Title text
+- `.lite-panel__close` - Close button
+- `.lite-panel__content` - Content section
+- `.lite-panel__actions` - Action buttons container
+- `.lite-panel__action` - Individual action button
+- `.lite-panel__action--primary` - Primary action variant
+- `.lite-panel__action--secondary` - Secondary action variant
+- `.lite-panel__action--danger` - Danger action variant
+
+#### Use Cases
+- **Confirmation Dialogs:** Delete confirmations, action confirmations
+- **Forms:** User registration, data entry, settings
+- **Information Display:** Notifications, alerts, help text
+- **Complex Workflows:** Multi-step wizards using component content
+- **Data Viewers:** Display detailed information with custom components
+
+---
+
 ## Data Transfer Objects
 
 ### FileFieldDto
