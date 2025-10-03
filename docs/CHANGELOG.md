@@ -5,6 +5,21 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.5] - 2025-10-03
+
+### Added
+- **LitePanel Component Data Extraction**: Automatic form data retrieval from dynamic components
+  - Panel now checks for `getData()` method on component instances
+  - Returns `{ action, data }` structure when component has data to pass
+  - Enables seamless form submission from panel components
+
+### Changed
+- **LiteTable Styling**: Enhanced table layout for better scrolling and height management
+  - Added flexbox layout with `height: 100%` and `flex-direction: column`
+  - Table body now scrollable with `flex: 1` and `overflow-y: auto`
+  - Empty state row fills available height
+- **Form Label Positioning**: Adjusted floating label top position from `2px` to `0` for better alignment across all form components
+
 ## [1.3.4] - 2025-10-02
 
 ### Added

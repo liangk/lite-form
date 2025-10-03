@@ -1129,4 +1129,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 ---
 
 ## Changelog
-- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.3` release adding the `LiteLoading` component with spinner and progress bar views.
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.5` release with LitePanel data extraction from dynamic components and improved table scrolling.

@@ -94,7 +94,14 @@ export class LitePanel implements AfterViewInit, OnDestroy {
   }
 
   onAction(action: LitePanelAction): void {
-    const emitted = Object.prototype.hasOwnProperty.call(action, 'value') ? action.value : null;
+    let emitted = Object.prototype.hasOwnProperty.call(action, 'value') ? action.value : null;
+    
+    // If there's a dynamic component with a getData method, include its data
+    if (this.componentRef?.instance && typeof this.componentRef.instance.getData === 'function') {
+      const componentData = this.componentRef.instance.getData();
+      emitted = { action: emitted, data: componentData };
+    }
+    
     this.close(emitted as unknown | null);
   }
 
