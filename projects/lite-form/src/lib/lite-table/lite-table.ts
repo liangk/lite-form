@@ -19,6 +19,8 @@ export class LiteTable<T = any> {
 
   // Track which row's menu is open (by paginated row index)
   openMenuIndex: number | null = null;
+  // Track if menu should open upward
+  menuOpenUpward = false;
 
   // Computed properties for pagination
   paginatedData = computed(() => {
@@ -83,7 +85,26 @@ export class LiteTable<T = any> {
   // Row menu handlers
   toggleMenu(rowIndex: number, event?: MouseEvent) {
     event?.stopPropagation();
-    this.openMenuIndex = this.openMenuIndex === rowIndex ? null : rowIndex;
+    
+    if (this.openMenuIndex === rowIndex) {
+      this.openMenuIndex = null;
+      this.menuOpenUpward = false;
+      return;
+    }
+    
+    this.openMenuIndex = rowIndex;
+    
+    // Check if button is near bottom of viewport
+    if (event?.target) {
+      const button = event.target as HTMLElement;
+      const rect = button.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const spaceBelow = viewportHeight - rect.bottom;
+      const menuHeight = 150; // Approximate menu height
+      
+      // Open upward if not enough space below
+      this.menuOpenUpward = spaceBelow < menuHeight && rect.top > menuHeight;
+    }
   }
 
   onMenuItemClick(action: string, row: T, event?: MouseEvent) {

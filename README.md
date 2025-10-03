@@ -1126,4 +1126,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ---
 ## Changelog
-- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.5` release with LitePanel data extraction from dynamic components and improved table scrolling.
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.6` release with smart dropdown positioning, input signal support, and enhanced table UI.

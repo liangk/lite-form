@@ -150,8 +150,9 @@ export class LitePanel implements AfterViewInit, OnDestroy {
       const inputs = this.contentInputs();
       if (inputs) {
         Object.entries(inputs).forEach(([key, value]) => {
-          if (this.componentRef && key in this.componentRef.instance) {
-            this.componentRef.instance[key] = value;
+          if (this.componentRef) {
+            // Use setInput to properly handle both input signals and @Input decorators
+            this.componentRef.setInput(key, value);
           }
         });
       }

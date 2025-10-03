@@ -5,6 +5,28 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.6] - 2025-10-03
+
+### Added
+- **LiteTable Menu Dropdown**: Smart positioning for row action menus
+  - Dropdown automatically opens upward when button is near bottom of viewport
+  - Calculates available space and adjusts position dynamically
+  - New `.menu-dropdown--upward` CSS modifier for upward positioning
+
+### Changed
+- **LitePanel Input Handling**: Improved support for Angular input signals
+  - Changed from direct property assignment to `ComponentRef.setInput()` method
+  - Now properly supports both `@Input()` decorators and modern `input()` signals
+  - Fixes compatibility issues with dynamically created components using signals
+- **LiteTable Menu Icon**: Replaced text-based tri-dots with SVG icon
+  - Larger, more visible 20x20px SVG with 3px diameter circles
+  - Uses `currentColor` for consistent theming
+  - Improved accessibility and visual clarity
+- **LiteTable Styling Refinements**
+  - Increased data cell min-height from 36px to 40px for better touch targets
+  - Removed font-size override from menu items for consistency
+  - Added `lite-table` element styling for flex layout and scrolling
+
 ## [1.3.5] - 2025-10-03
 
 ### Added

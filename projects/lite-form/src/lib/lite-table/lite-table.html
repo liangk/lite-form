@@ -34,10 +34,14 @@
                     aria-label="Row actions"
                     [attr.aria-expanded]="openMenuIndex === rowIndex"
                     (click)="toggleMenu(rowIndex, $event)">
-                    <span class="kebab">⋮</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                      <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                      <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                    </svg>
                   </button>
                   @if (openMenuIndex === rowIndex) {
-                    <div class="menu-dropdown" (click)="$event.stopPropagation()">
+                    <div class="menu-dropdown" [class.menu-dropdown--upward]="menuOpenUpward" (click)="$event.stopPropagation()">
                       @for (mi of column.menuItems || []; track mi.value) {
                         <button
                           class="menu-item"
