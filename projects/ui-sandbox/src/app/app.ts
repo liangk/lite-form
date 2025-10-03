@@ -324,8 +324,16 @@ export class App {
     this.panelResult.set(result ?? null);
     this.componentPanelOpen.set(false);
 
-    if (result === 'submit') {
-      this.showSnackbar('Form submitted successfully!', 'done');
+    // Handle component panel with data
+    if (result && typeof result === 'object' && 'action' in result && 'data' in result) {
+      const { action, data } = result as { action: unknown; data: any };
+      
+      if (action === 'submit') {
+        console.log('Form data submitted:', data);
+        this.showSnackbar('Form submitted successfully!', 'done');
+      } else if (action === null) {
+        this.showSnackbar('Form cancelled.', 'warn');
+      }
     } else if (result === null) {
       this.showSnackbar('Form cancelled.', 'warn');
     }

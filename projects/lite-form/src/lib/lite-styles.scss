@@ -8,8 +8,7 @@ input, .label, textarea {
   .value { min-height: 1em; line-height: 1em; }
 }
 .lite-input.in-edit {
-  .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
-  font-size: 1em; line-height: 40px; font-weight: normal; }
+  .label { position: absolute; left: 8px; top: 0; color: #aaa; pointer-events: none; transition: 0.2s; font-size: 1em; line-height: 40px; font-weight: normal; }
   input { border: 1px solid #ccc; border-radius: 4px; padding: 0 8px; font-size: 1em; outline: none;
     line-height: 40px; height: 40px; }
   input:focus {
@@ -35,8 +34,8 @@ input, .label, textarea {
       line-height: 40px; height: 40px; width: 100%; }
     input:focus { border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5); }
     input.invalid { border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25); }
-    .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
-      font-size: 1em; line-height: 40px; font-weight: normal; }
+    .label { position: absolute; left: 8px; top: 0; color: #aaa; pointer-events: none;
+      transition: 0.2s; font-size: 1em; line-height: 40px; font-weight: normal; }
     input:focus + .label, input:not(:placeholder-shown) + .label {
       transform: translateY(-10px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
       line-height: initial; }
@@ -86,8 +85,8 @@ input, .label, textarea {
   .value { min-height: 1em; line-height: 1em; }
 }
 .lite-textarea.in-edit {
-  .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
-  font-size: 1em; line-height: 40px; font-weight: normal; }
+  .label { position: absolute; left: 8px; top: 0; color: #aaa; pointer-events: none; 
+    transition: 0.2s; font-size: 1em; line-height: 40px; font-weight: normal; }
   textarea { border: 1px solid #ccc; border-radius: 4px; padding: 5px 8px; font-size: 1em; outline: none;
     line-height: 40px; }
   textarea:focus {
@@ -107,8 +106,8 @@ input, .label, textarea {
   .value { min-height: 1em; line-height: 1em; }
 }
 .lite-select.in-edit {
-  .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
-  font-size: 1em; line-height: 40px; font-weight: normal; }
+  .label { position: absolute; left: 8px; top: 0; color: #aaa; pointer-events: none; 
+    transition: 0.2s; font-size: 1em; line-height: 40px; font-weight: normal; }
   input { border: 1px solid #ccc; border-radius: 4px; padding: 0 2em 0 8px; font-size: 1em; outline: none;
     line-height: 40px; height: 40px; }
   input:focus {
@@ -147,8 +146,8 @@ input, .label, textarea {
   }
 }
 .lite-multi-select.in-edit {
-  .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
-    font-size: 1em; line-height: 40px; font-weight: normal; }
+  .label { position: absolute; left: 8px; top: 0; color: #aaa; pointer-events: none; 
+    transition: 0.2s; font-size: 1em; line-height: 40px; font-weight: normal; }
   
   .input-container {
     border: 1px solid #ccc; border-radius: 4px; background: #fff; outline: none;
@@ -278,7 +277,7 @@ input, .label, textarea {
 }
 .lite-date.in-edit {
   position: relative;
-  .label { position: absolute; left: 8px; top: 2px; color: #aaa; pointer-events: none; transition: 0.2s;
+  .label { position: absolute; left: 8px; top: 0; color: #aaa; pointer-events: none; transition: 0.2s;
     font-size: 1em; line-height: 40px; font-weight: normal; }
   input { border: 1px solid #ccc; border-radius: 4px; padding: 0 2em 0 8px; font-size: 1em; outline: none;
     line-height: 40px; height: 40px; color-scheme: light; }
@@ -543,7 +542,7 @@ input, .label, textarea {
   }
 }
 
-.lite-table { width: 100%; background: #fff;
+.lite-table { width: 100%; background: #fff; height: 100%; display: flex; flex-direction: column;
   .table-header { background: #f8f8f8; border-bottom: 1px solid #dee2e6;
     .header-row { display: flex;
       .header-cell { padding: 5px 10px; text-align: left; font-weight: 600; color: #333; font-size: 0.9em; min-height: 36px; display: flex; align-items: center;
@@ -554,7 +553,7 @@ input, .label, textarea {
       }
     }
   }
-  .table-body {
+  .table-body { flex: 1; overflow-y: auto;
     .data-row { display: flex; border-bottom: 1px solid #dee2e6; transition: background-color 0.2s ease;
       &:hover { background: #f8f9fa; }
       &:last-child { border-bottom: none; }
@@ -585,7 +584,7 @@ input, .label, textarea {
         }
       }
     }
-    .empty-row { display: flex; border-bottom: 1px solid #dee2e6;
+    .empty-row { display: flex; border-bottom: 1px solid #dee2e6; height: 100%;
       .empty-cell { padding: 40px 16px; text-align: center; color: #6c757d; font-style: italic; font-size: 0.9em; }
     }
   }
