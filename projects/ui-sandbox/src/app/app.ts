@@ -30,7 +30,7 @@ import {
   LitePanelAction,
   LiteLoading
 } from 'lite-form';
-import { UserFormPanelComponent } from './components/user-form-panel.component';
+import { UserFormPanelComponent, UserFormData } from './components/user-form-panel.component';
 
 @Component({
   selector: 'app-root',
@@ -228,6 +228,8 @@ export class App {
   componentPanelOpen = signal(false);
   panelResult = signal<unknown | null>(null);
   userFormComponent: Type<any> = UserFormPanelComponent;
+  userFormInputs = signal<{ initialData?: UserFormData; mode?: 'create' | 'edit' } | null>(null);
+  componentPanelTitle = signal<string>('User Form');
 
   // Lite loading demos
   showSpinner = signal(true);
@@ -315,8 +317,28 @@ export class App {
     }
   }
 
-  openComponentPanel() {
+  openComponentPanel(mode: 'create' | 'edit' = 'create') {
     this.panelResult.set(null);
+    
+    if (mode === 'edit') {
+      // Edit mode: Pass initial data to pre-populate the form
+      this.componentPanelTitle.set('Edit User');
+      this.userFormInputs.set({
+        initialData: {
+          name: 'John Doe',
+          email: 'john.doe@example.com',
+          bio: 'Software developer with 5 years of experience.'
+        },
+        mode: 'edit'
+      });
+    } else {
+      // Create mode: No initial data
+      this.componentPanelTitle.set('Create New User');
+      this.userFormInputs.set({
+        mode: 'create'
+      });
+    }
+    
     this.componentPanelOpen.set(true);
   }
 

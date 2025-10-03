@@ -43,7 +43,8 @@
       <div class="panel-demo__buttons">
         <button (click)="openBasicPanel()">Open Basic Panel</button>
         <button (click)="openConfirmationPanel()">Open Confirmation Panel</button>
-        <button (click)="openComponentPanel()">Open Component Panel</button>
+        <button (click)="openComponentPanel('create')">Create New User</button>
+        <button (click)="openComponentPanel('edit')">Edit User</button>
       </div>
       <p>Last action result: <strong>{{ panelResult() === null ? 'none' : panelResult() }}</strong></p>
     </div>
@@ -222,8 +223,9 @@
 
   @if (componentPanelOpen()) {
     <lite-panel
-      [title]="'User Registration Form'"
+      [title]="componentPanelTitle()"
       [content]="userFormComponent"
+      [contentInputs]="userFormInputs()"
       [actions]="componentPanelActions"
       width="600px"
       maxHeight="80vh"

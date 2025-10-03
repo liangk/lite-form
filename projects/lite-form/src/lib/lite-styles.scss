@@ -1,4 +1,5 @@
 * { box-sizing: border-box; }
+lite-table { flex: 1; overflow-y: auto; }
 input, .label, textarea {
   font-size: 1em; color: #333;
 }
@@ -557,7 +558,7 @@ input, .label, textarea {
     .data-row { display: flex; border-bottom: 1px solid #dee2e6; transition: background-color 0.2s ease;
       &:hover { background: #f8f9fa; }
       &:last-child { border-bottom: none; }
-      .data-cell { padding: 5px 10px; font-size: 0.9em; color: #333; min-height: 36px; display: flex; align-items: center;
+      .data-cell { padding: 5px 10px; font-size: 0.9em; color: #333; min-height: 40px; display: flex; align-items: center;
         &:last-child { border-right: none; }
         .single-action-button {
           background: none; border: 1px solid #ccc; color: #666; padding: 4px 8px; border-radius: 4px; cursor: pointer;
@@ -576,7 +577,8 @@ input, .label, textarea {
             .kebab { font-size: 18px; line-height: 1; }
           }
           .menu-dropdown { position: absolute; right: 0; top: calc(100% + 4px); background: #fff; border: 1px solid #dee2e6; box-shadow: 0 4px 12px rgba(0,0,0,.1); border-radius: 6px; min-width: 140px; z-index: 5; padding: 4px; display: flex; flex-direction: column; gap: 4px;
-            .menu-item { background: none; border: none; text-align: left; padding: 8px 10px; border-radius: 4px; cursor: pointer; color: #333; font-size: 0.9em;
+            &.menu-dropdown--upward { top: auto; bottom: calc(100% + 4px); }
+            .menu-item { background: none; border: none; text-align: left; padding: 8px 10px; border-radius: 4px; cursor: pointer; color: #333;
               &:hover { background: #f8f9fa; }
               &.danger { color: #dc3545; }
             }
