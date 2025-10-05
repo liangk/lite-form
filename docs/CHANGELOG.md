@@ -5,6 +5,30 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.8] - 2025-10-05
+
+### Added
+- **LitePanel Smart Action Disabling**: Automatic form validation-based button disabling
+  - Panel actions automatically disable when embedded component form is invalid
+  - Detects `isValid()` method on dynamic component instances
+  - Falls back to scanning component properties for `FormGroup` instances
+  - Submit-style actions (value='submit' or primary variant) respect form validity
+  - No hard-coded property names—uses Angular `FormGroup` type checking
+  - Enables seamless UX for form panels without manual disabled state management
+
+### Changed
+- **LitePanel Action Disabled Logic**: Enhanced `isActionDisabled()` method
+  - Now checks embedded component validity before enabling submit actions
+  - Supports both explicit `disabled` property and dynamic form validation
+  - Automatically finds and validates any `FormGroup` in component instance
+  - Improved error handling with console warnings for failed validity checks
+
+### Enhanced
+- **LitePanel Styling**: Improved disabled button states
+  - Added opacity and background color for disabled primary actions
+  - Hover states now respect disabled attribute with `:not(:disabled)` selector
+  - Better visual feedback for non-interactive buttons
+
 ## [1.3.6] - 2025-10-03
 
 ### Added

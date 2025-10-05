@@ -1,6 +1,7 @@
 import { Component, input, effect } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LiteInput, LiteTextarea, FieldDto } from 'lite-form';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export interface UserFormData {
   name?: string;
@@ -42,24 +43,38 @@ export interface UserFormData {
 })
 export class UserFormPanelComponent {
   initialData = input<UserFormData | undefined>();
+  validityChange = input<(isValid: boolean) => void>(() => {});
   mode = input<'create' | 'edit'>('create');
-
+  userForm = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    bio: new FormControl('', [Validators.maxLength(200)]),
+  });
   nameField: FieldDto = {
     label: 'Full Name',
-    formControl: new FormControl('', [Validators.required, Validators.minLength(3)])
+    formControl: this.userForm.get('name') as FormControl
   } as FieldDto;
 
   emailField: FieldDto = {
     label: 'Email Address',
-    formControl: new FormControl('', [Validators.required, Validators.email])
+    formControl: this.userForm.get('email') as FormControl
   } as FieldDto;
 
   bioField: FieldDto = {
     label: 'Bio',
-    formControl: new FormControl('', [Validators.maxLength(200)])
+    formControl: this.userForm.get('bio') as FormControl
   } as FieldDto;
 
   constructor() {
+    this.userForm.statusChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.emitValidity());
+
+    effect(() => {
+      this.validityChange();
+      this.emitValidity();
+    });
+
     // Use effect to populate form when initialData changes
     effect(() => {
       const data = this.initialData();
@@ -74,10 +89,11 @@ export class UserFormPanelComponent {
           this.bioField.formControl.setValue(data.bio);
         }
       }
+      this.emitValidity();
     });
   }
 
-  isValid(): boolean {
+  isValid() {
     return this.nameField.formControl.valid && 
            this.emailField.formControl.valid && 
            this.bioField.formControl.valid;
@@ -89,5 +105,9 @@ export class UserFormPanelComponent {
       email: this.emailField.formControl.value,
       bio: this.bioField.formControl.value
     };
+  }
+
+  private emitValidity(): void {
+    this.validityChange()(this.userForm.valid);
   }
 }

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, TemplateRef, Type, ViewContainerRef, ViewChild, ComponentRef, AfterViewInit, OnDestroy, computed, input, output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 export interface LitePanelAction {
   label: string;
@@ -8,6 +9,10 @@ export interface LitePanelAction {
    * Adds a CSS modifier class `lite-panel__action--${variant}` to let consumers style the action button.
    */
   variant?: 'primary' | 'secondary' | 'danger';
+  /**
+   * Controls action interactivity. Use a boolean literal or return `true` from a function to disable.
+   */
+  disabled?: boolean | (() => boolean);
 }
 
 let panelIdCounter = 0;
@@ -37,7 +42,7 @@ export class LitePanel implements AfterViewInit, OnDestroy {
   readonly panelTitleId = `lite-panel-title-${++panelIdCounter}`;
   private componentRef?: ComponentRef<any>;
 
-  private readonly defaultActions = [{ label: 'OK', value: null, variant: 'primary' }] satisfies LitePanelAction[];
+  private readonly defaultActions: LitePanelAction[] = [{ label: 'OK', value: null, variant: 'primary' }];
 
   readonly resolvedActions = computed(() => {
     const provided = this.actions();
@@ -110,6 +115,80 @@ export class LitePanel implements AfterViewInit, OnDestroy {
       'lite-panel__action': true,
       [`lite-panel__action--${action.variant}`]: !!action.variant
     };
+  }
+
+  isActionDisabled(action: LitePanelAction): boolean {
+    if (typeof action.disabled === 'function') {
+      try {
+        return !!action.disabled();
+      } catch (error) {
+        console.error('[LitePanel] Failed to evaluate action.disabled()', error);
+        return false;
+      }
+    }
+    if (typeof action.disabled === 'boolean') {
+      return action.disabled;
+    }
+
+    if (!this.shouldRespectComponentValidity(action)) {
+      return false;
+    }
+
+    const componentValid = this.getComponentValidity();
+    if (componentValid === null) {
+      return false;
+    }
+
+    return !componentValid;
+  }
+
+  private shouldRespectComponentValidity(action: LitePanelAction): boolean {
+    if (!this.componentRef?.instance) {
+      return false;
+    }
+
+    if (action.value === 'submit') {
+      return true;
+    }
+
+    if (action.variant === 'primary' && action.value === undefined) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private getComponentValidity(): boolean | null {
+    const instance = this.componentRef?.instance as { isValid?: () => unknown } | undefined;
+    if (!instance) {
+      return null;
+    }
+
+    if (typeof instance.isValid === 'function') {
+      try {
+        return !!instance.isValid();
+      } catch (error) {
+        console.warn('[LitePanel] Failed to evaluate content component isValid()', error);
+        return null;
+      }
+    }
+
+    const formGroup = this.findFormGroup(instance);
+    if (formGroup) {
+      return formGroup.valid;
+    }
+
+    return null;
+  }
+
+  private findFormGroup(instance: Record<string, unknown>): FormGroup | null {
+    for (const key of Object.keys(instance)) {
+      const value = instance[key];
+      if (value instanceof FormGroup) {
+        return value;
+      }
+    }
+    return null;
   }
 
   private toCssLength(value: string | number): string {
