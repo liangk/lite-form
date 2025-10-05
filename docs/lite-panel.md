@@ -7,6 +7,8 @@ A modal-style panel component for displaying overlays with customizable content.
 - Multiple content types: string, template, or component
 - Dynamic component loading with input signal support
 - Configurable action buttons with variants (primary, secondary, danger)
+- **Smart action disabling**: Submit buttons automatically disable when embedded form is invalid
+- Automatic form validation detection via `isValid()` method or `FormGroup` scanning
 - Customizable dimensions (width, height, maxWidth, maxHeight)
 - Backdrop click to close (configurable)
 - Data extraction from dynamic components via `getData()` method
@@ -43,8 +45,15 @@ interface LitePanelAction {
   label: string;
   value: any;
   variant?: 'primary' | 'secondary' | 'danger';
+  disabled?: boolean | (() => boolean);  // Optional: manually control button state
 }
 ```
+
+**Note on Smart Action Disabling**: Submit-style actions (those with `value='submit'` or `variant='primary'` without explicit value) are automatically disabled when the embedded component's form is invalid. The panel detects validity by:
+1. Checking for an `isValid()` method on the component instance
+2. Scanning component properties for any `FormGroup` instance and checking its `valid` property
+
+This automatic behavior can be overridden by explicitly setting the `disabled` property.
 
 ## Examples
 
@@ -166,6 +175,13 @@ export class UserFormComponent {
       email: this.emailField.formControl.value,
       bio: this.bioField.formControl.value
     };
+  }
+  
+  // Optional: Provide form validity for smart action disabling
+  isValid() {
+    return this.nameField.formControl.valid && 
+           this.emailField.formControl.valid && 
+           this.bioField.formControl.valid;
   }
 }
 
@@ -297,9 +313,59 @@ onPanelClosed(result: unknown) {
 }
 ```
 
+## Form Validation Integration
+
+LitePanel automatically disables submit-style action buttons when an embedded form component is invalid. This provides a seamless user experience without requiring manual state management.
+
+### How It Works
+
+1. **Automatic Detection**: When a dynamic component is loaded, the panel checks for form validity
+2. **Priority Order**:
+   - First checks for an `isValid()` method on the component instance
+   - Falls back to scanning all component properties for a `FormGroup` instance
+   - Uses the `FormGroup.valid` property to determine button state
+3. **Submit Actions**: Only affects actions with `value='submit'` or `variant='primary'` (without explicit value)
+4. **Real-time Updates**: Button state updates automatically as form validity changes
+
+### Implementation Example
+
+```typescript
+// Your form component
+export class MyFormComponent {
+  userForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email])
+  });
+  
+  // Option 1: Provide isValid() method (recommended)
+  isValid() {
+    return this.userForm.valid;
+  }
+  
+  // Option 2: Just have a FormGroup property (automatic detection)
+  // The panel will find 'userForm' and check its validity
+}
+```
+
+### Manual Override
+
+You can override automatic validation by explicitly setting the `disabled` property:
+
+```typescript
+formActions = [
+  { 
+    label: 'Submit', 
+    value: 'submit', 
+    variant: 'primary',
+    disabled: () => !this.customValidationLogic()  // Manual control
+  }
+];
+```
+
 ## Notes
 
 - Numeric width/height values are automatically suffixed with 'px'
 - Components passed via `content` are dynamically created and destroyed
 - The `contentInputs` binding properly handles both `@Input()` and `input()` signals
 - Templates receive a `close` function for manual closing
+- Submit buttons automatically disable when embedded forms are invalid (no manual wiring needed)

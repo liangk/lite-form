@@ -319,7 +319,7 @@ export class App {
 
   openComponentPanel(mode: 'create' | 'edit' = 'create') {
     this.panelResult.set(null);
-    
+
     if (mode === 'edit') {
       // Edit mode: Pass initial data to pre-populate the form
       this.componentPanelTitle.set('Edit User');
@@ -338,14 +338,13 @@ export class App {
         mode: 'create'
       });
     }
-    
+
     this.componentPanelOpen.set(true);
   }
 
   onComponentPanelClosed(result: unknown | null) {
     this.panelResult.set(result ?? null);
     this.componentPanelOpen.set(false);
-
     // Handle component panel with data
     if (result && typeof result === 'object' && 'action' in result && 'data' in result) {
       const { action, data } = result as { action: unknown; data: any };
