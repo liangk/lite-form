@@ -1,4 +1,6 @@
-* { box-sizing: border-box; }
+* { box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
 lite-table { flex: 1; overflow-y: auto; }
 input, .label, textarea {
   font-size: 1em; color: #333;
