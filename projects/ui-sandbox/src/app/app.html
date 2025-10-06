@@ -45,6 +45,7 @@
         <button (click)="openConfirmationPanel()">Open Confirmation Panel</button>
         <button (click)="openComponentPanel('create')">Create New User</button>
         <button (click)="openComponentPanel('edit')">Edit User</button>
+        <button (click)="openTemplateFormPanel()">Invite User (Template Form)</button>
       </div>
       <p>Last action result: <strong>{{ panelResult() === null ? 'none' : panelResult() }}</strong></p>
     </div>
@@ -232,4 +233,22 @@
       (closed)="onComponentPanelClosed($event)"
     ></lite-panel>
   }
+
+  @if (templateFormPanelOpen()) {
+    <lite-panel
+      [title]="'Invite User'"
+      [content]="inviteFormTemplate"
+      [formGroup]="inviteForm"
+      [actions]="templateFormPanelActions"
+      width="520px"
+      (closed)="onTemplateFormPanelClosed($event)"
+    ></lite-panel>
+  }
+
+  <ng-template #inviteFormTemplate>
+    <form class="invite-form" [formGroup]="inviteForm">
+      <lite-input [control]="inviteEmailField"></lite-input>
+      <lite-select [control]="inviteRoleField"></lite-select>
+    </form>
+  </ng-template>
 </div>

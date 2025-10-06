@@ -25,6 +25,7 @@ A modal-style panel component for displaying overlays with customizable content.
 | `title` | `string` | required | Panel header title |
 | `content` | `string \| TemplateRef \| Type<any>` | required | Content to display (text, template, or component) |
 | `contentInputs` | `Record<string, any> \| null` | `null` | Inputs to pass to dynamically loaded component |
+| `formGroup` | `FormGroup \| null` | `null` | Optional FormGroup for template-based form validation |
 | `actions` | `LitePanelAction[]` | `[]` | Array of action buttons |
 | `width` | `string \| number` | `'600px'` | Panel width (auto-adds 'px' for numbers) |
 | `height` | `string \| number` | `'auto'` | Panel height |
@@ -49,9 +50,10 @@ interface LitePanelAction {
 }
 ```
 
-**Note on Smart Action Disabling**: Submit-style actions (those with `value='submit'` or `variant='primary'` without explicit value) are automatically disabled when the embedded component's form is invalid. The panel detects validity by:
-1. Checking for an `isValid()` method on the component instance
-2. Scanning component properties for any `FormGroup` instance and checking its `valid` property
+**Note on Smart Action Disabling**: Submit-style actions (those with `value='submit'` or `variant='primary'` without explicit value) are automatically disabled when the embedded form is invalid. The panel detects validity by:
+1. Checking if a `FormGroup` was explicitly provided via the `formGroup` input (for ng-template forms)
+2. Checking for an `isValid()` method on dynamic component instances
+3. Scanning component properties for any `FormGroup` instance and checking its `valid` property
 
 This automatic behavior can be overridden by explicitly setting the `disabled` property.
 
@@ -121,6 +123,76 @@ export class ExampleComponent {
       // Perform delete operation
     }
     this.confirmOpen.set(false);
+  }
+}
+```
+
+### Template with Form Validation
+
+```typescript
+import { Component, signal } from '@angular/core';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { LitePanel, LiteInput, LiteSelect, FieldDto, SelectFieldDto } from 'ngx-lite-form';
+
+@Component({
+  standalone: true,
+  imports: [LitePanel, LiteInput, LiteSelect, ReactiveFormsModule],
+  template: `
+    @if (invitePanelOpen()) {
+      <lite-panel
+        [title]="'Invite User'"
+        [content]="invitePanel"
+        [formGroup]="inviteForm"
+        [actions]="inviteActions"
+        width="520px"
+        (closed)="onInviteClosed($event)"
+      ></lite-panel>
+    }
+    
+    <ng-template #invitePanel let-close="close">
+      <form class="invite-form" [formGroup]="inviteForm">
+        <lite-input [control]="emailField"></lite-input>
+        <lite-select [control]="roleField"></lite-select>
+      </form>
+    </ng-template>
+  `
+})
+export class ExampleComponent {
+  invitePanelOpen = signal(false);
+  
+  inviteForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    role: new FormControl('', [Validators.required])
+  });
+  
+  emailField: FieldDto = {
+    label: 'Email Address',
+    formControl: this.inviteForm.get('email') as FormControl
+  };
+  
+  roleField: SelectFieldDto = {
+    label: 'Role',
+    formControl: this.inviteForm.get('role') as FormControl,
+    options: ['Admin', 'Editor', 'Viewer'],
+    displayWith: (option: string) => option
+  };
+  
+  inviteActions = [
+    { label: 'Send Invite', value: 'invite', variant: 'primary' as const },
+    { label: 'Cancel', value: null, variant: 'secondary' as const }
+  ];
+  
+  openInvitePanel() {
+    this.inviteForm.reset();
+    this.invitePanelOpen.set(true);
+  }
+  
+  onInviteClosed(result: unknown) {
+    if (result === 'invite') {
+      console.log('Invite sent:', this.inviteForm.value);
+      // Send invitation with form data
+    }
+    this.invitePanelOpen.set(false);
   }
 }
 ```
@@ -319,15 +391,50 @@ LitePanel automatically disables submit-style action buttons when an embedded fo
 
 ### How It Works
 
-1. **Automatic Detection**: When a dynamic component is loaded, the panel checks for form validity
+1. **Automatic Detection**: The panel checks for form validity in the following priority order
 2. **Priority Order**:
-   - First checks for an `isValid()` method on the component instance
+   - First checks if a `FormGroup` was explicitly provided via the `formGroup` input (for ng-template forms)
+   - Then checks for an `isValid()` method on the component instance
    - Falls back to scanning all component properties for a `FormGroup` instance
    - Uses the `FormGroup.valid` property to determine button state
 3. **Submit Actions**: Only affects actions with `value='submit'` or `variant='primary'` (without explicit value)
 4. **Real-time Updates**: Button state updates automatically as form validity changes
 
-### Implementation Example
+### Implementation Examples
+
+#### Option 1: ng-template with FormGroup Input (Recommended for Templates)
+
+```typescript
+@Component({
+  template: `
+    <lite-panel
+      [title]="'User Form'"
+      [content]="formTemplate"
+      [formGroup]="userForm"
+      [actions]="formActions">
+    </lite-panel>
+    
+    <ng-template #formTemplate>
+      <form [formGroup]="userForm">
+        <lite-input [control]="nameField"></lite-input>
+        <lite-input [control]="emailField"></lite-input>
+      </form>
+    </ng-template>
+  `
+})
+export class MyComponent {
+  userForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email])
+  });
+  
+  formActions = [
+    { label: 'Submit', value: 'submit', variant: 'primary' as const }
+  ];
+}
+```
+
+#### Option 2: Dynamic Component with isValid() Method
 
 ```typescript
 // Your form component
@@ -337,13 +444,22 @@ export class MyFormComponent {
     email: new FormControl('', [Validators.required, Validators.email])
   });
   
-  // Option 1: Provide isValid() method (recommended)
+  // Provide isValid() method (recommended for components)
   isValid() {
     return this.userForm.valid;
   }
-  
-  // Option 2: Just have a FormGroup property (automatic detection)
-  // The panel will find 'userForm' and check its validity
+}
+```
+
+#### Option 3: Dynamic Component with FormGroup Property (Automatic Detection)
+
+```typescript
+export class MyFormComponent {
+  // Just have a FormGroup property - the panel will find it automatically
+  userForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email])
+  });
 }
 ```
 
