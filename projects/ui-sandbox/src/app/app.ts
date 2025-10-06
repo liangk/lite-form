@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, signal, Type } from '@angular/core';
-import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormControl, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
 import {
   FieldDto,
   SelectFieldDto,
@@ -37,6 +37,7 @@ import { UserFormPanelComponent, UserFormData } from './components/user-form-pan
   standalone: true,
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     LiteInput,
     LitePassword,
     LiteTextarea,
@@ -226,10 +227,29 @@ export class App {
   basicPanelOpen = signal(false);
   confirmationPanelOpen = signal(false);
   componentPanelOpen = signal(false);
+  templateFormPanelOpen = signal(false);
   panelResult = signal<unknown | null>(null);
   userFormComponent: Type<any> = UserFormPanelComponent;
   userFormInputs = signal<{ initialData?: UserFormData; mode?: 'create' | 'edit' } | null>(null);
   componentPanelTitle = signal<string>('User Form');
+  
+  // Template form panel demo
+  inviteForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    role: new FormControl('', [Validators.required])
+  });
+  
+  inviteEmailField: FieldDto = {
+    label: 'Email Address',
+    formControl: this.inviteForm.get('email') as FormControl
+  };
+  
+  inviteRoleField: SelectFieldDto = {
+    label: 'Role',
+    formControl: this.inviteForm.get('role') as FormControl,
+    options: ['Admin', 'Editor', 'Viewer'],
+    displayWith: (option: string) => option
+  };
 
   // Lite loading demos
   showSpinner = signal(true);
@@ -245,6 +265,11 @@ export class App {
 
   componentPanelActions: LitePanelAction[] = [
     { label: 'Submit', value: 'submit', variant: 'primary' },
+    { label: 'Cancel', value: null, variant: 'secondary' }
+  ];
+  
+  templateFormPanelActions: LitePanelAction[] = [
+    { label: 'Send Invite', value: 'submit', variant: 'primary' },
     { label: 'Cancel', value: null, variant: 'secondary' }
   ];
 
@@ -357,6 +382,24 @@ export class App {
       }
     } else if (result === null) {
       this.showSnackbar('Form cancelled.', 'warn');
+    }
+  }
+  
+  openTemplateFormPanel() {
+    this.panelResult.set(null);
+    this.inviteForm.reset();
+    this.templateFormPanelOpen.set(true);
+  }
+  
+  onTemplateFormPanelClosed(result: unknown | null) {
+    this.panelResult.set(result ?? null);
+    this.templateFormPanelOpen.set(false);
+    
+    if (result === 'submit') {
+      console.log('Invite sent:', this.inviteForm.value);
+      this.showSnackbar('Invitation sent successfully!', 'done');
+    } else if (result === null) {
+      this.showSnackbar('Invitation cancelled.', 'warn');
     }
   }
 

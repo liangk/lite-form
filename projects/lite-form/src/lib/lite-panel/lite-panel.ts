@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, TemplateRef, Type, ViewContainerRef, ViewChild, ComponentRef, AfterViewInit, OnDestroy, computed, input, output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, TemplateRef, Type, ViewContainerRef, ViewChild, ComponentRef, AfterViewInit, OnDestroy, computed, input, output, ViewChildren, QueryList } from '@angular/core';
+import { FormGroup, FormGroupDirective } from '@angular/forms';
 
 export interface LitePanelAction {
   label: string;
@@ -28,6 +28,7 @@ export class LitePanel implements AfterViewInit, OnDestroy {
   title = input<string | null>(null);
   content = input<string | TemplateRef<unknown> | Type<any> | null>(null);
   contentInputs = input<Record<string, any> | null>(null);
+  formGroup = input<FormGroup | null>(null);
   actions = input<LitePanelAction[] | null>(null);
   closeOnOverlayClick = input<boolean>(true);
   width = input<string | number | null>(null);
@@ -38,9 +39,11 @@ export class LitePanel implements AfterViewInit, OnDestroy {
   closed = output<unknown | null>();
 
   @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer?: ViewContainerRef;
+  @ViewChildren(FormGroupDirective) formGroupDirectives?: QueryList<FormGroupDirective>;
 
   readonly panelTitleId = `lite-panel-title-${++panelIdCounter}`;
   private componentRef?: ComponentRef<any>;
+  private detectedFormGroup: FormGroup | null = null;
 
   private readonly defaultActions: LitePanelAction[] = [{ label: 'OK', value: null, variant: 'primary' }];
 
@@ -143,7 +146,9 @@ export class LitePanel implements AfterViewInit, OnDestroy {
   }
 
   private shouldRespectComponentValidity(action: LitePanelAction): boolean {
-    if (!this.componentRef?.instance) {
+    // Check if we have either a component instance, explicit FormGroup, or detected FormGroup
+    const hasValidationSource = this.componentRef?.instance || this.formGroup() || this.detectedFormGroup;
+    if (!hasValidationSource) {
       return false;
     }
 
@@ -159,6 +164,17 @@ export class LitePanel implements AfterViewInit, OnDestroy {
   }
 
   private getComponentValidity(): boolean | null {
+    // Check for explicitly provided FormGroup (for ng-template forms)
+    const providedFormGroup = this.formGroup();
+    if (providedFormGroup) {
+      return providedFormGroup.valid;
+    }
+    
+    // Check for detected FormGroup from ng-template
+    if (this.detectedFormGroup) {
+      return this.detectedFormGroup.valid;
+    }
+
     const instance = this.componentRef?.instance as { isValid?: () => unknown } | undefined;
     if (!instance) {
       return null;
@@ -191,6 +207,11 @@ export class LitePanel implements AfterViewInit, OnDestroy {
     return null;
   }
 
+  private detectFormInTemplate(): void {
+    // FormGroupDirective query happens automatically via @ContentChildren
+    // We'll check it in ngAfterContentInit
+  }
+
   private toCssLength(value: string | number): string {
     if (typeof value === 'number') {
       return `${value}px`;
@@ -213,6 +234,28 @@ export class LitePanel implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.loadDynamicComponent();
+    
+    // Detect FormGroup in template after view init
+    setTimeout(() => {
+      if (this.formGroupDirectives && this.formGroupDirectives.length > 0) {
+        const firstDirective = this.formGroupDirectives.first;
+        if (firstDirective && firstDirective.form) {
+          this.detectedFormGroup = firstDirective.form;
+        }
+      }
+    }, 0);
+    
+    // Subscribe to changes in case FormGroupDirective appears later
+    if (this.formGroupDirectives) {
+      this.formGroupDirectives.changes.subscribe(() => {
+        if (this.formGroupDirectives && this.formGroupDirectives.length > 0) {
+          const firstDirective = this.formGroupDirectives.first;
+          if (firstDirective && firstDirective.form) {
+            this.detectedFormGroup = firstDirective.form;
+          }
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {
