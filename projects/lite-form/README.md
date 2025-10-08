@@ -511,5 +511,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ---
 ## Changelog
-- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.3.9` release with smart form validation-based action disabling for LitePanel.
-- 
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.4.0` release with LiteSelect click handler fixes and enhanced package discoverability.

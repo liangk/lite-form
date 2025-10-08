@@ -1,13 +1,16 @@
 {
   "name": "ngx-lite-form",
-  "version": "1.3.9",
-  "description": "A lightweight Angular form library with reusable input, textarea, select, multi-select, radio, checkbox, date picker and password components",
+  "version": "1.4.0",
+  "description": "Lightweight Angular 20+ form library with 15+ standalone components: input, textarea, select, multi-select, radio, checkbox, password, date picker, datetime picker, file upload, data table, pagination, modal panel, loading indicators, and toast notifications",
   "keywords": [
-    "angular", "forms", "components", "ui", "lite-form", "input", "password",
-    "select", "multi-select", "textarea", "radio", "checkbox",
-    "date-picker", "datetime-picker"
+    "angular", "angular20", "forms", "reactive-forms", "components", "ui-library",
+    "standalone-components", "typescript", "input", "textarea", "select", "dropdown",
+    "multi-select", "radio", "checkbox", "password", "date-picker", "datetime-picker",
+    "file-upload", "drag-drop", "data-table", "table", "pagination", "paginator",
+    "modal", "dialog", "panel", "loading", "spinner", "toast", "snackbar",
+    "form-validation", "ngx", "angular-forms"
   ],
-  "author": "liangk",
+  "author": "Ko-Hsin Liang",
   "license": "MIT",
   "repository": {
     "type": "git",

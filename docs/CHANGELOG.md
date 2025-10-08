@@ -5,6 +5,29 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-10-08
+
+### Fixed
+- **LiteSelect Option Click Handler**: Resolved race condition preventing option selection
+  - Changed from `(click)` to `(mousedown)` event to fire before input blur
+  - Fixed tracking expression from `track option.title` to `track $index`
+  - Removed input `(blur)` handler in favor of document click detection
+  - Extracted `handleInputValidation()` method for reusable validation logic
+  - Ensures reliable option selection when clicking from filtered results
+
+### Changed
+- **LiteSelect Input Clearing**: Enhanced reset behavior
+  - Clearing input text now resets form control value to `null`
+  - Provides consistent initial state when user deletes all text
+  - Improves form validation flow for required select fields
+
+### Improved
+- **Package Metadata**: Updated description and keywords for better discoverability
+  - Description now highlights "15+ standalone components" with comprehensive feature list
+  - Expanded keywords from 9 to 32 terms covering Angular 20+, reactive forms, UI components
+  - Added search-optimized terms: `dropdown`, `drag-drop`, `data-table`, `modal`, `dialog`, `spinner`, `toast`
+  - Better npm search visibility for Angular developers
+
 ## [1.3.9] - 2025-10-06
 
 ### Added

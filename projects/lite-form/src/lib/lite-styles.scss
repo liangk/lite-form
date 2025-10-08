@@ -125,8 +125,10 @@ input, .label, textarea {
   }
   .options {
     position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #ccc;
-    border-radius: 4px; max-height: 200px; overflow-y: auto; z-index: 1000; overflow: hidden;
-    .option { padding: 8px; cursor: pointer; &:hover { background-color: #f0f0f0; } }
+    border-radius: 4px; max-height: 200px; overflow-y: auto; z-index: 1000;
+    .option { padding: 8px; cursor: pointer; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+      &:hover { background-color: #f0f0f0; } }
     .option.selected { background-color: #e0e0e0; }
   }
   .arrow_box {
