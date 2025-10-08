@@ -511,4 +511,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ---
 ## Changelog
-- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.4.0` release with LiteSelect click handler fixes and enhanced package discoverability.
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.4.1` release with LiteDateTime selection state fix.

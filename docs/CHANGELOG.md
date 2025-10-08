@@ -5,6 +5,16 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2025-10-08
+
+### Fixed
+- **LiteDateTime Selection State**: Resolved visual bug where previous selected date remained highlighted
+  - Added `selectionChangeSignal` to trigger calendar re-computation on selection changes
+  - Calendar days computed signal now properly reacts to selection updates
+  - Cleaned up `setDateTimeSelected()` to remove manual DOM manipulation
+  - Previous selection now correctly clears when new date is selected
+  - Ensures only one date appears selected at a time in the calendar
+
 ## [1.4.0] - 2025-10-08
 
 ### Fixed
