@@ -38,13 +38,13 @@ export class LiteDateTime {
   selectedHour = new Date().getHours();
   selectedMinute = 0;
   selectedDateTime: CalendarDateTime | null = null;
-  // Signal to track form control value changes for reactivity
-  // private formValueChangeSignal = signal<any>(null);
+  // Signal to track selection changes for reactivity
+  private selectionChangeSignal = signal<number>(0);
   
   // Computed calendar days - only recalculates when dependencies change
   calendarDays = computed(() => {
-    // This makes the computed reactive to form value changes
-    // this.formValueChangeSignal();
+    // This makes the computed reactive to selection changes
+    this.selectionChangeSignal();
     return this.getMonthDays(this.currentMonth());
   });
 
@@ -127,7 +127,7 @@ export class LiteDateTime {
             const date = new Date(value);
             // console.log('Form value changed:', value, date, isNaN(date.getTime()));
             if (!isNaN(date.getTime())) {
-              console.log('Formatted Date:', this.formatDate(date, this.format()))
+              // console.log('Formatted Date:', this.formatDate(date, this.format()))
               this.formattedValue.set(this.formatDate(date, this.format()));
             } else {
               this.formattedValue.set(value);
@@ -204,8 +204,6 @@ export class LiteDateTime {
     };
     const dateString = this.toLocalISOString(this.selectedDateTime.date);
     (this.control().formControl as FormControl<string>).setValue(dateString);
-    const calDate = this.calendarDays().find(d => this.isSameDay(d.date, date));
-    if (calDate) {calDate.isSelected = true;}
   }
   private parseFormattedDate(dateString: string, format: string): Date | null {
     try {
@@ -350,18 +348,19 @@ export class LiteDateTime {
   }
 
   selectDate(day: CalendarDateTime): void {
-    if (this.selectedDateTime){
+    // Clear previous selection
+    if (this.selectedDateTime) {
       this.selectedDateTime.isSelected = false;
     }
-    // this.selectedDateTime = day;
-    // this.selectedDateTime.isSelected = true;
-    this.setDateTimeSelected(day.date);
-    // const dateString = this.toLocalISOString(day.date);
-    // (this.control().formControl as FormControl<string>).setValue(dateString);
-    // // this.formValueChangeSignal.set(Date.now()); // Trigger immediate update
     
-    // this.control().formControl.markAsDirty();
-    // this.control().formControl.markAsTouched();
+    // Set new selection
+    this.setDateTimeSelected(day.date);
+    
+    // Trigger calendar re-render to clear previous visual selection
+    this.selectionChangeSignal.update(v => v + 1);
+    
+    this.control().formControl.markAsDirty();
+    this.control().formControl.markAsTouched();
   }
 
   private isSameDay(date1: Date, date2: Date | null): boolean {
