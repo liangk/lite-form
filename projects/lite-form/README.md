@@ -62,7 +62,7 @@ Lite Form provides 15+ form and UI components. Click on any component below for 
 - **[LiteFile](docs/lite-file.md)** - File upload with drag & drop and camera capture
 
 ### Data Display & Navigation
-- **[LiteTable](docs/lite-table.md)** - Flexible data table with pagination and row actions
+- **[LiteTable](docs/lite-table.md)** - Flexible data table with sorting, pagination, and row actions
 - **[LitePaginator](docs/lite-paginator.md)** - Standalone pagination component
 
 ### UI Components
@@ -198,12 +198,12 @@ export class AppComponent {
     showPreview: true
   });
 
-  // Table with custom columns
+  // Table with custom columns and sorting
   employeeTable = new TableFieldDto(
     [
-      { key: 'name', label: 'Name', flex: '1' },
-      { key: 'department', label: 'Department', flex: '0 0 150px' },
-      { key: 'salary', label: 'Salary', flex: '0 0 120px', cellTemplate: (value) => `$${value?.toLocaleString() || '0'}` }
+      { key: 'name', label: 'Name', flex: '1', sortable: true },
+      { key: 'department', label: 'Department', flex: '0 0 150px', sortable: true },
+      { key: 'salary', label: 'Salary', flex: '0 0 120px', sortable: true, cellTemplate: (value) => `$${value?.toLocaleString() || '0'}` }
     ],
     [
       { name: 'John Smith', department: 'Engineering', salary: 75000 },
@@ -211,17 +211,25 @@ export class AppComponent {
     ]
   );
 
-  // Paginated table
+  // Paginated table with sorting
   userTable = new TableFieldDto(
     [
-      { key: 'name', label: 'Name', flex: '1' },
-      { key: 'email', label: 'Email', flex: '1' },
-      { key: 'location.country', label: 'Country', flex: '0 0 120px' }
+      { key: 'name', label: 'Name', flex: '1', sortable: true },
+      { key: 'email', label: 'Email', flex: '1', sortable: true },
+      { key: 'location.country', label: 'Country', flex: '0 0 120px', sortable: true }
     ],
     [], // Will be populated by API
     true, // Enable pagination
     new PaginatorFieldDto(1, 100, 10) // Page 1, 100 total items, 10 per page
   );
+  
+  // Handle sort changes
+  onTableSort(event: { column: string; direction: 'asc' | 'desc' | null }) {
+    this.userTable = { 
+      ...this.userTable, 
+      sortState: { column: event.column, direction: event.direction }
+    };
+  }
 
   // Standalone paginator
   paginator = new PaginatorFieldDto(1, 500, 25);
@@ -262,15 +270,21 @@ export class AppComponent {
   <lite-file [control]="fileField"></lite-file>
 </form>
 
-<!-- Data Table -->
-<lite-table [table]="employeeTable"></lite-table>
+<!-- Data Table with Sorting -->
+<lite-table 
+  [table]="employeeTable"
+  (sortChange)="onTableSort($event)">
+</lite-table>
 
-<!-- Paginated Table -->
+<!-- Paginated Table with Sorting -->
 <lite-table
   [table]="userTable"
   (pageChange)="onPageChange($event)"
-  (itemsPerPageChange)="onItemsPerPageChange($event)">
+  (itemsPerPageChange)="onItemsPerPageChange($event)"
+  (sortChange)="onTableSort($event)">
 </lite-table>
+
+> Sorting behavior: LiteTable performs client-side, page-level sorting. Only the currently visible page is sorted. Disable pagination to sort the full visible dataset, or sort on the server before passing data to the table if you need whole-dataset sorting across pages.
 
 <!-- Standalone Paginator -->
 <lite-paginator
@@ -420,18 +434,26 @@ class FileFieldDto {
 Table configuration for the LiteTable component.
 
 ```typescript
+type SortDirection = 'asc' | 'desc' | null;
+
+interface SortState {
+  column: string;
+  direction: SortDirection;
+}
+
 class TableFieldDto<T = any> {
   columns: TableColumn[];
   data: T[];
   showPaginator?: boolean;
   paginatorConfig: PaginatorFieldDto;
+  sortState?: SortState;    // Current sort state
 }
 
 interface TableColumn {
   key: string;              // Data property key (supports dot notation)
   label: string;            // Column header text
   flex?: string;            // CSS flex property (e.g., '0 0 100px', '1')
-  sortable?: boolean;       // Show sorting indicator
+  sortable?: boolean;       // Enable sorting for this column
   cellTemplate?: (value: any, row: any) => string; // Custom HTML template
   type?: 'text' | 'menu';   // Optional column type (default: 'text')
   menuItems?: Array<{ label: string; value: string; variant?: 'danger' | 'default' }>; // For 'menu' type columns
@@ -511,4 +533,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ---
 ## Changelog
-- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.4.1` release with LiteDateTime selection state fix.
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.4.2` release with LiteTable column sorting feature.

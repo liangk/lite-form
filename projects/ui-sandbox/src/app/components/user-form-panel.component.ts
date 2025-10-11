@@ -43,7 +43,7 @@ export interface UserFormData {
 })
 export class UserFormPanelComponent {
   initialData = input<UserFormData | undefined>();
-  validityChange = input<(isValid: boolean) => void>(() => {});
+  validityChange = input<(_isValid: boolean) => void>((_isValid: boolean) => {});
   mode = input<'create' | 'edit'>('create');
   userForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),

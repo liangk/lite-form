@@ -68,9 +68,9 @@ export class LitePanel implements AfterViewInit, OnDestroy {
     return value && typeof value === 'function' && !(value instanceof TemplateRef) ? value : null;
   });
 
-  readonly templateContext: { panel: LitePanel; close: (value?: unknown) => void } = {
+  readonly templateContext: { panel: LitePanel; close: (_value?: unknown) => void } = {
     panel: this,
-    close: (value?: unknown) => this.close(value ?? null)
+    close: (_value?: unknown) => this.close(_value ?? null)
   };
 
   readonly panelStyles = computed(() => {
