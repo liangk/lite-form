@@ -12,7 +12,7 @@ A flexible data table component with custom columns, cell templates, nested prop
 - Row action menus (single-action buttons or dropdown menus)
 - Smart dropdown positioning (auto-opens upward near bottom)
 - Empty state display
-- Sortable columns (via custom implementation)
+- Sortable columns with page-level sorting (frontend, only current page is sorted)
 - Responsive flex-based layout
 - SVG-based menu icons
 
@@ -29,32 +29,6 @@ A flexible data table component with custom columns, cell templates, nested prop
 | Output | Type | Description |
 |--------|------|-------------|
 | `pageChange` | `EventEmitter<number>` | Emits when page number changes |
-| `itemsPerPageChange` | `EventEmitter<number>` | Emits when items per page changes |
-| `menuAction` | `EventEmitter<{ action: string; row: T }>` | Emits when row menu action is clicked |
-
-### TableFieldDto Class
-
-```typescript
-class TableFieldDto<T = any> {
-  columns: TableColumn[];
-  data: T[];
-  showPaginator?: boolean;
-  paginatorConfig: PaginatorFieldDto;
-}
-```
-
-### TableColumn Interface
-
-```typescript
-interface TableColumn {
-  label: string;
-  key: string;
-  flex?: string;
-  type?: 'menu';
-  cellTemplate?: (value: any, row: any) => string;
-  menuItems?: MenuItem[];
-}
-
 interface MenuItem {
   label: string;
   value: string;
@@ -133,6 +107,52 @@ onItemsPerPageChange(itemsPerPage: number) {
   (itemsPerPageChange)="onItemsPerPageChange($event)"
 ></lite-table>
 ```
+
+## Sorting
+
+LiteTable supports client-side, page-level sorting:
+
+- Sorting is applied to the currently visible page only.
+- If pagination is disabled, sorting applies to the full visible dataset.
+- Clicking a sortable header cycles: ascending → descending → none.
+- Sorting compares the rendered cell value using `getCellValue()`, so custom `cellTemplate` formatting is respected. Numeric strings are compared numerically when both sides parse to numbers; otherwise locale-aware string comparison is used.
+
+### Enable sorting on columns
+
+```typescript
+userTable = signal(new TableFieldDto<User>(
+  [
+    { label: 'Name', key: 'name', sortable: true },
+    { label: 'Email', key: 'email', sortable: true },
+    { label: 'Role', key: 'role' }
+  ],
+  this.users,
+  true,
+  new PaginatorFieldDto(1, this.users.length, 10)
+));
+```
+
+### Handle sort changes
+
+Bind to `sortChange` and update `table.sortState` in your component. Reassign the table object to trigger change detection, if needed in your setup.
+
+```html
+<lite-table 
+  [table]="userTable()"
+  (sortChange)="onSort($event)"></lite-table>
+```
+
+```ts
+onSort(event: { column: string; direction: 'asc' | 'desc' | null }) {
+  const current = this.userTable();
+  this.userTable.set({
+    ...current,
+    sortState: { column: event.column, direction: event.direction }
+  });
+}
+```
+
+> Note: Sorting is applied to the current page slice on the frontend. If you need server-side or whole-dataset sorting across pages, perform sorting in your data source before passing rows to `LiteTable`.
 
 ### Custom Cell Templates
 

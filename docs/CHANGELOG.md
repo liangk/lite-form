@@ -5,6 +5,30 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2025-10-11
+
+### Added
+- **LiteTable Column Sorting**: Full sorting functionality for table columns
+  - Added `sortable` property to `TableColumn` interface for enabling sort on specific columns
+  - New `SortState` interface and `SortDirection` type for managing sort state
+  - `sortState` property in `TableFieldDto` to track current sort column and direction
+  - `sortChange` output event emits when sort state changes
+  - Visual sort indicators with up/down arrows in column headers
+  - Three-state sorting: ascending → descending → no sort (cycles on click)
+  - Supports string, number, and date sorting with proper type handling
+  - Null/undefined values handled gracefully (sorted to end)
+  - Works seamlessly with pagination - sorts full dataset before pagination
+  - Computed `sortedData` signal for reactive sorting
+  - Styled sort arrows with hover states and active indicators
+  - Note: Sorting is applied on the frontend to the currently visible page (page-level sorting). If you need whole-dataset or server-side sorting, perform it before passing data to the table.
+
+### Enhanced
+- **LiteTable Styling**: Improved header cell layout for sort indicators
+  - Added gap between label and sort arrows
+  - Sort indicators show with reduced opacity when not active
+  - Active sort direction highlighted in primary color (#2079e1)
+  - Smooth opacity transitions on hover
+
 ## [1.4.1] - 2025-10-08
 
 ### Fixed

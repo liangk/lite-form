@@ -123,11 +123,18 @@ export interface TableColumn {
   label: string;
   flex?: string;
   sortable?: boolean;
-  cellTemplate?: (value: any, row: any) => string;
+  cellTemplate?: (_value: any, _row: any) => string;
   // Optional type for special rendering. Defaults to 'text'.
   type?: 'text' | 'menu';
   // When type is 'menu', provide menu items shown in the row actions dropdown.
   menuItems?: Array<{ label: string; value: string; variant?: 'danger' | 'default' }>;
+}
+
+export type SortDirection = 'asc' | 'desc' | null;
+
+export interface SortState {
+  column: string;
+  direction: SortDirection;
 }
 
 export class TableFieldDto<T = any> {
@@ -135,16 +142,19 @@ export class TableFieldDto<T = any> {
   data: T[];
   showPaginator?: boolean;
   paginatorConfig: PaginatorFieldDto;
+  sortState?: SortState;
 
   constructor(
     columns: TableColumn[],
     data: T[],
     showPaginator: boolean = false,
-    paginatorConfig: PaginatorFieldDto = new PaginatorFieldDto()
+    paginatorConfig: PaginatorFieldDto = new PaginatorFieldDto(),
+    sortState?: SortState
   ) {
     this.columns = columns;
     this.data = data;
     this.showPaginator = showPaginator;
     this.paginatorConfig = paginatorConfig;
+    this.sortState = sortState;
   }
 }

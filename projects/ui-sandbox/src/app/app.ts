@@ -192,10 +192,10 @@ export class App {
   // Table demo data
   tableDemo: TableFieldDto = new TableFieldDto(
     [
-      { key: 'name', label: 'Name', flex: '1' },
-      { key: 'location.country', label: 'Country', flex: '0 0 120px' },
+      { key: 'name', label: 'Name', flex: '1', sortable: true },
+      { key: 'location.country', label: 'Country', flex: '0 0 120px', sortable: true },
       { key: 'picture.medium', label: 'Picture', flex: '0 0 80px', cellTemplate: (value) => `<img src="${value}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />` },
-      { key: 'dob.date', label: 'Date of Birth', flex: '0 0 120px', cellTemplate: (value) => new Date(value).toLocaleDateString('en-AU') },
+      { key: 'dob.date', label: 'Date of Birth', flex: '0 0 120px', sortable: true, cellTemplate: (value) => new Date(value).toLocaleDateString('en-AU') },
       { key: 'registered.date', label: 'Registered', flex: '0 0 160px', cellTemplate: (value) => new Date(value).toLocaleString('en-AU') },
       { key: 'actions', label: '', flex: '0 0 72px', type: 'menu', menuItems: [
         { label: 'Delete', value: 'delete' }
@@ -208,10 +208,10 @@ export class App {
   // Table demo with paginator
   tableWithPaginatorDemo: TableFieldDto = new TableFieldDto(
     [
-      { key: 'name', label: 'Name', flex: '1' },
-      { key: 'email', label: 'Email', flex: '1' },
-      { key: 'gender', label: 'Gender', flex: '0 0 100px' },
-      { key: 'location.country', label: 'Country', flex: '0 0 120px' },
+      { key: 'name', label: 'Name', flex: '1', sortable: true },
+      { key: 'email', label: 'Email', flex: '1', sortable: true },
+      { key: 'gender', label: 'Gender', flex: '0 0 100px', sortable: true },
+      { key: 'location.country', label: 'Country', flex: '0 0 120px', sortable: true },
       { key: 'phone', label: 'Phone', flex: '0 0 140px' },
       { key: 'actions', label: '', flex: '0 0 44px', type: 'menu', menuItems: [
         { label: 'Edit', value: 'edit' },
@@ -552,6 +552,19 @@ export class App {
       this.tableWithPaginatorDemo = { ...this.tableWithPaginatorDemo };
       this.showSnackbar(`Table items per page set to ${itemsPerPage}`, 'done');
     }
+  }
+
+  // Sort handlers
+  onTableSort(event: { column: string; direction: any }) {
+    this.tableDemo = { ...this.tableDemo, sortState: { column: event.column, direction: event.direction } };
+    const directionText = event.direction === 'asc' ? 'ascending' : event.direction === 'desc' ? 'descending' : 'cleared';
+    this.showSnackbar(`Sorted by ${event.column} (${directionText})`, 'done');
+  }
+
+  onTableWithPaginatorSort(event: { column: string; direction: any }) {
+    this.tableWithPaginatorDemo = { ...this.tableWithPaginatorDemo, sortState: { column: event.column, direction: event.direction } };
+    const directionText = event.direction === 'asc' ? 'ascending' : event.direction === 'desc' ? 'descending' : 'cleared';
+    this.showSnackbar(`Sorted by ${event.column} (${directionText})`, 'done');
   }
 
   // Row menu handler for both tables

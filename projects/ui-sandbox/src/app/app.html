@@ -122,17 +122,22 @@
       (itemsPerPageChange)="onItemsPerPageChange($event)">
     </lite-paginator>
   </div>
-  <h2>Table Demo (Basic)</h2>
+  <h2>Table Demo (Basic with Sorting)</h2>
   <div class="row">
-    <lite-table [table]="tableDemo" (menuAction)="onRowMenuAction($event)"></lite-table>
+    <lite-table 
+      [table]="tableDemo" 
+      (menuAction)="onRowMenuAction($event)"
+      (sortChange)="onTableSort($event)">
+    </lite-table>
   </div>
-  <h2>Table Demo (With Paginator)</h2>
+  <h2>Table Demo (With Paginator and Sorting)</h2>
   <div class="row">
     <lite-table
       [table]="tableWithPaginatorDemo"
       (menuAction)="onRowMenuAction($event)"
       (pageChange)="onTablePageChange($event)"
-      (itemsPerPageChange)="onTableItemsPerPageChange($event)">
+      (itemsPerPageChange)="onTableItemsPerPageChange($event)"
+      (sortChange)="onTableWithPaginatorSort($event)">
     </lite-table>
   </div>
 
