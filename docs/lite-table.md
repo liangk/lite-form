@@ -9,6 +9,7 @@ A flexible data table component with custom columns, cell templates, nested prop
 - Cell template functions for custom formatting
 - Nested property access with dot notation
 - Integrated pagination with customizable options
+- Row selection with checkbox column (select all / individual rows)
 - Row action menus (single-action buttons or dropdown menus)
 - Smart dropdown positioning (auto-opens upward near bottom)
 - Empty state display
@@ -29,10 +30,30 @@ A flexible data table component with custom columns, cell templates, nested prop
 | Output | Type | Description |
 |--------|------|-------------|
 | `pageChange` | `EventEmitter<number>` | Emits when page number changes |
+| `itemsPerPageChange` | `EventEmitter<number>` | Emits when items per page changes |
+| `menuAction` | `EventEmitter<{action: string, row: T}>` | Emits when row action menu item is clicked |
+| `sortChange` | `EventEmitter<{column: string, direction: SortDirection}>` | Emits when column sort state changes |
+| `selectionChange` | `EventEmitter<T[]>` | Emits array of selected rows when selection changes |
+
+### Types
+
+```typescript
+type SortDirection = 'asc' | 'desc' | null;
+
+interface TableColumn {
+  key: string;
+  label: string;
+  flex?: string;
+  sortable?: boolean;
+  cellTemplate?: (value: any, row: any) => string;
+  type?: 'text' | 'menu' | 'select';
+  menuItems?: MenuItem[];
+}
+
 interface MenuItem {
   label: string;
   value: string;
-  variant?: 'danger';
+  variant?: 'danger' | 'default';
 }
 ```
 
@@ -310,6 +331,44 @@ userTable = signal(new TableFieldDto<User>(
   false
 ));
 ```
+
+### Row Selection
+
+Add a checkbox column to enable multi-row selection with "select all" functionality.
+
+```typescript
+userTable = signal(new TableFieldDto<User>(
+  [
+    { key: '__select__', label: '', flex: '0 0 36px', type: 'select' },
+    { label: 'Name', key: 'name', flex: '1' },
+    { label: 'Email', key: 'email', flex: '1' },
+    { label: 'Role', key: 'role', flex: '0 0 120px' }
+  ],
+  this.users,
+  false
+));
+
+onSelectionChange(selectedRows: User[]) {
+  console.log('Selected rows:', selectedRows);
+  console.log(`${selectedRows.length} row(s) selected`);
+  // Prepare bulk actions, enable/disable buttons, etc.
+}
+```
+
+```html
+<lite-table 
+  [table]="userTable()"
+  (selectionChange)="onSelectionChange($event)"
+></lite-table>
+```
+
+**Selection Features:**
+- Header checkbox toggles "select all" / "deselect all" for visible rows
+- Indeterminate state when some (but not all) rows are selected
+- Individual row checkboxes for granular selection
+- `selectionChange` event emits array of all selected row objects
+- Works seamlessly with pagination (select all affects only current page)
+- Selection state persists across page changes
 
 ## Smart Dropdown Positioning
 

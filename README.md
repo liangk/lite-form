@@ -62,7 +62,7 @@ Lite Form provides 15+ form and UI components. Click on any component below for 
 - **[LiteFile](docs/lite-file.md)** - File upload with drag & drop and camera capture
 
 ### Data Display & Navigation
-- **[LiteTable](docs/lite-table.md)** - Flexible data table with sorting, pagination, and row actions
+- **[LiteTable](docs/lite-table.md)** - Flexible data table with sorting, pagination, row selection, and row actions
 - **[LitePaginator](docs/lite-paginator.md)** - Standalone pagination component
 
 ### UI Components
@@ -198,9 +198,10 @@ export class AppComponent {
     showPreview: true
   });
 
-  // Table with custom columns and sorting
+  // Table with custom columns, sorting, and row selection
   employeeTable = new TableFieldDto(
     [
+      { key: '__select__', label: '', flex: '0 0 36px', type: 'select' },
       { key: 'name', label: 'Name', flex: '1', sortable: true },
       { key: 'department', label: 'Department', flex: '0 0 150px', sortable: true },
       { key: 'salary', label: 'Salary', flex: '0 0 120px', sortable: true, cellTemplate: (value) => `$${value?.toLocaleString() || '0'}` }
@@ -229,6 +230,12 @@ export class AppComponent {
       ...this.userTable, 
       sortState: { column: event.column, direction: event.direction }
     };
+  }
+
+  // Handle selection changes
+  onSelectionChange(selectedRows: any[]) {
+    console.log('Selected rows:', selectedRows);
+    // Enable bulk actions, update UI, etc.
   }
 
   // Standalone paginator
@@ -270,10 +277,11 @@ export class AppComponent {
   <lite-file [control]="fileField"></lite-file>
 </form>
 
-<!-- Data Table with Sorting -->
+<!-- Data Table with Sorting and Selection -->
 <lite-table 
   [table]="employeeTable"
-  (sortChange)="onTableSort($event)">
+  (sortChange)="onTableSort($event)"
+  (selectionChange)="onSelectionChange($event)">
 </lite-table>
 
 <!-- Paginated Table with Sorting -->
@@ -455,7 +463,7 @@ interface TableColumn {
   flex?: string;            // CSS flex property (e.g., '0 0 100px', '1')
   sortable?: boolean;       // Enable sorting for this column
   cellTemplate?: (value: any, row: any) => string; // Custom HTML template
-  type?: 'text' | 'menu';   // Optional column type (default: 'text')
+  type?: 'text' | 'menu' | 'select';   // Optional column type (default: 'text')
   menuItems?: Array<{ label: string; value: string; variant?: 'danger' | 'default' }>; // For 'menu' type columns
 }
 ```
@@ -533,4 +541,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ---
 ## Changelog
-- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.4.2` release with LiteTable column sorting feature.
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.4.3` release with LiteTable row selection feature.
