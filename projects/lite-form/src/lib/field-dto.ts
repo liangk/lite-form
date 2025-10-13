@@ -125,7 +125,7 @@ export interface TableColumn {
   sortable?: boolean;
   cellTemplate?: (_value: any, _row: any) => string;
   // Optional type for special rendering. Defaults to 'text'.
-  type?: 'text' | 'menu';
+  type?: 'text' | 'menu' | 'select';
   // When type is 'menu', provide menu items shown in the row actions dropdown.
   menuItems?: Array<{ label: string; value: string; variant?: 'danger' | 'default' }>;
 }

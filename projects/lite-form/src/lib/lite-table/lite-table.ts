@@ -18,9 +18,14 @@ export class LiteTable<T = any> {
   menuAction = output<{ action: string; row: T }>();
   // Emits when sort state changes
   sortChange = output<{ column: string; direction: SortDirection }>();
+  // Emits when selection changes with array of selected rows
+  selectionChange = output<T[]>();
 
   // Internal sort state signal for reliable reactivity
   private internalSortState = signal<SortState | undefined>(undefined);
+
+  // Track selected rows
+  private selectedRows = new Set<T>();
 
   // Track which row's menu is open (by paginated row index)
   openMenuIndex: number | null = null;
@@ -144,6 +149,37 @@ export class LiteTable<T = any> {
 
   onItemsPerPageChange(itemsPerPage: number) {
     this.itemsPerPageChange.emit(itemsPerPage);
+  }
+
+  // Selection helpers
+  isRowSelected(row: T): boolean {
+    return this.selectedRows.has(row);
+  }
+
+  toggleRow(row: T, checked: boolean) {
+    if (checked) this.selectedRows.add(row); else this.selectedRows.delete(row);
+    this.selectionChange.emit(Array.from(this.selectedRows));
+  }
+
+  areAllVisibleSelected(): boolean {
+    const page = this.paginatedData();
+    return page.length > 0 && page.every(r => this.selectedRows.has(r));
+  }
+
+  isSomeVisibleSelected(): boolean {
+    const page = this.paginatedData();
+    const any = page.some(r => this.selectedRows.has(r));
+    return any && !this.areAllVisibleSelected();
+  }
+
+  toggleSelectAllVisible(checked: boolean) {
+    const page = this.paginatedData();
+    if (checked) {
+      page.forEach(r => this.selectedRows.add(r));
+    } else {
+      page.forEach(r => this.selectedRows.delete(r));
+    }
+    this.selectionChange.emit(Array.from(this.selectedRows));
   }
 
   // Row menu handlers

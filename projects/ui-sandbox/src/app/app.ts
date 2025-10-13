@@ -192,6 +192,7 @@ export class App {
   // Table demo data
   tableDemo: TableFieldDto = new TableFieldDto(
     [
+      { key: '__select__', label: '', flex: '0 0 44px', type: 'select' },
       { key: 'name', label: 'Name', flex: '1', sortable: true },
       { key: 'location.country', label: 'Country', flex: '0 0 120px', sortable: true },
       { key: 'picture.medium', label: 'Picture', flex: '0 0 80px', cellTemplate: (value) => `<img src="${value}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />` },
@@ -559,6 +560,16 @@ export class App {
     this.tableDemo = { ...this.tableDemo, sortState: { column: event.column, direction: event.direction } };
     const directionText = event.direction === 'asc' ? 'ascending' : event.direction === 'desc' ? 'descending' : 'cleared';
     this.showSnackbar(`Sorted by ${event.column} (${directionText})`, 'done');
+  }
+
+  // Selection handler
+  onTableSelectionChange(selectedRows: any[]) {
+    console.log('Selection changed:', selectedRows);
+    console.log(`${selectedRows.length} row(s) selected`);
+    // You can prepare other data or trigger actions here based on selection
+    if (selectedRows.length > 0) {
+      this.showSnackbar(`${selectedRows.length} row(s) selected`, 'done');
+    }
   }
 
   onTableWithPaginatorSort(event: { column: string; direction: any }) {

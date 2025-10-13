@@ -10,16 +10,25 @@
           [class.sorted-asc]="getSortDirection(column.key) === 'asc'"
           [class.sorted-desc]="getSortDirection(column.key) === 'desc'"
           (click)="onSort(column)">
-          <span class="header-label">{{ column.label }}</span>
-          @if (column.sortable) {
-            <span class="sort-indicator">
-              <svg class="sort-arrow sort-arrow-up" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 3L9 7H3L6 3Z" fill="currentColor"/>
-              </svg>
-              <svg class="sort-arrow sort-arrow-down" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 9L3 5H9L6 9Z" fill="currentColor"/>
-              </svg>
-            </span>
+          @if (column.type === 'select') {
+            <input type="checkbox"
+              class="checkbox-input" 
+              (click)="$event.stopPropagation()"
+              [checked]="areAllVisibleSelected()"
+              [indeterminate]="isSomeVisibleSelected()"
+              (change)="toggleSelectAllVisible($any($event.target).checked)" />
+          } @else {
+            <span class="header-label">{{ column.label }}</span>
+            @if (column.sortable) {
+              <span class="sort-indicator">
+                <svg class="sort-arrow sort-arrow-up" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 3L9 7H3L6 3Z" fill="currentColor"/>
+                </svg>
+                <svg class="sort-arrow sort-arrow-down" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 9L3 5H9L6 9Z" fill="currentColor"/>
+                </svg>
+              </span>
+            }
           }
         </div>
       }
@@ -65,6 +74,12 @@
                   }
                 </div>
               }
+            } @else if (column.type === 'select') {
+              <input type="checkbox"
+                class="checkbox-input" 
+                (click)="$event.stopPropagation()"
+                [checked]="isRowSelected(row)"
+                (change)="toggleRow(row, $any($event.target).checked)" />
             } @else {
               <span [innerHTML]="getCellValue(row, column)"></span>
             }
