@@ -1,6 +1,6 @@
 {
   "name": "ngx-lite-form",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Lightweight Angular 20+ form library with 15+ standalone components: input, textarea, select, multi-select, radio, checkbox, password, date picker, datetime picker, file upload, data table, pagination, modal panel, loading indicators, and toast notifications",
   "keywords": [
     "angular", "angular20", "forms", "reactive-forms", "components", "ui-library",

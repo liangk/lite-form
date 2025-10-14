@@ -18,6 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Works seamlessly with pagination - select all affects only visible page rows
   - Click events on checkboxes stop propagation to avoid triggering sort
 
+- **LiteTable Row Click Event**: New `rowClick` output event
+  - Emits the clicked row object when any data row is clicked
+  - Enables row-level interactions like navigation, detail views, or inline editing
+  - Rows now display pointer cursor to indicate clickability
+  - Works alongside selection checkboxes and menu actions
+
 ### Enhanced
 - **LiteTable API**: New selection helper methods
   - `isRowSelected(row)` - Check if a specific row is selected
@@ -25,6 +31,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `areAllVisibleSelected()` - Check if all visible rows are selected
   - `isSomeVisibleSelected()` - Check for indeterminate state
   - `toggleSelectAllVisible(checked)` - Select/deselect all visible rows
+
+- **LiteTable Styling**: Improved row interactivity
+  - Added `cursor: pointer` to data rows for better UX
+  - Styled checkboxes with accent color and increased size for better visibility
 
 ## [1.4.2] - 2025-10-11
 

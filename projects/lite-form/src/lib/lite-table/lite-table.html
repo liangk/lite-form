@@ -38,7 +38,7 @@
   <!-- Table Body -->
   <div class="table-body">
     @for (row of paginatedData(); track $index; let rowIndex = $index) {
-      <div class="data-row">
+      <div class="data-row" (click)="onRowClick(row)">
         @for (column of table().columns; track column.key) {
           <div class="data-cell" [style.flex]="column.flex || '1'">
             @if (column.type === 'menu') {
