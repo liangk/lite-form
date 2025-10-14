@@ -28,7 +28,10 @@ import {
   PaginatorFieldDto,
   TableFieldDto,
   LitePanelAction,
-  LiteLoading
+  LiteLoading,
+  LiteTabGroup,
+  LiteTabItem,
+  LiteTabContent
 } from 'lite-form';
 import { UserFormPanelComponent, UserFormData } from './components/user-form-panel.component';
 
@@ -51,7 +54,9 @@ import { UserFormPanelComponent, UserFormData } from './components/user-form-pan
     LitePanel,
     LitePaginator,
     LiteTable,
-    LiteLoading
+    LiteLoading,
+    LiteTabGroup,
+    LiteTabContent
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
@@ -223,6 +228,21 @@ export class App {
     true, // Enable paginator
     new PaginatorFieldDto(1, 20, 10) // Start with page 1, 20 items total, 20 per page
   );
+
+  // Tab group demo - wrapping table demos
+  tableTabs: LiteTabItem[] = [
+    { label: 'Basic Table', content: '' }, // Content will be in template
+    { label: 'Table with Paginator', content: '' }
+  ];
+  activeTabIndex = signal(0);
+
+  // Tab group demo - wrapping date demos (3 tabs)
+  dateTabs: LiteTabItem[] = [
+    { label: 'Single Date', content: '' },
+    { label: 'Date Range', content: '' },
+    { label: 'Date & Time', content: '' }
+  ];
+  activeDateTabIndex = signal(0);
 
   // Lite panel demos
   basicPanelOpen = signal(false);
@@ -583,6 +603,18 @@ export class App {
     this.tableWithPaginatorDemo = { ...this.tableWithPaginatorDemo, sortState: { column: event.column, direction: event.direction } };
     const directionText = event.direction === 'asc' ? 'ascending' : event.direction === 'desc' ? 'descending' : 'cleared';
     this.showSnackbar(`Sorted by ${event.column} (${directionText})`, 'done');
+  }
+
+  // Tab change handler
+  onTabChange(index: number) {
+    this.activeTabIndex.set(index);
+    console.log('Tab changed to:', index);
+  }
+
+  // Date tab change handler
+  onDateTabChange(index: number) {
+    this.activeDateTabIndex.set(index);
+    console.log('Date tab changed to:', index);
   }
 
   // Row menu handler for both tables

@@ -19,3 +19,5 @@ export * from './lib/lite-paginator/lite-paginator';
 export * from './lib/lite-table/lite-table';
 export * from './lib/lite-panel/lite-panel';
 export * from './lib/lite-loading/lite-loading';
+export * from './lib/lite-tab-group/lite-tab-group';
+export * from './lib/lite-tab-content';
