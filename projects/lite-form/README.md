@@ -68,6 +68,7 @@ Lite Form provides 15+ form and UI components. Click on any component below for 
 ### UI Components
 - **[LitePanel](docs/lite-panel.md)** - Modal panel for dialogs and forms
 - **[LiteLoading](docs/lite-loading.md)** - Loading spinner and progress bar
+- **[LiteTabGroup](docs/lite-tab-group.md)** - Tabs with sliding track and Angular projection
 - **[LiteSnackbar](docs/lite-snackbar.md)** - Toast notifications service
 
 ---
@@ -366,6 +367,7 @@ For detailed API documentation, examples, and usage guides for each component, p
 - [LitePaginator Documentation](docs/lite-paginator.md)
 - [LitePanel Documentation](docs/lite-panel.md)
 - [LiteLoading Documentation](docs/lite-loading.md)
+- [LiteTabGroup Documentation](docs/lite-tab-group.md)
 - [LiteSnackbar Documentation](docs/lite-snackbar.md)
 
 ---
@@ -548,4 +550,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ---
 ## Changelog
-- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.4.4` release with LiteTable row selection and row click features.
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.4.5` release with LiteTabGroup and tab sliding/size fixes.

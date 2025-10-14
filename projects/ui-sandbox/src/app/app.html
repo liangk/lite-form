@@ -82,20 +82,32 @@
     <lite-checkbox [control]="requiredCheckboxDemo" [inEdit]="false"></lite-checkbox>
     <lite-checkbox [control]="requiredCheckboxDemo"></lite-checkbox>
   </div>
-  <h2>Date Demo</h2>
-  <div class="row">
-    <lite-date [control]="dateDemo" [inEdit]="false"></lite-date>
-    <lite-date [control]="dateDemo"></lite-date>
-  </div>
-  <h2>Date Range Demo</h2>
-  <div class="row">
-    <lite-date [control]="dateRangeDemo" [inEdit]="false" [range]="true"></lite-date>
-    <lite-date [control]="dateRangeDemo" [range]="true"></lite-date>
-  </div>
-  <h2>Datetime Demo</h2>
-  <div class="row">
-    <lite-datetime [control]="datetimeDemo" [inEdit]="false"></lite-datetime>
-    <lite-datetime [control]="datetimeDemo"></lite-datetime>
+  <h2>Date Demos with Tab Group (3 Tabs)</h2>
+  <div class="tab_group_container">
+    <lite-tab-group 
+      [tabs]="dateTabs" 
+      [activeIndex]="activeDateTabIndex()"
+      (tabChange)="onDateTabChange($event)">
+      
+      <ng-template libLiteTabContent>
+        <h3>Single Date Picker</h3>
+        <lite-date [control]="dateDemo" [inEdit]="false"></lite-date>
+        <lite-date [control]="dateDemo"></lite-date>
+      </ng-template>
+
+      <ng-template libLiteTabContent>
+        <h3>Date Range Picker</h3>
+        <lite-date [control]="dateRangeDemo" [inEdit]="false" [range]="true"></lite-date>
+        <lite-date [control]="dateRangeDemo" [range]="true"></lite-date>
+      </ng-template>
+
+      <ng-template libLiteTabContent>
+        <h3>Date & Time Picker</h3>
+        <lite-datetime [control]="datetimeDemo" [inEdit]="false"></lite-datetime>
+        <lite-datetime [control]="datetimeDemo"></lite-datetime>
+      </ng-template>
+
+    </lite-tab-group>
   </div>
   <div class="row">
     <div class="col">
@@ -122,25 +134,34 @@
       (itemsPerPageChange)="onItemsPerPageChange($event)">
     </lite-paginator>
   </div>
-  <h2>Table Demo (Basic with Sorting)</h2>
-  <div class="row">
-    <lite-table 
-      [table]="tableDemo" 
-      (menuAction)="onRowMenuAction($event)"
-      (sortChange)="onTableSort($event)"
-      (selectionChange)="onTableSelectionChange($event)"
-      (rowClick)="onTableRowClick($event)">
-    </lite-table>
-  </div>
-  <h2>Table Demo (With Paginator and Sorting)</h2>
-  <div class="row">
-    <lite-table
-      [table]="tableWithPaginatorDemo"
-      (menuAction)="onRowMenuAction($event)"
-      (pageChange)="onTablePageChange($event)"
-      (itemsPerPageChange)="onTableItemsPerPageChange($event)"
-      (sortChange)="onTableWithPaginatorSort($event)">
-    </lite-table>
+  <h2>Table Demos with Tab Group</h2>
+  <div class="tab_group_container">
+    <lite-tab-group 
+      [tabs]="tableTabs" 
+      [activeIndex]="activeTabIndex()"
+      (tabChange)="onTabChange($event)">
+      
+      <ng-template libLiteTabContent>
+        <lite-table 
+          [table]="tableDemo" 
+          (menuAction)="onRowMenuAction($event)"
+          (sortChange)="onTableSort($event)"
+          (selectionChange)="onTableSelectionChange($event)"
+          (rowClick)="onTableRowClick($event)">
+        </lite-table>
+      </ng-template>
+
+      <ng-template libLiteTabContent>
+        <lite-table
+          [table]="tableWithPaginatorDemo"
+          (menuAction)="onRowMenuAction($event)"
+          (pageChange)="onTablePageChange($event)"
+          (itemsPerPageChange)="onTableItemsPerPageChange($event)"
+          (sortChange)="onTableWithPaginatorSort($event)">
+        </lite-table>
+      </ng-template>
+
+    </lite-tab-group>
   </div>
 
   <h2>Loading Demo</h2>

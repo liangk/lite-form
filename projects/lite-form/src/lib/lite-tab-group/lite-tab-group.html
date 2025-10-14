@@ -1,0 +1,22 @@
+<div class="lite-tab-group">
+  <div class="tab-header">
+    @for (tab of tabs(); track $index; let i = $index) {
+      <button class="tab-item" [class.tab-item--active]="isActive(i)" (click)="onTabClick(i)">{{ tab.label }}</button>
+    }
+  </div>
+  <div class="tab-content-wrapper" #tabWrapper>
+    <div class="tab-contents" [style.transform]="tabTransformPx">
+      @for (tab of tabs(); track $index; let i = $index) {
+        <div class="tab-content" [style.flex]="'0 0 ' + paneWidthPx" [style.width]="paneWidthPx">
+          @if (getTabTemplate(i); as template) {
+            <ng-container *ngTemplateOutlet="template"></ng-container>
+          } @else {
+            <div [innerHTML]="tab.content"></div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+
