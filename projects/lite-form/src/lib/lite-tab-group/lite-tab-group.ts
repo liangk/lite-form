@@ -86,7 +86,7 @@ export class LiteTabGroup implements AfterViewInit, OnDestroy {
     return items?.[idx]?.content;
   }
 
-  getTabTemplate(index: number): TemplateRef<any> | null {
+  getTabTemplate(index: number): TemplateRef<unknown> | null {
     const contents = this.tabContents?.toArray();
     return contents?.[index]?.template || null;
   }

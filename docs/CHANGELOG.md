@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **LiteTabGroup Component**: New tabs container with sliding track
-  - Supports simple content via `tabs: LiteTabItem[]` and full Angular projection via `liteTabContent` directive
+  - Supports simple content via `tabs: LiteTabItem[]` and full Angular projection via `libLiteTabContent` directive
   - Emits `tabChange` with the active index
   - Exported from `public-api` along with `LiteTabContent` directive
 

@@ -1,9 +1,10 @@
 import { Directive, TemplateRef } from '@angular/core';
 
 @Directive({
-  selector: '[liteTabContent]',
+  selector: '[libLiteTabContent]',
   standalone: true
 })
 export class LiteTabContent {
-  constructor(public template: TemplateRef<any>) {}
+  // eslint-disable-next-line no-unused-vars
+  constructor(public template: TemplateRef<unknown>) {}
 }

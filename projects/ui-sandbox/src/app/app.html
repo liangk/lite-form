@@ -89,19 +89,19 @@
       [activeIndex]="activeDateTabIndex()"
       (tabChange)="onDateTabChange($event)">
       
-      <ng-template liteTabContent>
+      <ng-template libLiteTabContent>
         <h3>Single Date Picker</h3>
         <lite-date [control]="dateDemo" [inEdit]="false"></lite-date>
         <lite-date [control]="dateDemo"></lite-date>
       </ng-template>
 
-      <ng-template liteTabContent>
+      <ng-template libLiteTabContent>
         <h3>Date Range Picker</h3>
         <lite-date [control]="dateRangeDemo" [inEdit]="false" [range]="true"></lite-date>
         <lite-date [control]="dateRangeDemo" [range]="true"></lite-date>
       </ng-template>
 
-      <ng-template liteTabContent>
+      <ng-template libLiteTabContent>
         <h3>Date & Time Picker</h3>
         <lite-datetime [control]="datetimeDemo" [inEdit]="false"></lite-datetime>
         <lite-datetime [control]="datetimeDemo"></lite-datetime>
@@ -141,7 +141,7 @@
       [activeIndex]="activeTabIndex()"
       (tabChange)="onTabChange($event)">
       
-      <ng-template liteTabContent>
+      <ng-template libLiteTabContent>
         <lite-table 
           [table]="tableDemo" 
           (menuAction)="onRowMenuAction($event)"
@@ -151,7 +151,7 @@
         </lite-table>
       </ng-template>
 
-      <ng-template liteTabContent>
+      <ng-template libLiteTabContent>
         <lite-table
           [table]="tableWithPaginatorDemo"
           (menuAction)="onRowMenuAction($event)"

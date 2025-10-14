@@ -5,7 +5,7 @@ A lightweight tab container that supports both simple HTML content and full Angu
 
 ## Features
 - Tabs with labels via `tabs: LiteTabItem[]`
-- Project Angular components into each tab via `liteTabContent` directive
+- Project Angular components into each tab via `libLiteTabContent` directive
 - Active tab control with `activeIndex`
 - `tabChange` event when the active tab changes
 - Pixel-based sliding for accurate transitions across any number of tabs
@@ -27,8 +27,8 @@ export interface LiteTabItem { label: string; content?: string }
 
 ### Projection Directive
 ```ts
-@Directive({ selector: '[liteTabContent]', standalone: true })
-export class LiteTabContent { constructor(public template: TemplateRef<any>) {} }
+@Directive({ selector: '[libLiteTabContent]', standalone: true })
+export class LiteTabContent { constructor(public template: TemplateRef<unknown>) {} }
 ```
 
 ## Usage
@@ -44,10 +44,10 @@ import { LiteTabGroup, LiteTabItem, LiteTabContent, LiteTable, TableFieldDto, Pa
   imports: [LiteTabGroup, LiteTabContent, LiteTable],
   template: `
   <lite-tab-group [tabs]="tabs" [activeIndex]="active()" (tabChange)="onTab($event)">
-    <ng-template liteTabContent>
+    <ng-template libLiteTabContent>
       <lite-table [table]="basicTable"></lite-table>
     </ng-template>
-    <ng-template liteTabContent>
+    <ng-template libLiteTabContent>
       <lite-table [table]="pagedTable"></lite-table>
     </ng-template>
   </lite-tab-group>
@@ -80,5 +80,5 @@ Example overrides:
 ```
 
 ## Notes
-- When projecting Angular components with `liteTabContent`, panes are sized in pixels to match the wrapper ensuring precise sliding regardless of content.
+- When projecting Angular components with `libLiteTabContent`, panes are sized in pixels to match the wrapper ensuring precise sliding regardless of content.
 - The component re-measures on window resize and when projected content changes.
