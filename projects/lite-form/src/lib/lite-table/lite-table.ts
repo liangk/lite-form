@@ -20,6 +20,8 @@ export class LiteTable<T = any> {
   sortChange = output<{ column: string; direction: SortDirection }>();
   // Emits when selection changes with array of selected rows
   selectionChange = output<T[]>();
+  // Emits when a row is clicked
+  rowClick = output<T>();
 
   // Internal sort state signal for reliable reactivity
   private internalSortState = signal<SortState | undefined>(undefined);
@@ -180,6 +182,11 @@ export class LiteTable<T = any> {
       page.forEach(r => this.selectedRows.delete(r));
     }
     this.selectionChange.emit(Array.from(this.selectedRows));
+  }
+
+  // Row click handler
+  onRowClick(row: T) {
+    this.rowClick.emit(row);
   }
 
   // Row menu handlers

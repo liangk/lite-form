@@ -10,6 +10,7 @@ A flexible data table component with custom columns, cell templates, nested prop
 - Nested property access with dot notation
 - Integrated pagination with customizable options
 - Row selection with checkbox column (select all / individual rows)
+- Row click events for navigation and detail views
 - Row action menus (single-action buttons or dropdown menus)
 - Smart dropdown positioning (auto-opens upward near bottom)
 - Empty state display
@@ -34,6 +35,7 @@ A flexible data table component with custom columns, cell templates, nested prop
 | `menuAction` | `EventEmitter<{action: string, row: T}>` | Emits when row action menu item is clicked |
 | `sortChange` | `EventEmitter<{column: string, direction: SortDirection}>` | Emits when column sort state changes |
 | `selectionChange` | `EventEmitter<T[]>` | Emits array of selected rows when selection changes |
+| `rowClick` | `EventEmitter<T>` | Emits the clicked row object when a data row is clicked |
 
 ### Types
 
@@ -370,6 +372,43 @@ onSelectionChange(selectedRows: User[]) {
 - Works seamlessly with pagination (select all affects only current page)
 - Selection state persists across page changes
 
+### Row Click Event
+
+Handle row clicks to navigate to detail pages, open modals, or trigger inline editing.
+
+```typescript
+userTable = signal(new TableFieldDto<User>(
+  [
+    { label: 'Name', key: 'name', flex: '1' },
+    { label: 'Email', key: 'email', flex: '1' },
+    { label: 'Role', key: 'role', flex: '0 0 120px' }
+  ],
+  this.users,
+  false
+));
+
+onRowClick(user: User) {
+  console.log('Row clicked:', user);
+  // Navigate to detail page
+  this.router.navigate(['/users', user.id]);
+  // Or open a modal/panel
+  this.openUserDetailPanel(user);
+}
+```
+
+```html
+<lite-table 
+  [table]="userTable()"
+  (rowClick)="onRowClick($event)"
+></lite-table>
+```
+
+**Row Click Features:**
+- Entire row is clickable with pointer cursor
+- Emits the complete row data object
+- Works alongside selection checkboxes and menu actions
+- Ideal for navigation, detail views, or inline editing workflows
+
 ## Smart Dropdown Positioning
 
 The table automatically detects when a row action menu button is near the bottom of the viewport and opens the dropdown upward instead of downward to prevent it from being cut off.
@@ -400,7 +439,8 @@ lite-table {
 }
 
 .data-row {
-  // Individual row
+  // Individual row (clickable)
+  cursor: pointer;
   &:hover {
     background: #f8f9fa;
   }

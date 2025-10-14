@@ -572,6 +572,13 @@ export class App {
     }
   }
 
+  // Row click handler
+  onTableRowClick(row: any) {
+    const fullName = row?.name ? `${row.name.first ?? ''} ${row.name.last ?? ''}`.trim() : 'Unknown';
+    console.log('Row clicked:', row);
+    this.showSnackbar(`Clicked: ${fullName}`, 'done');
+  }
+
   onTableWithPaginatorSort(event: { column: string; direction: any }) {
     this.tableWithPaginatorDemo = { ...this.tableWithPaginatorDemo, sortState: { column: event.column, direction: event.direction } };
     const directionText = event.direction === 'asc' ? 'ascending' : event.direction === 'desc' ? 'descending' : 'cleared';

@@ -579,7 +579,7 @@ input, .label, textarea {
     }
   }
   .table-body { flex: 1; overflow-y: auto;
-    .data-row { display: flex; border-bottom: 1px solid #dee2e6; transition: background-color 0.2s ease;
+    .data-row { display: flex; border-bottom: 1px solid #dee2e6; align-items: center; transition: background 0.15s ease; cursor: pointer;
       &:hover { background: #f8f9fa; }
       &:last-child { border-bottom: none; }
       .data-cell { padding: 5px 10px; font-size: 0.9em; color: #333; min-height: 40px; display: flex; align-items: center;

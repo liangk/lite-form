@@ -238,6 +238,12 @@ export class AppComponent {
     // Enable bulk actions, update UI, etc.
   }
 
+  // Handle row clicks
+  onRowClick(row: any) {
+    console.log('Row clicked:', row);
+    // Navigate to detail page, open modal, etc.
+  }
+
   // Standalone paginator
   paginator = new PaginatorFieldDto(1, 500, 25);
 
@@ -277,11 +283,12 @@ export class AppComponent {
   <lite-file [control]="fileField"></lite-file>
 </form>
 
-<!-- Data Table with Sorting and Selection -->
+<!-- Data Table with Sorting, Selection, and Row Click -->
 <lite-table 
   [table]="employeeTable"
   (sortChange)="onTableSort($event)"
-  (selectionChange)="onSelectionChange($event)">
+  (selectionChange)="onSelectionChange($event)"
+  (rowClick)="onRowClick($event)">
 </lite-table>
 
 <!-- Paginated Table with Sorting -->
@@ -541,4 +548,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ---
 ## Changelog
-- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.4.3` release with LiteTable row selection feature.
+- See [docs/CHANGELOG.md](https://github.com/liangk/lite-form/blob/main/docs/CHANGELOG.md) for the full historical record, including the latest `v1.4.4` release with LiteTable row selection and row click features.

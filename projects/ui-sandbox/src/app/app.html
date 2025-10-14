@@ -128,7 +128,8 @@
       [table]="tableDemo" 
       (menuAction)="onRowMenuAction($event)"
       (sortChange)="onTableSort($event)"
-      (selectionChange)="onTableSelectionChange($event)">
+      (selectionChange)="onTableSelectionChange($event)"
+      (rowClick)="onTableRowClick($event)">
     </lite-table>
   </div>
   <h2>Table Demo (With Paginator and Sorting)</h2>
