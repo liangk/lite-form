@@ -24,6 +24,7 @@ input, .label, textarea {
   input.invalid {
     border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 2px 1px rgba(220, 53, 69, 0.25);
   }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
 }
 .lite-password {
   display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
@@ -81,11 +82,13 @@ input, .label, textarea {
       .feedback-tip { margin-bottom: 2px; }
     }
   }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
 }
 .lite-textarea {
   display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
   .label { font-size: 0.8em; font-weight: 500; }
   .value { min-height: 1em; line-height: 1em; }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
 }
 .lite-textarea.in-edit {
   .label { position: absolute; left: 8px; top: 0; color: #aaa; pointer-events: none; 
@@ -102,11 +105,13 @@ input, .label, textarea {
   textarea.invalid {
     border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25);
   }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
 }
 .lite-select {
   display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
   .label { font-size: 0.8em; font-weight: 500; }
   .value { min-height: 1em; line-height: 1em; }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
 }
 .lite-select.in-edit {
   .label { position: absolute; left: 8px; top: 0; color: #aaa; pointer-events: none; 
@@ -119,6 +124,7 @@ input, .label, textarea {
   input.invalid {
     border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25);
   }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
   .label.float {
     transform: translateY(-10px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
     line-height: initial;
@@ -132,10 +138,11 @@ input, .label, textarea {
     .option.selected { background-color: #e0e0e0; }
   }
   .arrow_box {
-    position: absolute; right: 0; top: 0; cursor: pointer; height: 100%; width: 2em;
+    position: absolute; right: 4px; top: -4px; cursor: pointer; 
+    height: calc(100% - 8px); width: 2em; display: flex; align-items: center; justify-content: center;
     .arrow {
       width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
-      border-top: 5px solid #333; position: absolute; top: 48%; left: 0.5em;
+      border-top: 5px solid #333;
     }
     .arrow:hover { border-top-color: #2079e1; }
   }
@@ -149,6 +156,7 @@ input, .label, textarea {
       line-height: 16px;
     }
   }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
 }
 .lite-multi-select.in-edit {
   .label { position: absolute; left: 8px; top: 0; color: #aaa; pointer-events: none; 
@@ -211,7 +219,7 @@ input, .label, textarea {
   }
   
   .arrow_box {
-    position: absolute; right: 4px; top: 4px; cursor: pointer; 
+    position: absolute; right: 4px; top: -4px; cursor: pointer; 
     height: calc(100% - 8px); width: 2em; display: flex; align-items: center; justify-content: center;
     .arrow {
       width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
@@ -219,6 +227,7 @@ input, .label, textarea {
     }
     .arrow:hover { border-top-color: #2079e1; }
   }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
 }
 .lite-radio {
   display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
@@ -226,11 +235,13 @@ input, .label, textarea {
   .value { display: flex; gap: 5px; flex-wrap: wrap;
     .no-value { color: #999; font-style: italic; }
   }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
 }
 .lite-radio.in-edit {
   .radio-container {
     position: relative;
     .label { font-size: 1.1em; font-weight: 500; padding: 5px 0; }
+    .hint { font-size: 0.8em; color: #666; margin-bottom: 5px; }
     .radio-options {
       display: flex; flex-direction: column; gap: 10px; padding: 5px 0;
       .radio-option {
@@ -244,13 +255,6 @@ input, .label, textarea {
     .radio-options.horizontal { flex-direction: row; flex-wrap: wrap; }
   }
 }
-.in-edit {
-  .error-messages {
-    color: orangered; font-size: 0.8em; letter-spacing: 0.6px; line-height: 1.8em; padding-left: 10px;
-    .error-message { margin-bottom: 2px; }
-  }
-}
-
 .lite-checkbox {
   display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
   .label { font-size: 0.8em; font-weight: 500; }
@@ -258,6 +262,7 @@ input, .label, textarea {
     .checked { color: #28a745; font-weight: 500; }
     .unchecked { color: #6c757d; }
   }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
 }
 .lite-checkbox.in-edit {
   .checkbox-container {
@@ -269,16 +274,17 @@ input, .label, textarea {
       .required { margin-left: 4px; }
       &:hover { .checkbox-text { color: #2079e1; } }
     }
+    .hint { font-size: 0.8em; color: #666; margin-top: 0; padding-left: 26px; }
   }
 }
 .lite-checkbox.invalid {
   .checkbox-container { .checkbox-label { .checkbox-text { color: #dc3545; } } }
 }
-
 .lite-date {
   display: flex; flex-direction: column; margin-bottom: 10px; position: relative; gap: 5px;
   .label { font-size: 0.8em; font-weight: 500; }
   .value { display: flex; gap: 5px; flex-wrap: wrap; color: #333; font-size: 1em; }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
 }
 .lite-date.in-edit {
   position: relative;
@@ -291,6 +297,7 @@ input, .label, textarea {
     transform: translateY(-10px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
     line-height: initial; }
   .date-input.invalid { border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25); }
+  .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
   .calendar_icon {
     position: absolute; right: 0; top: 0; cursor: pointer; height: 100%; width: 2.5em;
     .calendar { width: 16px; height: 16px; color: #333; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }

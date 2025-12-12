@@ -13,6 +13,9 @@
         <span>*</span>
       }
     </div>
+    @if (control().hint) {
+      <div class="hint">{{ control().hint }}</div>
+    }
     <div class="arrow_box" (click)="toggleOptionPanel()"><div class="arrow"></div></div>
     @if (hasErrors()) {
       <div class="error-messages">

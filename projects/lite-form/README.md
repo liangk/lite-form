@@ -136,7 +136,11 @@ import {
 })
 export class AppComponent {
   // Basic input
-  nameField = new FieldDto('Full Name', new FormControl(''));
+  nameField: FieldDto = {
+    label: 'Full Name',
+    formControl: new FormControl(''),
+    hint: 'Enter your full legal name'
+  } as FieldDto;
   
   // Number input
   ageField = new FieldDto('Age', new FormControl(0), 2, 'number');
@@ -159,7 +163,8 @@ export class AppComponent {
     'Country',
     new FormControl(''),
     ['USA', 'Canada', 'Mexico'],
-    (option) => option
+    (option) => option,
+    'Select your country of residence'
   );
   
   // Multi-select
@@ -191,13 +196,16 @@ export class AppComponent {
   };
   
   // File upload
-  fileField = new FileFieldDto('Attachments', new FormControl([]), {
-    multiple: true,
-    accept: 'image/*,application/pdf',
-    maxFileSize: 5 * 1024 * 1024,
-    maxFiles: 5,
-    showPreview: true
-  });
+  fileField = new FileFieldDto(
+    'Attachments',
+    new FormControl([]),
+    true, // multiple
+    'image/*,application/pdf', // accept
+    5 * 1024 * 1024, // maxFileSize
+    5, // maxFiles
+    true, // showPreview
+    'Upload up to 5 files (max 5MB each).' // hint
+  );
 
   // Table with custom columns, sorting, and row selection
   employeeTable = new TableFieldDto(
@@ -391,6 +399,8 @@ class FieldDto {
   label: string;
   formControl: FormControl;
   rows?: number; // For textarea only
+  type?: 'text' | 'number';
+  hint?: string; // Helper text displayed below the field
 }
 ```
 
@@ -402,6 +412,7 @@ abstract class BaseSelectFieldDto<T> {
   label: string;
   options: T[];
   displayWith: (option: T) => string;
+  hint?: string; // Helper text displayed below the field
 }
 ```
 
@@ -444,6 +455,7 @@ class FileFieldDto {
   maxFileSize?: number; // Maximum file size in bytes (default: 10MB)
   maxFiles?: number; // Maximum number of files allowed (default: 10)
   showPreview?: boolean; // Show image previews (default: true)
+  hint?: string; // Helper text displayed below the field
 }
 ```
 

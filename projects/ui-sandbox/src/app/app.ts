@@ -64,7 +64,11 @@ import { UserFormPanelComponent, UserFormData } from './components/user-form-pan
 export class App {
   protected readonly title = signal('UI Sandbox');
   readonly potterApi = 'https://potterapi-fedeperin.vercel.app/en'
-  inputDemo: FieldDto = { label: 'Test Input', formControl: new FormControl('', [Validators.required]) } as FieldDto;
+  inputDemo: FieldDto = { 
+    label: 'Test Input', 
+    formControl: new FormControl('', [Validators.required]),
+    hint: 'Enter your username (min 3 chars)'
+  } as FieldDto;
   
   // Basic password with detailed validation
   passwordDemo: FieldDto = { 
@@ -74,7 +78,8 @@ export class App {
       Validators.minLength(8),
       Validators.maxLength(50),
       Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
-    ]) 
+    ]),
+    hint: 'Must contain at least 8 characters, one uppercase, one lowercase, one number and one special char.'
   } as FieldDto;
   
   // Confirm password with simpler validation (just required and length)
@@ -86,19 +91,25 @@ export class App {
     ]) 
   } as FieldDto;
   
-  textareaDemo: FieldDto = { label: 'Test Textarea', formControl: new FormControl('') } as FieldDto;
+  textareaDemo: FieldDto = { 
+    label: 'Test Textarea', 
+    formControl: new FormControl(''),
+    hint: 'Describe yourself in a few sentences.'
+  } as FieldDto;
   selectDemo: SelectFieldDto = {
     label: 'Test Select',
     formControl: new FormControl(null, [Validators.required]),
     options: [],
-    displayWith: (option: any) => option?.label
+    displayWith: (option: any) => option?.label,
+    hint: 'Select your favorite Harry Potter book.'
   };
   
   multiSelectDemo: MultiSelectFieldDto = {
     label: 'Test Multi-Select',
     formControl: new FormControl<any[]>([], { nonNullable: true }),
     options: [],
-    displayWith: (option: any) => option?.title
+    displayWith: (option: any) => option?.title,
+    hint: 'Select one or more characters.'
   };
 
   radioDemo: RadioFieldDto = {
@@ -110,31 +121,37 @@ export class App {
       'Premium Corporate Plan',
       'Custom Implementation'
     ],
-    displayWith: (option: string) => option
+    displayWith: (option: string) => option,
+    hint: 'Choose the package that best suits your needs.'
   };
   
   checkboxDemo: FieldDto = {
     label: 'I agree to the terms and conditions',
     formControl: new FormControl<boolean>(false, { nonNullable: true }),
+    hint: 'You must agree to proceed.'
   };
   
   requiredCheckboxDemo: FieldDto = {
     label: 'Accept privacy policy (required)',
     formControl: new FormControl<boolean>(false, { nonNullable: true, validators: [Validators.requiredTrue] }),
+    hint: 'This is mandatory.'
   };
 
   dateDemo: FieldDto = {
     label: 'Birth Date',
     formControl: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    hint: 'Your date of birth as per official ID.'
   };
 
   dateRangeDemo: DateRangeFieldDto = {
     label: 'Event Date Range',
     formControl: new FormControl<string[]>(['', ''], { nonNullable: true }),
+    hint: 'Select the start and end dates.'
   };
   datetimeDemo: FieldDto = {
     label: 'Presentation Time',
     formControl: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    hint: 'Select the date and time of the presentation.'
   };
 
   // Advanced password with custom complexity validator
@@ -164,7 +181,8 @@ export class App {
     '*/*', // accept all files
     5 * 1024 * 1024, // 5MB max
     5, // max 5 files
-    true // show preview
+    true, // show preview
+    'Upload up to 5 files (max 5MB each).'
   );
 
   imageFileDemo: FileFieldDto = new FileFieldDto(
@@ -174,7 +192,8 @@ export class App {
     'image/*', // images only
     2 * 1024 * 1024, // 2MB max
     1, // max 1 file
-    true // show preview
+    true, // show preview
+    'Upload a profile picture (max 2MB).'
   );
 
   documentFileDemo: FileFieldDto = new FileFieldDto(
@@ -184,7 +203,8 @@ export class App {
     '.pdf,.doc,.docx,.txt', // specific file types
     10 * 1024 * 1024, // 10MB max
     3, // max 3 files
-    false // no preview for docs
+    false, // no preview for docs
+    'Upload relevant documents (PDF, Word, etc.).'
   );
 
   // Paginator demo

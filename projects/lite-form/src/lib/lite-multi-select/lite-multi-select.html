@@ -37,6 +37,9 @@
     <div class="label" [ngClass]="{float: shouldFloat()}">
       {{ control().label }}<span *ngIf="isRequired()">*</span>
     </div>
+    @if (control().hint) {
+      <div class="hint">{{ control().hint }}</div>
+    }
     <div class="arrow_box" (click)="showOptions = showOptions === 'expand' ? 'collapse' : 'expand'">
       <div class="arrow"></div>
     </div>

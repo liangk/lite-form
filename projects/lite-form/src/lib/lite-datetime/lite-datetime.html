@@ -14,6 +14,10 @@
       </svg>
     </div>
     
+    @if (control().hint) {
+      <div class="hint">{{ control().hint }}</div>
+    }
+
     @if (showCalendar()) {
       <div class="calendar-overlay" [ngClass]="'position-' + calendarPosition()">
         <ng-container *ngTemplateOutlet="calendarPanel"></ng-container>

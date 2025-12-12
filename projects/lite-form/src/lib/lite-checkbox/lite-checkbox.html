@@ -9,6 +9,9 @@
         <div class="checkbox-text">{{ control().label }}<span *ngIf="isRequired()" class="required">*</span></div>
 
       </label>
+      @if (control().hint) {
+        <div class="hint">{{ control().hint }}</div>
+      }
     </div>
   } @else {
     <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>

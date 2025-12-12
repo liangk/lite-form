@@ -2,6 +2,9 @@
   @if (inEdit()) {
     <input type="text" [formControl]="control().formControl" placeholder="" [ngClass]="{'invalid': hasErrors()}" />
     <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+    @if (control().hint) {
+      <div class="hint">{{ control().hint }}</div>
+    }
     @if (hasErrors()) {
       <div class="error-messages">
         @for (errorMessage of getErrorMessage(); track errorMessage) {

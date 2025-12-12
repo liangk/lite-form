@@ -2,6 +2,9 @@
   @if (inEdit()) {
     <div class="radio-container">
       <div class="label" [ngClass]="{'float': true}">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+      @if (control().hint) {
+        <div class="hint">{{ control().hint }}</div>
+      }
       <div class="radio-options" [ngClass]="{'horizontal': direction() === 'horizontal', 'vertical': direction() === 'vertical'}">
         @for (option of control().options; track option) {
           <label class="radio-option">

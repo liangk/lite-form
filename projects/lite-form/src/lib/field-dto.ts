@@ -5,12 +5,14 @@ export class FieldDto {
   formControl: FormControl;
   rows?: number;
   type?: 'text' | 'number';
+  hint?: string;
 
-  constructor(label: string, formControl: FormControl, rows: number = 2, type: 'text' | 'number' = 'text') {
+  constructor(label: string, formControl: FormControl, rows: number = 2, type: 'text' | 'number' = 'text', hint?: string) {
     this.label = label;
     this.formControl = formControl;
     this.rows = rows;
     this.type = type;
+    this.hint = hint;
   }
 }
 
@@ -18,15 +20,18 @@ export abstract class BaseSelectFieldDto<T = any> {
   label: string;
   options: T[];
   displayWith: (_option: T) => string;
+  hint?: string;
   
   constructor(
     label: string,
     options: T[],
-    displayWith: (_option: T) => string
+    displayWith: (_option: T) => string,
+    hint?: string
   ) {
     this.label = label;
     this.options = options;
     this.displayWith = displayWith;
+    this.hint = hint;
   }
 }
 
@@ -37,9 +42,10 @@ export class SelectFieldDto<T = any> extends BaseSelectFieldDto<T> {
     label: string,
     formControl: FormControl<T>,
     options: T[],
-    displayWith: (_option: T) => string
+    displayWith: (_option: T) => string,
+    hint?: string
   ) {
-    super(label, options, displayWith);
+    super(label, options, displayWith, hint);
     this.formControl = formControl;
   }
 }
@@ -51,9 +57,10 @@ export class MultiSelectFieldDto<T = any> extends BaseSelectFieldDto<T> {
     label: string,
     formControl: FormControl<T[]>,
     options: T[],
-    displayWith: (_option: T) => string
+    displayWith: (_option: T) => string,
+    hint?: string
   ) {
-    super(label, options, displayWith);
+    super(label, options, displayWith, hint);
     this.formControl = formControl;
   }
 }
@@ -65,9 +72,10 @@ export class RadioFieldDto<T = any> extends BaseSelectFieldDto<T> {
     label: string,
     formControl: FormControl<T>,
     options: T[],
-    displayWith: (_option: T) => string
+    displayWith: (_option: T) => string,
+    hint?: string
   ) {
-    super(label, options, displayWith);
+    super(label, options, displayWith, hint);
     this.formControl = formControl;
   }
 }
@@ -80,6 +88,7 @@ export class FileFieldDto {
   maxFileSize?: number;
   maxFiles?: number;
   showPreview?: boolean;
+  hint?: string;
 
   constructor(
     label: string,
@@ -88,7 +97,8 @@ export class FileFieldDto {
     accept: string = '*/*',
     maxFileSize: number = 10 * 1024 * 1024, // 10MB
     maxFiles: number = 10,
-    showPreview: boolean = true
+    showPreview: boolean = true,
+    hint?: string
   ) {
     this.label = label;
     this.formControl = formControl;
@@ -97,6 +107,7 @@ export class FileFieldDto {
     this.maxFileSize = maxFileSize;
     this.maxFiles = maxFiles;
     this.showPreview = showPreview;
+    this.hint = hint;
   }
 }
 

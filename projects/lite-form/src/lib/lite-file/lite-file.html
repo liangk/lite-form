@@ -7,7 +7,9 @@
       {{ fileCount() }}
     </span>
   </button>
-
+  @if (control().hint) {
+    <div class="hint">{{ control().hint }}</div>
+  }
 </div>
 <!-- Panel overlay -->
 <div class="panel-overlay" 
