@@ -1,6 +1,9 @@
 * { box-sizing: border-box;
   font-family: 'Inter', sans-serif;
 }
+.error-messages { font-size: 0.8em; color: #dc3545; margin-top: -2px; padding-left: 8px;
+  .error-message { margin-top: 2px; }
+}
 lite-table { flex: 1; overflow-y: auto; }
 input, .label, textarea {
   font-size: 1em; color: #333;

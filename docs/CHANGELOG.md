@@ -5,6 +5,20 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.8] - 2025-12-13
+
+### Added
+- **Hint Field Support**: Added hint field support across all form input components
+  - All input components now support optional hint text display below inputs
+  - Consistent styling and positioning for hint messages
+  - Improves user experience with contextual help text
+
+### Fixed
+- **Error Message Styling**: Added global styling for `.error-messages` to display in red/orange color
+  - Added `.error-messages` style rule in `lite-styles.scss` with `color: #dc3545`
+  - Ensures consistent error message coloring across all form components
+  - Matches existing error styling used for invalid input borders
+
 ## [1.4.4] - 2025-10-14
 
 ### Added
