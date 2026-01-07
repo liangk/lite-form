@@ -194,3 +194,34 @@ export class BadgeFieldDto {
     this.icon = icon;
   }
 }
+
+export class SliderFieldDto {
+  label: string;
+  formControl: FormControl<number>;
+  min?: number;
+  max?: number;
+  step?: number;
+  showMinMax?: boolean;
+  valueFormatter?: (_value: number) => string;
+  hint?: string;
+
+  constructor(
+    label: string,
+    formControl: FormControl<number>,
+    min: number = 0,
+    max: number = 100,
+    step: number = 1,
+    showMinMax: boolean = true,
+    valueFormatter?: (_value: number) => string,
+    hint?: string
+  ) {
+    this.label = label;
+    this.formControl = formControl;
+    this.min = min;
+    this.max = max;
+    this.step = step;
+    this.showMinMax = showMinMax;
+    this.valueFormatter = valueFormatter;
+    this.hint = hint;
+  }
+}

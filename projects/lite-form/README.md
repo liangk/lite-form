@@ -1,6 +1,6 @@
 # Lite Form: A Lightweight and Powerful Angular Form Library
 
-**Lite Form is a comprehensive, open-source library of 16+ standalone components for building modern, reactive forms in Angular (v20+). It provides lightweight, customizable, and fully-typed form controls—from basic inputs to advanced data tables, loading indicators, and badge components—designed to accelerate development and improve user experience.**
+**Lite Form is a comprehensive, open-source library of 18+ standalone components for building modern, reactive forms in Angular (v20+). It provides lightweight, customizable, and fully-typed form controls—from basic inputs to advanced data tables, loading indicators, and badge components—designed to accelerate development and improve user experience.**
 
 This library is built for developers who need a robust, out-of-the-box solution for form-heavy applications without the overhead of heavy-weight dependencies. All components are standalone, tree-shakable, and integrate seamlessly with Angular's Reactive Forms module.
 
@@ -47,7 +47,7 @@ Lite Form is ideal for a wide range of applications, including but not limited t
 
 ## Components
 
-Lite Form provides 15+ form and UI components. Click on any component below for detailed documentation:
+Lite Form provides 18+ form and UI components. Click on any component below for detailed documentation:
 
 ### Form Controls
 - **[LiteInput](docs/lite-input.md)** - Text input with floating labels and validation
@@ -57,6 +57,8 @@ Lite Form provides 15+ form and UI components. Click on any component below for 
 - **[LiteMultiSelect](docs/lite-multi-select.md)** - Multi-selection dropdown with inline display
 - **[LiteRadio](docs/lite-radio.md)** - Radio button group for single selection
 - **[LiteCheckbox](docs/lite-checkbox.md)** - Checkbox for boolean input
+- **[LiteToggle](docs/lite-toggle.md)** - Modern iOS-style toggle switch for boolean states
+- **[LiteSlider](docs/lite-slider.md)** - Range slider for numeric input with visual feedback
 - **[LiteDate](docs/lite-date.md)** - Date picker with single/range selection
 - **[LiteDateTime](docs/lite-datetime.md)** - Combined date and time picker
 - **[LiteFile](docs/lite-file.md)** - File upload with drag & drop and camera capture
@@ -93,6 +95,8 @@ import {
   LiteMultiSelect,
   LiteRadio,
   LiteCheckbox,
+  LiteToggle,
+  LiteSlider,
   LiteDate,
   LiteDateTime,
   LiteFile,
@@ -111,6 +115,7 @@ import {
   RadioFieldDto,
   DateRangeFieldDto,
   FileFieldDto,
+  SliderFieldDto,
   TableFieldDto,
   PaginatorFieldDto,
   LitePanelAction,
@@ -127,6 +132,8 @@ import {
     LiteMultiSelect,
     LiteRadio,
     LiteCheckbox,
+    LiteToggle,
+    LiteSlider,
     LiteDate,
     LiteDateTime,
     LiteFile,
@@ -161,6 +168,20 @@ export class AppComponent {
   
   // Checkbox (using basic FieldDto for boolean)
   agreeField = new FieldDto('I agree to terms', new FormControl<boolean>(false, { nonNullable: true }));
+  
+  // Toggle switch
+  notificationsField = new FieldDto('Enable Notifications', new FormControl<boolean>(true, { nonNullable: true }));
+  
+  // Slider
+  volumeField = new SliderFieldDto(
+    'Volume',
+    new FormControl<number>(75, { nonNullable: true }),
+    0,
+    100,
+    1,
+    true,
+    (value) => `${value}%`
+  );
   
   // Select dropdown
   countryField = new SelectFieldDto(
@@ -303,6 +324,8 @@ export class AppComponent {
   <lite-password [control]="passwordField" [showStrengthIndicator]="true"></lite-password>
   <lite-textarea [control]="descriptionField"></lite-textarea>
   <lite-checkbox [control]="agreeField"></lite-checkbox>
+  <lite-toggle [control]="notificationsField"></lite-toggle>
+  <lite-slider [control]="volumeField"></lite-slider>
   <lite-select [control]="countryField"></lite-select>
   <lite-multi-select [control]="skillsField"></lite-multi-select>
   <lite-radio [control]="planField"></lite-radio>
@@ -398,6 +421,8 @@ For detailed API documentation, examples, and usage guides for each component, p
 - [LiteMultiSelect Documentation](docs/lite-multi-select.md)
 - [LiteRadio Documentation](docs/lite-radio.md)
 - [LiteCheckbox Documentation](docs/lite-checkbox.md)
+- [LiteToggle Documentation](docs/lite-toggle.md)
+- [LiteSlider Documentation](docs/lite-slider.md)
 - [LiteDate Documentation](docs/lite-date.md)
 - [LiteDateTime Documentation](docs/lite-datetime.md)
 - [LiteFile Documentation](docs/lite-file.md)
@@ -554,6 +579,35 @@ class BadgeFieldDto {
   )
 }
 ```
+
+### SliderFieldDto
+Slider field configuration for the LiteSlider component.
+
+```typescript
+class SliderFieldDto {
+  label: string;
+  formControl: FormControl<number>;
+  min?: number;                            // Minimum value (default: 0)
+  max?: number;                            // Maximum value (default: 100)
+  step?: number;                           // Step increment (default: 1)
+  showMinMax?: boolean;                    // Show min/max labels (default: true)
+  valueFormatter?: (value: number) => string;  // Custom value formatter
+  hint?: string;                           // Helper text
+
+  constructor(
+    label: string,
+    formControl: FormControl<number>,
+    min: number = 0,
+    max: number = 100,
+    step: number = 1,
+    showMinMax: boolean = true,
+    valueFormatter?: (value: number) => string,
+    hint?: string
+  )
+}
+```
+
+**Note:** LiteToggle uses the standard `FieldDto` with a `FormControl<boolean>`.
 
 ---
 

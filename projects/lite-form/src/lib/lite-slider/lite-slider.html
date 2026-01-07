@@ -1,0 +1,40 @@
+<div class="lite-slider" [ngClass]="{'in-edit': inEdit(), 'invalid': hasErrors()}">
+  @if (inEdit()) {
+    <div class="slider-container">
+      <div class="slider-header">
+        <label class="slider-label">{{ control().label }}<span *ngIf="isRequired()" class="required">*</span></label>
+        <div class="slider-value">{{ getDisplayValue() }}</div>
+      </div>
+      <div class="slider-track-container">
+        <input type="range" 
+               class="slider-input"
+               [min]="control().min ?? 0"
+               [max]="control().max ?? 100"
+               [step]="control().step ?? 1"
+               [value]="control().formControl.value"
+               (input)="onSliderChange($event)" />
+        <div class="slider-progress" [style.width.%]="getProgressPercentage()"></div>
+      </div>
+      @if (control().showMinMax) {
+        <div class="slider-range">
+          <span class="range-min">{{ control().min ?? 0 }}</span>
+          <span class="range-max">{{ control().max ?? 100 }}</span>
+        </div>
+      }
+      @if (control().hint) {
+        <div class="hint">{{ control().hint }}</div>
+      }
+    </div>
+  } @else {
+    <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+    <div class="value">{{ getDisplayValue() }}</div>
+  }
+
+  @if (inEdit() && hasErrors()) {
+    <div class="error-messages">
+      @for (error of getErrorMessage(); track error) {
+        <div class="error-message">{{ error }}</div>
+      }
+    </div>
+  }
+</div>

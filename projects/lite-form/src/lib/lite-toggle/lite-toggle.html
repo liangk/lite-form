@@ -1,0 +1,32 @@
+<div class="lite-toggle" [ngClass]="{'in-edit': inEdit(), 'invalid': hasErrors()}">
+  @if (inEdit()) {
+    <div class="toggle-container">
+      <label class="toggle-label">
+        <div class="toggle-text">{{ control().label }}<span *ngIf="isRequired()" class="required">*</span></div>
+        <div class="toggle-switch" [ngClass]="{'checked': control().formControl.value}" (click)="onToggleChange()">
+          <div class="toggle-slider"></div>
+        </div>
+      </label>
+      @if (control().hint) {
+        <div class="hint">{{ control().hint }}</div>
+      }
+    </div>
+  } @else {
+    <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+    <div class="value">
+      @if (control().formControl.value) {
+        <span class="checked">✓ On</span>
+      } @else {
+        <span class="unchecked">✗ Off</span>
+      }
+    </div>
+  }
+
+  @if (inEdit() && hasErrors()) {
+    <div class="error-messages">
+      @for (error of getErrorMessage(); track error) {
+        <div class="error-message">{{ error }}</div>
+      }
+    </div>
+  }
+</div>

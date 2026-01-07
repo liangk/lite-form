@@ -9,6 +9,7 @@ import {
   RadioFieldDto,
   DateRangeFieldDto,
   FileFieldDto,
+  SliderFieldDto,
   FormUtils,
   SnackbarType,
   LiteSnackbarService,
@@ -19,6 +20,8 @@ import {
   LiteMultiSelect,
   LiteRadio,
   LiteCheckbox,
+  LiteToggle,
+  LiteSlider,
   LiteDate,
   LiteDateTime,
   LiteFile,
@@ -50,6 +53,8 @@ import { UserFormPanelComponent, UserFormData } from './components/user-form-pan
     LiteMultiSelect,
     LiteRadio,
     LiteCheckbox,
+    LiteToggle,
+    LiteSlider,
     LiteDate,
     LiteDateTime,
     LiteFile,
@@ -139,6 +144,56 @@ export class App {
     formControl: new FormControl<boolean>(false, { nonNullable: true, validators: [Validators.requiredTrue] }),
     hint: 'This is mandatory.'
   };
+
+  toggleDemo: FieldDto = {
+    label: 'Enable Notifications',
+    formControl: new FormControl<boolean>(true, { nonNullable: true }),
+    hint: 'Receive push notifications on your device.'
+  };
+
+  darkModeToggle: FieldDto = {
+    label: 'Dark Mode',
+    formControl: new FormControl<boolean>(false, { nonNullable: true }),
+    hint: 'Switch between light and dark theme.'
+  };
+
+  requiredToggleDemo: FieldDto = {
+    label: 'Accept Terms (required)',
+    formControl: new FormControl<boolean>(false, { nonNullable: true, validators: [Validators.requiredTrue] }),
+    hint: 'You must accept the terms to continue.'
+  };
+
+  volumeSlider = new SliderFieldDto(
+    'Volume',
+    new FormControl<number>(75, { nonNullable: true }),
+    0,
+    100,
+    1,
+    true,
+    (value) => `${value}%`,
+    'Adjust the audio volume level.'
+  );
+
+  priceSlider = new SliderFieldDto(
+    'Max Price',
+    new FormControl<number>(500, { nonNullable: true }),
+    0,
+    2000,
+    50,
+    true,
+    (value) => `$${value.toLocaleString()}`,
+    'Set your maximum price range.'
+  );
+
+  temperatureSlider = new SliderFieldDto(
+    'Temperature',
+    new FormControl<number>(22, { nonNullable: true }),
+    15,
+    30,
+    0.5,
+    true,
+    (value) => `${value}°C`
+  );
 
   dateDemo: FieldDto = {
     label: 'Birth Date',

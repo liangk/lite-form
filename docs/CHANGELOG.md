@@ -5,6 +5,63 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-01-07
+
+### Added
+- **LiteToggle Component**: Modern iOS-style toggle switch for boolean input
+  - Smooth sliding animation with visual feedback
+  - Works with standard `FieldDto` with `FormControl<boolean>`
+  - Support for edit and view modes
+  - Form validation integration with error messages
+  - Required field indicators
+  - Helper text (hints) support
+  - Accessible keyboard navigation (Space/Enter to toggle)
+  - Exported via `projects/lite-form/src/public-api.ts`
+  - Perfect for settings panels, feature flags, and privacy controls
+
+- **LiteSlider Component**: Range slider for numeric input with visual progress bar
+  - Configurable min, max, and step values
+  - Custom value formatting via `valueFormatter` function
+  - Optional min/max range display
+  - Real-time value display in header
+  - Visual progress bar overlay on track
+  - Support for edit and view modes
+  - Form validation integration with error messages
+  - Required field indicators
+  - Helper text (hints) support
+  - Accessible keyboard navigation (Arrow keys to adjust)
+  - TypeScript-typed with `SliderFieldDto` class
+  - Exported via `projects/lite-form/src/public-api.ts`
+  - Ideal for volume controls, price filters, ratings, and numeric range selection
+
+### Enhanced
+- **Documentation**: Added comprehensive documentation for new components
+  - `docs/lite-toggle.md` with full API reference, examples, and use cases
+  - `docs/lite-slider.md` with full API reference, custom formatting examples, and use cases
+  - Updated main README to include both new components (now 18+ components)
+  - Added `SliderFieldDto` to DTO documentation section
+- **UI Sandbox**: Added interactive demos in `projects/ui-sandbox/src/app/`
+  - Toggle demos: basic toggle, dark mode toggle, required toggle with validation
+  - Slider demos: volume slider (0-100%), price slider ($0-$2000), temperature slider (15-30°C)
+  - All demos show both view mode and edit mode
+- **Styling**: Added compact SCSS styles following the space-saving style guide
+  - Toggle switch with iOS-style animation
+  - Slider with centered thumb alignment and visual progress bar
+  - Consistent error states and validation styling
+
+### Fixed
+- **Slider Thumb Alignment**: Properly centered slider thumb on track
+  - Increased track container height to 18px with flexbox centering
+  - Added webkit-specific margin adjustment for perfect alignment
+  - Progress bar centered using transform translateY(-50%)
+- **Slider Value Visibility**: Enhanced slider value display
+  - Increased font-weight to 700 for better readability
+  - Blue color (#2079e1) for clear visibility
+
+### Changed
+- **Version**: Bumped to 1.5.0 (minor version for new features)
+- **Peer Dependencies**: Support for Angular 20.1.0 and Angular 21.0.0
+
 ## [1.4.9] - 2025-12-19
 
 ### Added
