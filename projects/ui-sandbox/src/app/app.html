@@ -215,6 +215,51 @@
     </div>
   </div>
 
+  <h2>Badge/Chip Demo</h2>
+  <div class="row">
+    <div class="col">
+      <h3>Color Variants</h3>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+        <lite-badge [badge]="defaultBadge"></lite-badge>
+        <lite-badge [badge]="primaryBadge"></lite-badge>
+        <lite-badge [badge]="statusBadge"></lite-badge>
+        <lite-badge [badge]="warningBadge"></lite-badge>
+        <lite-badge [badge]="errorBadge"></lite-badge>
+        <lite-badge [badge]="infoBadge"></lite-badge>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3>Sizes</h3>
+      <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 16px;">
+        <lite-badge [badge]="infoBadge"></lite-badge>
+        <lite-badge [badge]="statusBadge"></lite-badge>
+        <lite-badge [badge]="primaryBadge"></lite-badge>
+      </div>
+    </div>
+    <div class="col">
+      <h3>With Icons</h3>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+        <lite-badge [badge]="iconBadge"></lite-badge>
+        <lite-badge [badge]="iconRemovableBadge" (remove)="showSnackbar('Verified badge removed', 'done')"></lite-badge>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3>Removable Chips (Tags)</h3>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+        @for (chip of removableChips(); track $index) {
+          <lite-badge [badge]="chip" (remove)="onRemoveChip($index)"></lite-badge>
+        }
+        @if (removableChips().length === 0) {
+          <span style="color: #6c757d; font-style: italic;">All chips removed. Refresh to reset.</span>
+        }
+      </div>
+    </div>
+  </div>
+
   @if (basicPanelOpen()) {
     <lite-panel
       [title]="'Welcome to Lite Panel'"

@@ -31,7 +31,9 @@ import {
   LiteLoading,
   LiteTabGroup,
   LiteTabItem,
-  LiteTabContent
+  LiteTabContent,
+  LiteBadge,
+  BadgeFieldDto
 } from 'lite-form';
 import { UserFormPanelComponent, UserFormData } from './components/user-form-panel.component';
 
@@ -56,7 +58,8 @@ import { UserFormPanelComponent, UserFormData } from './components/user-form-pan
     LiteTable,
     LiteLoading,
     LiteTabGroup,
-    LiteTabContent
+    LiteTabContent,
+    LiteBadge
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
@@ -298,6 +301,37 @@ export class App {
   showProgressIndeterminate = signal(true);
   progressValue = signal(0);
   progressInterval: any = null;
+
+  // Badge demos
+  statusBadge = new BadgeFieldDto('Active', 'success', 'medium');
+  warningBadge = new BadgeFieldDto('Pending', 'warning', 'medium');
+  errorBadge = new BadgeFieldDto('Failed', 'danger', 'medium');
+  infoBadge = new BadgeFieldDto('New', 'info', 'small');
+  primaryBadge = new BadgeFieldDto('Featured', 'primary', 'large');
+  defaultBadge = new BadgeFieldDto('Default', 'default', 'medium');
+  
+  removableChips = signal<BadgeFieldDto[]>([
+    new BadgeFieldDto('Angular', 'primary', 'medium', true),
+    new BadgeFieldDto('TypeScript', 'info', 'medium', true),
+    new BadgeFieldDto('RxJS', 'success', 'medium', true),
+    new BadgeFieldDto('SCSS', 'warning', 'medium', true)
+  ]);
+  
+  iconBadge = new BadgeFieldDto(
+    'Star',
+    'warning',
+    'medium',
+    false,
+    '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'
+  );
+  
+  iconRemovableBadge = new BadgeFieldDto(
+    'Verified',
+    'success',
+    'medium',
+    true,
+    '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+  );
 
   confirmationPanelActions: LitePanelAction[] = [
     { label: 'Delete', value: 'delete', variant: 'danger' },
@@ -714,5 +748,13 @@ export class App {
         this.progressValue.set(current + 10);
       }
     }, 300);
+  }
+
+  // Badge event handlers
+  onRemoveChip(index: number) {
+    const chips = this.removableChips();
+    const removed = chips[index];
+    this.removableChips.set(chips.filter((_, i) => i !== index));
+    this.showSnackbar(`Removed: ${removed.label}`, 'done');
   }
 }

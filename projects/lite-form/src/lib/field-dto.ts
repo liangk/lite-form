@@ -169,3 +169,28 @@ export class TableFieldDto<T = any> {
     this.sortState = sortState;
   }
 }
+
+export type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info';
+export type BadgeSize = 'small' | 'medium' | 'large';
+
+export class BadgeFieldDto {
+  label: string;
+  variant?: BadgeVariant;
+  size?: BadgeSize;
+  removable?: boolean;
+  icon?: string;
+
+  constructor(
+    label: string,
+    variant: BadgeVariant = 'default',
+    size: BadgeSize = 'medium',
+    removable: boolean = false,
+    icon?: string
+  ) {
+    this.label = label;
+    this.variant = variant;
+    this.size = size;
+    this.removable = removable;
+    this.icon = icon;
+  }
+}

@@ -1,6 +1,6 @@
 # Lite Form: A Lightweight and Powerful Angular Form Library
 
-**Lite Form is a comprehensive, open-source library of 13+ standalone components for building modern, reactive forms in Angular (v20+). It provides lightweight, customizable, and fully-typed form controls—from basic inputs to advanced data tables and loading indicators—designed to accelerate development and improve user experience.**
+**Lite Form is a comprehensive, open-source library of 16+ standalone components for building modern, reactive forms in Angular (v20+). It provides lightweight, customizable, and fully-typed form controls—from basic inputs to advanced data tables, loading indicators, and badge components—designed to accelerate development and improve user experience.**
 
 This library is built for developers who need a robust, out-of-the-box solution for form-heavy applications without the overhead of heavy-weight dependencies. All components are standalone, tree-shakable, and integrate seamlessly with Angular's Reactive Forms module.
 
@@ -69,6 +69,7 @@ Lite Form provides 15+ form and UI components. Click on any component below for 
 - **[LitePanel](docs/lite-panel.md)** - Modal panel for dialogs and forms
 - **[LiteLoading](docs/lite-loading.md)** - Loading spinner and progress bar
 - **[LiteTabGroup](docs/lite-tab-group.md)** - Tabs with sliding track and Angular projection
+- **[LiteBadge](docs/lite-badge.md)** - Badge and chip component for status indicators and tags
 - **[LiteSnackbar](docs/lite-snackbar.md)** - Toast notifications service
 
 ---
@@ -98,7 +99,8 @@ import {
   LiteTable,
   LitePaginator,
   LitePanel,
-  LiteLoading
+  LiteLoading,
+  LiteBadge
 } from 'ngx-lite-form';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -111,7 +113,8 @@ import {
   FileFieldDto,
   TableFieldDto,
   PaginatorFieldDto,
-  LitePanelAction
+  LitePanelAction,
+  BadgeFieldDto
 } from 'ngx-lite-form';
 
 @Component({
@@ -129,7 +132,8 @@ import {
     LiteFile,
     LiteTable,
     LitePaginator,
-    LiteLoading
+    LiteLoading,
+    LiteBadge
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -273,6 +277,21 @@ export class AppComponent {
     this.panelResult.set(result);
     this.basicPanelOpen.set(false);
   }
+
+  // Badge examples
+  statusBadge = new BadgeFieldDto('Active', 'success');
+  warningBadge = new BadgeFieldDto('Pending', 'warning');
+  infoBadge = new BadgeFieldDto('New', 'info', 'small');
+  
+  tags = signal<BadgeFieldDto[]>([
+    new BadgeFieldDto('Angular', 'primary', 'medium', true),
+    new BadgeFieldDto('TypeScript', 'info', 'medium', true),
+    new BadgeFieldDto('RxJS', 'success', 'medium', true)
+  ]);
+
+  removeTag(index: number) {
+    this.tags.update(current => current.filter((_, i) => i !== index));
+  }
 }
 ```
 
@@ -354,6 +373,17 @@ export class AppComponent {
 
 <!-- Controlled visibility -->
 <lite-loading [visible]="isLoading" [message]="'Please wait...'"></lite-loading>
+
+<!-- Badges and Chips -->
+<!-- Status badges -->
+<lite-badge [badge]="statusBadge"></lite-badge>
+<lite-badge [badge]="warningBadge"></lite-badge>
+<lite-badge [badge]="infoBadge"></lite-badge>
+
+<!-- Removable tags/chips -->
+@for (tag of tags(); track $index) {
+  <lite-badge [badge]="tag" (remove)="removeTag($index)"></lite-badge>
+}
 ```
 ---
 
@@ -376,6 +406,7 @@ For detailed API documentation, examples, and usage guides for each component, p
 - [LitePanel Documentation](docs/lite-panel.md)
 - [LiteLoading Documentation](docs/lite-loading.md)
 - [LiteTabGroup Documentation](docs/lite-tab-group.md)
+- [LiteBadge Documentation](docs/lite-badge.md)
 - [LiteSnackbar Documentation](docs/lite-snackbar.md)
 
 ---
@@ -497,6 +528,30 @@ class PaginatorFieldDto {
   currentPage: number;
   totalItems: number;
   itemsPerPage: number;
+}
+```
+
+### BadgeFieldDto
+Badge and chip configuration for the LiteBadge component.
+
+```typescript
+type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info';
+type BadgeSize = 'small' | 'medium' | 'large';
+
+class BadgeFieldDto {
+  label: string;
+  variant?: BadgeVariant;  // Color variant (default: 'default')
+  size?: BadgeSize;        // Size option (default: 'medium')
+  removable?: boolean;     // Show remove button (default: false)
+  icon?: string;           // SVG or HTML string for icon
+
+  constructor(
+    label: string,
+    variant: BadgeVariant = 'default',
+    size: BadgeSize = 'medium',
+    removable: boolean = false,
+    icon?: string
+  )
 }
 ```
 

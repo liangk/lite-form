@@ -5,6 +5,33 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.9] - 2025-12-19
+
+### Added
+- **LiteBadge Component**: Versatile badge and chip component for status indicators and tags
+  - 6 color variants: default, primary, success, warning, danger, info
+  - 3 size options: small, medium, large
+  - Removable chips with close button and remove event output
+  - Icon support via SVG or HTML string injection
+  - Smooth hover and focus animations with accessible ARIA labels
+  - TypeScript-typed with `BadgeFieldDto` class
+  - Perfect for status displays, tag systems, category labels, and visual indicators
+  - Exported via `projects/lite-form/src/public-api.ts`
+
+### Enhanced
+- **Documentation**: Added comprehensive `docs/lite-badge.md` with full API reference
+  - Complete usage examples for all variants, sizes, and features
+  - Icon integration examples with SVG markup
+  - Removable chip patterns with signal-based state management
+  - Use cases: status indicators, category tags, user skills, notification counts
+  - Custom styling guide and accessibility best practices
+- **UI Sandbox**: Added badge demos in `projects/ui-sandbox/src/app/`
+  - Color variant showcase (all 6 variants)
+  - Size comparison (small, medium, large)
+  - Icon badges with star and checkmark examples
+  - Removable chips demo with interactive removal
+  - Real-time feedback with snackbar notifications
+
 ## [1.4.8] - 2025-12-13
 
 ### Added
