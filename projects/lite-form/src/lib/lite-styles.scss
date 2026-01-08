@@ -94,16 +94,16 @@ input, .label, textarea {
   .hint { font-size: 0.8em; color: #666; margin-top: -2px; padding-left: 8px; }
 }
 .lite-textarea.in-edit {
-  .label { position: absolute; left: 8px; top: 0; color: #aaa; pointer-events: none; 
-    transition: 0.2s; font-size: 1em; line-height: 40px; font-weight: normal; }
+  .label { position: absolute; left: 0; top: 0; color: #aaa; pointer-events: none; 
+    transition: 0.2s; font-size: 1em; font-weight: normal; padding: 0.75em; }
   textarea { border: 1px solid #ccc; border-radius: 4px; padding: 5px 8px; font-size: 1em; outline: none;
-    line-height: 40px; }
+    line-height: 1.5em; field-sizing: content; min-height: 80px; }
   textarea:focus {
     border-color: #2079e1; box-shadow: 0 0 5px rgba(32, 121, 225, 0.5);
   }
   textarea:focus + .label, textarea:not(:placeholder-shown) + .label {
-    transform: translateY(-10px) translateX(-10px) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
-    line-height: initial;
+    transform: translateY(-0.75em) scale(.8); background: #fff; padding: 0 5px; color: #2079e1;
+    line-height: 1.5em;
   }
   textarea.invalid {
     border-color: #dc3545; background-color: #fff5f5; box-shadow: 0 0 0 2px 1px rgba(220, 53, 69, 0.25);
