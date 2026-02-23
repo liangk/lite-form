@@ -36,6 +36,8 @@ Lite Form is ideal for a wide range of applications, including but not limited t
 - **Built-in Validation** - Form validation with error messages and utilities
 - **Password Security** - Advanced password validation and strength analysis
 - **Date Handling** - Single date and date range selection with custom formatting
+- **Time Picker** - Intuitive time selection with hour/minute controls and quick actions
+- **Rating Input** - Star rating component with multiple variants and readonly mode
 - **File Upload** - Drag & drop file upload with camera capture and file management
 - **Panels & Dialogs** - Modal panels supporting string, template, or component content with configurable action buttons
 - **Data Tables** - Flexible table component with custom columns, sorting, and pagination
@@ -57,10 +59,12 @@ Lite Form provides 18+ form and UI components. Click on any component below for 
 - **[LiteMultiSelect](docs/lite-multi-select.md)** - Multi-selection dropdown with inline display
 - **[LiteRadio](docs/lite-radio.md)** - Radio button group for single selection
 - **[LiteCheckbox](docs/lite-checkbox.md)** - Checkbox for boolean input
-- **[LiteToggle](docs/lite-toggle.md)** - Modern iOS-style toggle switch for boolean states
-- **[LiteSlider](docs/lite-slider.md)** - Range slider for numeric input with visual feedback
+- **[LiteToggle](docs/lite-toggle.md)** - Toggle switch for boolean input
+- **[LiteSlider](docs/lite-slider.md)** - Range slider for numeric input
 - **[LiteDate](docs/lite-date.md)** - Date picker with single/range selection
 - **[LiteDateTime](docs/lite-datetime.md)** - Combined date and time picker
+- **[LiteTime](docs/lite-time.md)** - Time picker with hour/minute selection
+- **[LiteRate](docs/lite-rate.md)** - Star rating input with variants
 - **[LiteFile](docs/lite-file.md)** - File upload with drag & drop and camera capture
 
 ### Data Display & Navigation
@@ -99,6 +103,8 @@ import {
   LiteSlider,
   LiteDate,
   LiteDateTime,
+  LiteTime,
+  LiteRate,
   LiteFile,
   LiteTable,
   LitePaginator,
@@ -114,8 +120,10 @@ import {
   MultiSelectFieldDto,
   RadioFieldDto,
   DateRangeFieldDto,
-  FileFieldDto,
+  TimeFieldDto,
+  RateFieldDto,
   SliderFieldDto,
+  FileFieldDto,
   TableFieldDto,
   PaginatorFieldDto,
   LitePanelAction,
@@ -136,6 +144,8 @@ import {
     LiteSlider,
     LiteDate,
     LiteDateTime,
+    LiteTime,
+    LiteRate,
     LiteFile,
     LiteTable,
     LitePaginator,
@@ -168,20 +178,6 @@ export class AppComponent {
   
   // Checkbox (using basic FieldDto for boolean)
   agreeField = new FieldDto('I agree to terms', new FormControl<boolean>(false, { nonNullable: true }));
-  
-  // Toggle switch
-  notificationsField = new FieldDto('Enable Notifications', new FormControl<boolean>(true, { nonNullable: true }));
-  
-  // Slider
-  volumeField = new SliderFieldDto(
-    'Volume',
-    new FormControl<number>(75, { nonNullable: true }),
-    0,
-    100,
-    1,
-    true,
-    (value) => `${value}%`
-  );
   
   // Select dropdown
   countryField = new SelectFieldDto(
@@ -324,8 +320,6 @@ export class AppComponent {
   <lite-password [control]="passwordField" [showStrengthIndicator]="true"></lite-password>
   <lite-textarea [control]="descriptionField"></lite-textarea>
   <lite-checkbox [control]="agreeField"></lite-checkbox>
-  <lite-toggle [control]="notificationsField"></lite-toggle>
-  <lite-slider [control]="volumeField"></lite-slider>
   <lite-select [control]="countryField"></lite-select>
   <lite-multi-select [control]="skillsField"></lite-multi-select>
   <lite-radio [control]="planField"></lite-radio>
@@ -421,8 +415,6 @@ For detailed API documentation, examples, and usage guides for each component, p
 - [LiteMultiSelect Documentation](docs/lite-multi-select.md)
 - [LiteRadio Documentation](docs/lite-radio.md)
 - [LiteCheckbox Documentation](docs/lite-checkbox.md)
-- [LiteToggle Documentation](docs/lite-toggle.md)
-- [LiteSlider Documentation](docs/lite-slider.md)
 - [LiteDate Documentation](docs/lite-date.md)
 - [LiteDateTime Documentation](docs/lite-datetime.md)
 - [LiteFile Documentation](docs/lite-file.md)
@@ -579,35 +571,6 @@ class BadgeFieldDto {
   )
 }
 ```
-
-### SliderFieldDto
-Slider field configuration for the LiteSlider component.
-
-```typescript
-class SliderFieldDto {
-  label: string;
-  formControl: FormControl<number>;
-  min?: number;                            // Minimum value (default: 0)
-  max?: number;                            // Maximum value (default: 100)
-  step?: number;                           // Step increment (default: 1)
-  showMinMax?: boolean;                    // Show min/max labels (default: true)
-  valueFormatter?: (value: number) => string;  // Custom value formatter
-  hint?: string;                           // Helper text
-
-  constructor(
-    label: string,
-    formControl: FormControl<number>,
-    min: number = 0,
-    max: number = 100,
-    step: number = 1,
-    showMinMax: boolean = true,
-    valueFormatter?: (value: number) => string,
-    hint?: string
-  )
-}
-```
-
-**Note:** LiteToggle uses the standard `FieldDto` with a `FormControl<boolean>`.
 
 ---
 

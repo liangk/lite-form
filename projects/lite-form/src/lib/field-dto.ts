@@ -225,3 +225,46 @@ export class SliderFieldDto {
     this.hint = hint;
   }
 }
+
+export class TimeFieldDto {
+  label: string;
+  formControl: FormControl<string>;
+  hint?: string;
+
+  constructor(
+    label: string,
+    formControl: FormControl<string>,
+    hint?: string
+  ) {
+    this.label = label;
+    this.formControl = formControl;
+    this.hint = hint;
+  }
+}
+
+export type RateVariant = 'default' | 'primary' | 'success' | 'danger' | 'info';
+
+export class RateFieldDto {
+  label: string;
+  formControl: FormControl<number>;
+  max?: number;
+  readonly?: boolean;
+  variant?: RateVariant;
+  hint?: string;
+
+  constructor(
+    label: string,
+    formControl: FormControl<number>,
+    max: number = 5,
+    readonly: boolean = false,
+    variant: RateVariant = 'default',
+    hint?: string
+  ) {
+    this.label = label;
+    this.formControl = formControl;
+    this.max = max;
+    this.readonly = readonly;
+    this.variant = variant;
+    this.hint = hint;
+  }
+}

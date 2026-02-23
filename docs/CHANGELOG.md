@@ -5,6 +5,58 @@ All notable changes to the LiteForm project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-02-23
+
+### Added
+- **LiteTime Component**: Modern time picker for hour and minute selection
+  - Interactive time picker with scrollable hour (00-23) and minute lists (5-minute increments)
+  - Quick action buttons: "Now" (sets current time) and "Clear" (resets selection)
+  - Floating label with smooth transitions
+  - Format customization support (HH:mm)
+  - Automatic positioning (top/bottom) based on viewport space
+  - Support for edit and view modes
+  - Form validation integration with error messages
+  - Required field indicators
+  - Helper text (hints) support
+  - TypeScript-typed with `TimeFieldDto` class
+  - Exported via `projects/lite-form/src/public-api.ts`
+  - Perfect for appointment scheduling, alarm settings, business hours, and any time input requirement
+
+- **LiteRate Component**: Star rating input for collecting user feedback
+  - Interactive star rating with click-to-select (1-5 stars or custom maximum)
+  - Five color variants: default (yellow), primary (blue), success (green), danger (red), info (cyan)
+  - Readonly mode for displaying ratings without allowing changes
+  - Configurable maximum stars (default: 5, customizable to any number)
+  - Toggle behavior: click same star to clear rating (set to 0)
+  - Support for edit and view modes
+  - Form validation integration with error messages
+  - Required field indicators
+  - Helper text (hints) support
+  - TypeScript-typed with `RateFieldDto` class and `RateVariant` type
+  - Exported via `projects/lite-form/src/public-api.ts`
+  - Ideal for product reviews, service ratings, quality assessments, and any rating-based input
+
+### Enhanced
+- **Documentation**: Added comprehensive documentation for new components
+  - `docs/lite-time.md` with full API reference, usage examples, and common use cases
+  - `docs/lite-rate.md` with full API reference, variant examples, and integration patterns
+  - Updated main README to include both new components (now 18+ components)
+  - Added `TimeFieldDto` and `RateFieldDto` to DTO documentation section
+  - Updated component count from 16+ to 18+ throughout documentation
+- **UI Sandbox**: Added interactive demos in `projects/ui-sandbox/src/app/`
+  - Time picker demos: meeting time, alarm time with both view and edit modes
+  - Rating demos: interactive rating, readonly rating (info variant), product rating (success variant)
+  - All demos show both view mode and edit mode for comparison
+- **Styling**: Added compact SCSS styles following the space-saving style guide
+  - Time picker with floating label, calendar overlay, and scrollable time lists
+  - Star rating with color variants and smooth hover effects
+  - Consistent error states and validation styling
+  - Proper focus indicators and accessibility support
+
+### Changed
+- **Version**: Bumped to 1.6.0 (minor version for new features)
+- **Component Library**: Expanded from 16 to 18 standalone components
+
 ## [1.5.0] - 2026-01-07
 
 ### Added

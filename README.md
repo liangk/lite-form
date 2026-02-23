@@ -1,6 +1,6 @@
 # Lite Form: A Lightweight and Powerful Angular Form Library
 
-**Lite Form is a comprehensive, open-source library of 16+ standalone components for building modern, reactive forms in Angular (v20+). It provides lightweight, customizable, and fully-typed form controls—from basic inputs to advanced data tables, loading indicators, and badge components—designed to accelerate development and improve user experience.**
+**Lite Form is a comprehensive, open-source library of 18+ standalone components for building modern, reactive forms in Angular (v20+). It provides lightweight, customizable, and fully-typed form controls—from basic inputs to advanced data tables, loading indicators, and badge components—designed to accelerate development and improve user experience.**
 
 This library is built for developers who need a robust, out-of-the-box solution for form-heavy applications without the overhead of heavy-weight dependencies. All components are standalone, tree-shakable, and integrate seamlessly with Angular's Reactive Forms module.
 
@@ -36,6 +36,8 @@ Lite Form is ideal for a wide range of applications, including but not limited t
 - **Built-in Validation** - Form validation with error messages and utilities
 - **Password Security** - Advanced password validation and strength analysis
 - **Date Handling** - Single date and date range selection with custom formatting
+- **Time Picker** - Intuitive time selection with hour/minute controls and quick actions
+- **Rating Input** - Star rating component with multiple variants and readonly mode
 - **File Upload** - Drag & drop file upload with camera capture and file management
 - **Panels & Dialogs** - Modal panels supporting string, template, or component content with configurable action buttons
 - **Data Tables** - Flexible table component with custom columns, sorting, and pagination
@@ -47,7 +49,7 @@ Lite Form is ideal for a wide range of applications, including but not limited t
 
 ## Components
 
-Lite Form provides 15+ form and UI components. Click on any component below for detailed documentation:
+Lite Form provides 18+ form and UI components. Click on any component below for detailed documentation:
 
 ### Form Controls
 - **[LiteInput](docs/lite-input.md)** - Text input with floating labels and validation
@@ -57,8 +59,12 @@ Lite Form provides 15+ form and UI components. Click on any component below for 
 - **[LiteMultiSelect](docs/lite-multi-select.md)** - Multi-selection dropdown with inline display
 - **[LiteRadio](docs/lite-radio.md)** - Radio button group for single selection
 - **[LiteCheckbox](docs/lite-checkbox.md)** - Checkbox for boolean input
+- **[LiteToggle](docs/lite-toggle.md)** - Toggle switch for boolean input
+- **[LiteSlider](docs/lite-slider.md)** - Range slider for numeric input
 - **[LiteDate](docs/lite-date.md)** - Date picker with single/range selection
 - **[LiteDateTime](docs/lite-datetime.md)** - Combined date and time picker
+- **[LiteTime](docs/lite-time.md)** - Time picker with hour/minute selection
+- **[LiteRate](docs/lite-rate.md)** - Star rating input with variants
 - **[LiteFile](docs/lite-file.md)** - File upload with drag & drop and camera capture
 
 ### Data Display & Navigation
@@ -93,8 +99,12 @@ import {
   LiteMultiSelect,
   LiteRadio,
   LiteCheckbox,
+  LiteToggle,
+  LiteSlider,
   LiteDate,
   LiteDateTime,
+  LiteTime,
+  LiteRate,
   LiteFile,
   LiteTable,
   LitePaginator,
@@ -110,6 +120,9 @@ import {
   MultiSelectFieldDto,
   RadioFieldDto,
   DateRangeFieldDto,
+  TimeFieldDto,
+  RateFieldDto,
+  SliderFieldDto,
   FileFieldDto,
   TableFieldDto,
   PaginatorFieldDto,
@@ -127,8 +140,12 @@ import {
     LiteMultiSelect,
     LiteRadio,
     LiteCheckbox,
+    LiteToggle,
+    LiteSlider,
     LiteDate,
     LiteDateTime,
+    LiteTime,
+    LiteRate,
     LiteFile,
     LiteTable,
     LitePaginator,

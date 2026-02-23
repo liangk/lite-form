@@ -1,9 +1,10 @@
-import { Component, effect, input, ElementRef, HostListener, computed, signal, DoCheck } from '@angular/core';
+import { Component, effect, input, ElementRef, HostListener, computed, signal, DoCheck, DestroyRef, inject } from '@angular/core';
 import { SelectFieldDto } from '../field-dto';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { FormUtils } from '../form-utils';
+import { startWith, Subscription } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -34,6 +35,9 @@ export class LiteSelect implements DoCheck {
   
   // Internal signal that gets updated when options change
   private _optionsVersion = signal(0);
+
+  private readonly _destroyRef = inject(DestroyRef);
+  private _valueSub?: Subscription;
   
   readonly FormUtils = FormUtils;
   
@@ -70,15 +74,15 @@ export class LiteSelect implements DoCheck {
   }
 
   constructor(private _elementRef: ElementRef) {
-    
+    this._destroyRef.onDestroy(() => this._valueSub?.unsubscribe());
+
     effect(() => {
-      // Sync inputText with FormControl value when it changes
-      const value = this.control().formControl.value;
-      if (value && typeof value === 'object') {
+      const formControl = this.control().formControl;
+      this._valueSub?.unsubscribe();
+      this._valueSub = formControl.valueChanges.pipe(startWith(formControl.value)).subscribe(value => {
+        if (value === null || value === undefined) { this.inputText.set(''); return; }
         this.inputText.set(this.control().displayWith(value));
-      } else if (!value) {
-        this.inputText.set('');
-      }
+      });
     }, { allowSignalWrites: true });
   }
 

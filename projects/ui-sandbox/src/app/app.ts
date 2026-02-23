@@ -10,6 +10,8 @@ import {
   DateRangeFieldDto,
   FileFieldDto,
   SliderFieldDto,
+  TimeFieldDto,
+  RateFieldDto,
   FormUtils,
   SnackbarType,
   LiteSnackbarService,
@@ -22,6 +24,8 @@ import {
   LiteCheckbox,
   LiteToggle,
   LiteSlider,
+  LiteTime,
+  LiteRate,
   LiteDate,
   LiteDateTime,
   LiteFile,
@@ -55,6 +59,8 @@ import { UserFormPanelComponent, UserFormData } from './components/user-form-pan
     LiteCheckbox,
     LiteToggle,
     LiteSlider,
+    LiteTime,
+    LiteRate,
     LiteDate,
     LiteDateTime,
     LiteFile,
@@ -193,6 +199,41 @@ export class App {
     0.5,
     true,
     (value) => `${value}°C`
+  );
+
+  timeDemo = new TimeFieldDto(
+    'Meeting Time',
+    new FormControl<string>('', { nonNullable: true }),
+    'Select the meeting start time.'
+  );
+
+  alarmTimeDemo = new TimeFieldDto(
+    'Alarm',
+    new FormControl<string>('07:30', { nonNullable: true }),
+    'Set your daily alarm.'
+  );
+
+  ratingDemo = new RateFieldDto(
+    'Rating',
+    new FormControl<number>(0, { nonNullable: true })
+  );
+
+  readonlyRatingDemo = new RateFieldDto(
+    'Average Rating',
+    new FormControl<number>(4, { nonNullable: true }),
+    5,
+    true,
+    'info',
+    'Customer satisfaction rating.'
+  );
+
+  productRatingDemo = new RateFieldDto(
+    'Product Quality',
+    new FormControl<number>(3, { nonNullable: true }),
+    5,
+    false,
+    'success',
+    'How would you rate this product?'
   );
 
   dateDemo: FieldDto = {

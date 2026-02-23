@@ -1,7 +1,9 @@
 <div class="lite-input" [ngClass]="{'in-edit': inEdit()}">
   @if (inEdit()) {
     <input type="text" [formControl]="control().formControl" placeholder="" [ngClass]="{'invalid': hasErrors()}" />
-    <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+    <div class="label">{{ control().label }}
+      @if (isRequired()) {<span>*</span>}
+    </div>
     @if (control().hint) {
       <div class="hint">{{ control().hint }}</div>
     }
@@ -13,7 +15,9 @@
       </div>
     }
   } @else {
-    <div class="label">{{ control().label }}<span *ngIf="isRequired()">*</span></div>
+    <div class="label">{{ control().label }}
+      @if (isRequired()) {<span>*</span>}
+    </div>
     <div class="value">{{ control().formControl.value }}</div>
   }
 </div>

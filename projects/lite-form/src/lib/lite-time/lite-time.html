@@ -1,0 +1,66 @@
+<div class="lite-time" [ngClass]="{'in-edit': inEdit(), 'invalid': hasErrors()}">
+  @if (inEdit()) {
+    <input type="text" [formControl]="control().formControl" [ngClass]="{'invalid': hasErrors()}" 
+           (change)="onTimeInput($event)" [placeholder]="format()" />
+    <label class="label">{{ control().label }}
+      @if (isRequired()) {<span>*</span>}
+    </label>
+    <div class="calendar_icon" (click)="togglePicker()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="calendar" viewBox="0 0 16 16">
+        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+      </svg>
+    </div>
+    
+    @if (control().hint) {
+      <div class="hint">{{ control().hint }}</div>
+    }
+    @if (hasErrors()) {
+      <div class="error-messages">
+        @for (error of getErrorMessage(); track error) {
+          <div class="error-message">{{ error }}</div>
+        }
+      </div>
+    }
+
+    @if (showPicker()) {
+      <div class="calendar-overlay" [ngClass]="'position-' + pickerPosition()">
+        <div class="calendar-panel">
+          <div class="time-panel">
+            <div class="control-header">
+              <button type="button" class="close-button" (click)="closeCalendar()" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M2.146 2.146a.5.5 0 0 1 .708 0L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854a.5.5 0 0 1 0-.708z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="time-header">HOURS</div>
+            <div class="hh-grid">
+                @for (hh of hourSet; track hh) {
+                  <div class="hh-slot" [ngClass]="{'selected': currentHours === hh}" (click)="onSelectHour(hh)">
+                      {{ hh < 10 ? '0' + hh : hh }}
+                  </div>
+                }
+            </div>
+            <div class="time-header">MINUTES</div>
+            <div class="hh-grid">
+                @for (mm of minSet; track mm) {
+                  <div class="hh-slot" [ngClass]="{'selected': currentMinutes === mm}" (click)="onSelectMinute(mm)">
+                      {{ mm < 10 ? '0' + mm : mm }}
+                  </div>
+                }
+            </div>
+          </div>          
+        </div>
+      </div>
+    }
+  } @else {
+    <div class="label">{{ control().label }}
+      @if (isRequired()) {<span>*</span>}
+    </div>
+    <div class="value">
+      {{ getDisplayValue() }}
+    </div>
+  }
+
+</div>

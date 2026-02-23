@@ -60,6 +60,7 @@
       <h2>Select Demo</h2>
       <lite-select [control]="selectDemo" [inEdit]="false"></lite-select>
       <lite-select [control]="selectDemo"></lite-select>
+      <button (click)="selectDemo.formControl.setValue(null)">Clear Select</button>
     </div>
     <div class="col">
       <h2>Multi-Select Demo</h2>
@@ -116,6 +117,37 @@
       <h3>Temperature Slider</h3>
       <lite-slider [control]="temperatureSlider" [inEdit]="false"></lite-slider>
       <lite-slider [control]="temperatureSlider"></lite-slider>
+    </div>
+  </div>
+  <h2>Time Demos</h2>
+  <div class="row">
+    <div class="col">
+      <h3>Meeting Time</h3>
+      <lite-time [control]="timeDemo" [inEdit]="false"></lite-time>
+      <lite-time [control]="timeDemo"></lite-time>
+    </div>
+    <div class="col">
+      <h3>Alarm Time</h3>
+      <lite-time [control]="alarmTimeDemo" [inEdit]="false"></lite-time>
+      <lite-time [control]="alarmTimeDemo"></lite-time>
+    </div>
+  </div>
+  <h2>Rating Demos</h2>
+  <div class="row">
+    <div class="col">
+      <h3>Interactive Rating</h3>
+      <lite-rate [control]="ratingDemo" [inEdit]="false"></lite-rate>
+      <lite-rate [control]="ratingDemo"></lite-rate>
+    </div>
+    <div class="col">
+      <h3>Readonly Rating (info)</h3>
+      <lite-rate [control]="readonlyRatingDemo" [inEdit]="false"></lite-rate>
+      <lite-rate [control]="readonlyRatingDemo"></lite-rate>
+    </div>
+    <div class="col">
+      <h3>Product Rating (Success)</h3>
+      <lite-rate [control]="productRatingDemo" [inEdit]="false"></lite-rate>
+      <lite-rate [control]="productRatingDemo"></lite-rate>
     </div>
   </div>
   <h2>Date Demos with Tab Group (3 Tabs)</h2>
